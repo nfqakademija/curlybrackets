@@ -16,8 +16,7 @@ class HomeController extends AbstractController
     {
 
         $repository = $em->getRepository(User::class);
-        $user = $repository->find('3');
-
+        $user = $repository->find('119');
         return $this->render('home/index.html.twig', [
             'user' => $user
         ]);
