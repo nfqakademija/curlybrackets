@@ -9,12 +9,13 @@
         "sensiolabs/security-checker": "^5.0",
         "symfony/asset": "4.2.*",
         "symfony/console": "4.2.*",
+        "symfony/debug-bundle": "4.2.*",
         "symfony/dotenv": "4.2.*",
         "symfony/flex": "^1.1",
-        "symfony/monolog-bundle": "^3.0",
         "symfony/framework-bundle": "4.2.*",
         "symfony/http-foundation": "4.2.*",
         "symfony/maker-bundle": "^1.11",
+        "symfony/monolog-bundle": "^3.0",
         "symfony/orm-pack": "^1.0",
         "symfony/security-bundle": "4.2.*",
         "symfony/twig-bundle": "4.2.*",
@@ -73,8 +74,7 @@
         "easycorp/easy-log-handler": "^1.0.7",
         "fzaninotto/faker": "^1.8",
         "squizlabs/php_codesniffer": "^3.4",
-        "symfony/debug-bundle": "*",
         "symfony/profiler-pack": "*",
-        "symfony/var-dumper": "*"
+        "symfony/var-dumper": "4.2.*"
     }
 }
