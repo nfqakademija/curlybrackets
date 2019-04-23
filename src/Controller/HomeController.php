@@ -15,11 +15,6 @@ class HomeController extends AbstractController
     public function index(EntityManagerInterface $em)
     {
 
-        $repository = $em->getRepository(User::class);
-        $user = $repository->find('129');
-
-        return $this->render('home/index.html.twig', [
-            'user' => $user
-        ]);
+        return $this->render('home/index.html.twig');
     }
 }
