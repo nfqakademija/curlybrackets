@@ -1,14 +1,20 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm-6">
-            <img class="logo" src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo4.png" />
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="navbar-brand">
+            <img class="logo" src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo4.png" alt="Logotipas" />
         </div>
-        <div class="col-sm-6">
-            <ul class="header-menu">
-                <li><a href="#">Apie mus</a></li>
-                <li><a href="#">Sąrašas</a></li>
-                <li><a href="#">Prisijungti</a></li>
-            </ul>
-        </div>
-    </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto header-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Pradžia</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Prisijungti</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Atsijungti</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Registruotis</a></li>
+                </ul>
+            </div>
+
+    </nav>
 </div>

@@ -27,18 +27,18 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Įveskite slaptažodį',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Slaptažodis turi turėti bent {{ limit }} simbolius',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
                     new Regex([
                         'pattern' => "/^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/",
                         'match' => true,
-                            'message' => "Your name cannot contain a number"]),
+                            'message' => "Jūsų vardas negali turėti skaičių"]),
 
                 ],
             ])
