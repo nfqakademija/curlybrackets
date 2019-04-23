@@ -10,6 +10,7 @@ set -e
 # Installing dependencies
 echo "Preparing PHP dependencies..."
 APP_ENV=dev $SCRIPT_DIR/backend.sh composer install
+APP_ENV=dev $SCRIPT_DIR/backend.sh bin/console d:mi:m --no-interaction
 echo ""
 echo "Preparing JavaScript/CSS dependencies..."
 echo ""
