@@ -5,10 +5,15 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\Entity
+ * @ORM\Table(name="user")
  */
 class User implements UserInterface
 {
@@ -21,6 +26,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Length(
+     *     min = 6,
+     *     minMessage="Reikalingi mažiausiai 6 simboliai")
      */
     private $username;
 
@@ -41,6 +49,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     *
      */
     private $email;
 
@@ -66,6 +75,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     * min = 7,
+     * minMessage="Reikalingi mažiausiai 7 simboliai")
      */
     private $password;
 
@@ -224,5 +236,18 @@ class User implements UserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        // somehow you have an array of "fake names"
+        $fakeNames = ['blet', 'kurva'];
+
+        // check if the name is actually a fake name
+//        if (in_array($this->getUsername(), $fakeNames)) {
+            $context->buildViolation('Nenaudokime keiksmažodžių!')
+                ->atPath('username')
+                ->addViolation();
+       // }
     }
 }

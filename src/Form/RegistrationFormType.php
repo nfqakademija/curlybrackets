@@ -3,20 +3,24 @@
 namespace App\Form;
 
 use App\Entity\User;
+use function PHPSTORM_META\type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('username')
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -31,6 +35,11 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
+                    new Regex([
+                        'pattern' => "/^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/",
+                        'match' => true,
+                            'message' => "Your name cannot contain a number"]),
+
                 ],
             ])
         ;
