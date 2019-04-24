@@ -1,13 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="container">
+        <div class="login">
+            <h1 class="h3 mb-3 font-weight-normal">Registracija</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.email) }}
-        <button class="btn btn-primary">Register</button>
-    {{ form_end(registrationForm) }}
-    <a class="nav-link" href="{{ path('home') }}"><button type="button" class="btn btn-danger">Cancel</button></a>
+            {{ form_start(registrationForm) }}
+                {{ form_row(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Vartotojo vardas'}}) }}
+                {{ form_row(registrationForm.plainPassword,  {'attr': {'class': 'form-control', 'placeholder': 'Slaptažodis'}}) }}
+                {{ form_row(registrationForm.email,  {'attr': {'class': 'form-control', 'placeholder': 'El.paštas'}}) }}
+                <div class="reg-btn">
+                    <button class="login-btn">Registruotis</button> <a href="{{ path('home') }}">Atšaukti</a>
+                </div>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}
