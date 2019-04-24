@@ -35,10 +35,10 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
-                    new Regex([
-                        'pattern' => "/^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/",
-                        'match' => true,
-                            'message' => "Jūsų vardas negali turėti skaičių"]),
+//                    new Regex([
+//                        'pattern' => "/^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/",
+//                        'match' => true,
+//                            'message' => "Jūsų vardas negali turėti skaičių"]),
 
                 ],
             ])
