@@ -14,7 +14,18 @@ class HomeController extends AbstractController
      */
     public function index(EntityManagerInterface $em)
     {
+        if($this->getUser()) {
 
-        return $this->render('home/index.html.twig');
+            $username = $this->getUser()->getUsername();
+
+            return $this->render('home/index.html.twig', [
+                'username' => $username
+            ]);
+        }
+
+        else {
+            return $this->render('home/index.html.twig');
+        }
+
     }
 }
