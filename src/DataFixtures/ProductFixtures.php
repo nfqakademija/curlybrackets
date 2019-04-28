@@ -10,6 +10,7 @@ class ProductFixtures extends BaseFixtures
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(Product::class, 10, function (Product $product) {
+            $product->setTitle($this->faker->company());
             $product->setSupplierId(random_int(1, 190));
             $product->setDeadline($this->faker->dateTimeBetween('+1 days', '+50 days'));
             $product->setPicture($this->faker->imageUrl(640, 480, 'cats'));
