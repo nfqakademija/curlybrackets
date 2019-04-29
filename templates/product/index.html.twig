@@ -26,7 +26,8 @@
                 <td>{{ product.id }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.picture }}</td>
+                <td><img src="{{asset(product.picture) }}" width="200" height="200"
+                         alt="Picture of Theodore Roosevelt"></td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.status ? 'Active' : 'Disabled' }}</td>
                 <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>

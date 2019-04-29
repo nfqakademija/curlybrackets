@@ -11,7 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductType extends AbstractType
 {
@@ -31,11 +34,17 @@ class ProductType extends AbstractType
                 'widget' => 'single_text',
                 'required' => true,
                 'invalid_message' => 'Įveskite laiką',
-
             ])
+
             ->add('picture', FileType::class, [
+                'data_class' => null,
+                'mapped' => false,
                 'label' => 'Pasirinkite nuotrauką',
-                'required' => false
+                'required' => false,
+                'constraints' => [
+                    new Image()
+                ]
+
             ])
             ->add('description', TextareaType::class, [
                 'label' => false,
