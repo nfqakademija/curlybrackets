@@ -36,6 +36,7 @@
                 <td>
                     <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
                     <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                    <a href="{{ path('product_delete', {'id': product.id}) }}">Delete</a>
                 </td>
             </tr>
         {% else %}
@@ -47,4 +48,5 @@
     </table>
 
     <a href="{{ path('product_new') }}">Create new</a>
+
 {% endblock %}
