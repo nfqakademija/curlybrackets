@@ -31,3 +31,6 @@ yarn-error.log
 ###< symfony/web-server-bundle ###
 
 /public/uploads
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

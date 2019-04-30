@@ -3,40 +3,38 @@
 {% block title %}Product index{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
+    <h1>Produktai</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Deadline</th>
-                <th>Picture</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>DeletedAt</th>
-                <th>actions</th>
+                <th>Pavadinimas</th>
+                <th>Atsiimti iki</th>
+                <th>Nuotrauka</th>
+                <th>Aprašymas</th>
+                <th>Būsena</th>
+                <th>Atiduotas</th>
+                <th>Sukurta</th>
+                <th>Atnaujinta</th>
+                <th>Veiksmai</th>
             </tr>
         </thead>
         <tbody>
         {% for product in products %}
             <tr>
-                <td>{{ product.id }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
-                <td><img src="{{asset(product.picture) }}" width="200" height="200"
-                         alt="Picture of Theodore Roosevelt"></td>
+                <td><img src="{{asset('uploads/productPictures/') ~product.picture  }}" width="200" height="200"
+                         alt="Food picture"></td>
                 <td>{{ product.description }}</td>
-                <td>{{ product.status ? 'Active' : 'Disabled' }}</td>
+                <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
+                <td>{{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}</td>
                 <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.deletedAt ? product.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-                    <a href="{{ path('product_delete', {'id': product.id}) }}">Delete</a>
+                    <button class="btn btn-success"><a href="{{ path('product_show', {'id': product.id}) }}">show</a></button>
+                    <button class="btn btn-success"><a href="{{ path('product_edit', {'id': product.id}) }}">edit</a></button>
+                    <button class="btn btn-danger"><a href="{{ path('product_delete', {'id': product.id}) }}">Delete</a></button>
                 </td>
             </tr>
         {% else %}

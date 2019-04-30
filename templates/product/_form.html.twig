@@ -1,9 +1,13 @@
 {{ form_start(form) }}
-{{ form_start(form) }}
-                {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Pavadinimas'}}) }}
-                {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Aprašymas'}}) }}
-                {{ form_row(form.deadline, {'attr': {'class': 'form-control col-4', 'placeholder': 'Atsiimti iki'}}) }}
-                {{ form_row(form.picture, {'attr': {'class': 'form-control', 'placeholder': 'Nuotrauka'}}) }}
+{{  dump(form.status)}}
+    {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Pavadinimas'}}) }}
+    {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Aprašymas'}}) }}
+    {{ form_row(form.deadline, {'attr': {'class': 'form-control col-4', 'placeholder': 'Atsiimti iki'}}) }}
+    {{ form_row(form.picture, {'attr': {'class': 'form-control', 'placeholder': 'Nuotrauka'}}) }}
+    {{ form_row(form.status, {'attr': {'class': 'custom-control custom-checkbox'}}) }}
+    {{ form_row(form.givenAway, {'attr': {'class': 'custom-control custom-checkbox'}}) }}
+     {{ form_row(form.status, { }) }}
+
 
 <div class="reg-btn">
     <button class="login-btn">{{ button_label|default('Įrašyti') }}</button><a href="{{ path('product_index') }}">Atšaukti</a>

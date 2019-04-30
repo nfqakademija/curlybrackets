@@ -67,6 +67,11 @@ class Product
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $GivenAway;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -98,7 +103,7 @@ class Product
 
     public function getPicture(): ?string
     {
-        return '/uploads/productPictures/' .  $this->picture;
+        return $this->picture;
     }
 
     public function setPicture(?string $picture): self
@@ -176,6 +181,18 @@ class Product
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getGivenAway(): ?bool
+    {
+        return $this->GivenAway;
+    }
+
+    public function setGivenAway(bool $GivenAway): self
+    {
+        $this->GivenAway = $GivenAway;
 
         return $this;
     }
