@@ -6,7 +6,6 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,32 +32,11 @@ class ProductController extends AbstractController
     {
 
         $product = new Product();
+
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('picture')->getData()) {
-                /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
-                $file = $form->get('picture')->getData();
-
-                $fileName = md5($product->getId())  . '-' . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $file->guessExtension();
-
-                try {
-                    $file->move(
-                        $this->getParameter('pictures_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-                $product->setPicture($fileName);
-
-            } else {
-                $fileName = 'placeholderProduct.jpg';
-                $product->setPicture($fileName);
-            }
-
             $product->setSupplierId($this->get('security.token_storage')->getToken()->getUser()->getId());
             $product->setCreatedAt(new \DateTime("now"));
             $product->setUpdatedAt(new \DateTime("now"));
@@ -93,45 +71,13 @@ class ProductController extends AbstractController
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-
-
-            if ($form->get('picture')->getData()) {
-                /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
-                $file = $form->get('picture')->getData();
-                $fileName = md5($product->getId()) . '-' . pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '.' . $file->guessExtension();
-
-                try {
-
-                    $file->move(
-                        $this->getParameter('pictures_directory'),
-                        $fileName
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-
-
-            } else {
-                $fileName = $product->getPicture();
-                $product->setPicture($fileName);
-
-            }
-            $product->setPicture($fileName);
             $product->setUpdatedAt(new \DateTime("now"));
             $this->getDoctrine()->getManager()->flush();
-
-
             return $this->redirectToRoute('product_index', [
                 'id' => $product->getId(),
             ]);
-
         }
-
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
