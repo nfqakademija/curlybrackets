@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+    <h1>Produktai</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Atsiimti iki</th>
+                <th>Nuotrauka</th>
+                <th>Aprašymas</th>
+                <th>Būsena</th>
+                <th>Atiduotas</th>
+                <th>Sukurta</th>
+                <th>Atnaujinta</th>
+                <th>Veiksmai</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.title }}</td>
+                <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
+                <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square")}}" width="200" height="200"
+                         alt="Food picture"></td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
+                <td>{{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}</td>
+                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <button class="btn btn-success"><a href="{{ path('product_show', {'id': product.id}) }}">show</a></button>
+                    <button class="btn btn-success"><a href="{{ path('product_edit', {'id': product.id}) }}">edit</a></button>
+                    <button class="btn btn-danger"><a href="{{ path('product_delete', {'id': product.id}) }}">Delete</a></button>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('product_new') }}">Create new</a>
+
+{% endblock %}

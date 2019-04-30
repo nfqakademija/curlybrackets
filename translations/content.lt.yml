@@ -1,0 +1,6 @@
+page:
+  product:
+    product_form:
+      title: ''
+
+      invalid_message: 'error zinute'
