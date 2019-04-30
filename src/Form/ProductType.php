@@ -21,7 +21,9 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => false,
+                'label' => 'page.product.product_form.title',
+                'translation_domain' => 'content',
+                'invalid_message' => 'page.product.product_form.invalid_message',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Įveskite pavadinimą',

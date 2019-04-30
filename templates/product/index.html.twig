@@ -24,7 +24,7 @@
             <tr>
                 <td>{{ product.title }}</td>
                 <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
-                <td><img src="{{asset('uploads/productPictures/') ~product.picture  }}" width="200" height="200"
+                <td><img src="{{('/uploads/productPictures/' ~product.picture )| imagine_filter('square') }}" width="200" height="200"
                          alt="Food picture"></td>
                 <td>{{ product.description }}</td>
                 <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
