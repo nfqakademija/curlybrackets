@@ -1,6 +1,6 @@
 page:
   product:
     product_form:
-      title: 'Testas1'
+      title: ''
 
       invalid_message: 'error zinute'

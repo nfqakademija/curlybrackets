@@ -36,9 +36,6 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
-        dump($form);
-//        exit;
-
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('picture')->getData()) {
                 /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
