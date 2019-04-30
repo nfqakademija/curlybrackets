@@ -94,7 +94,7 @@ class Product
         return $this->deadline;
     }
 
-    public function setDeadline(\DateTimeInterface $deadline): self
+    public function setDeadline(?\DateTimeInterface $deadline): self
     {
         $this->deadline = $deadline;
 

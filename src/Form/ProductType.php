@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductType extends AbstractType
 {
@@ -32,6 +33,9 @@ class ProductType extends AbstractType
                 'widget' => 'single_text',
                 'required' => true,
                 'invalid_message' => 'Įveskite laiką',
+                'constraints' => [
+                    new NotBlank(),
+                ]
             ])
 
             ->add('picture', FileType::class, [
@@ -49,18 +53,26 @@ class ProductType extends AbstractType
             ->add('status', ChoiceType::class, [
                 'required' => true,
                 'placeholder' => 'Ar aktyvuoti produktą?',
+                'constraints' => [
+                    new NotNull()
+                ],
                 'choices' => [
                     'Aktyvuoti' => true,
                     'Palikti neaktyvų' => false ,
+
                 ]
             ])
 
             ->add('givenAway', ChoiceType::class, [
                 'required' => true,
                 'placeholder' => 'Gal produktas jau atiduotas?',
+                'constraints' => [
+                    new NotBlank(),
+                ],
                 'choices' => [
                     'Atiduotas' => true,
                     'Vis dar ne' => false,
+
                 ]
             ])
 
