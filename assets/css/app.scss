@@ -19,6 +19,7 @@ h1{
   font-size: 2em;
   color: $heading;
   margin-top: 45px;
+  margin-bottom: 0;
 }
 
 h2{
@@ -115,16 +116,22 @@ a:hover{
   position: relative;
   overflow: hidden;
   display: inline-block;
+  width: 100%;
 }
 
 .up-btn {
-  border: 2px solid gray;
-  color: gray;
-  background-color: white;
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-size: 20px;
-  font-weight: bold;
+  border: 1px solid #CED4DA;
+  color: #6C757D;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 1em;
+  width: 100%;
+  min-height: 86px;
+  cursor: pointer;
+}
+
+.up-btn:hover {
+  background-color: $elements;
 }
 
 .upload-btn input[type=file] {
@@ -146,4 +153,42 @@ a:hover{
 
 .form-block {
   margin: 45px 0;
+}
+
+.form-label label {
+  display:none;
+}
+
+.form-space {
+  margin-bottom: 10px;
+}
+
+.form-check {
+  margin-top: 20px;
+}
+
+.form-padding-right {
+  padding-right: 5px;
+}
+
+.form-padding-left {
+  padding-left: 5px;
+}
+
+.title-margin-left {
+  margin-left: 15px;
+}
+
+.form-message {
+  min-height: 150px;
+}
+
+@media screen and (max-width: 575px ) {
+  .form-padding-right {
+    padding-right: 15px;
+  }
+
+  .form-padding-left {
+    padding-left: 15px;
+  }
 }
