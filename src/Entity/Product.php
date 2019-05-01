@@ -15,21 +15,12 @@ class Product
 {
 
     /**
-     * @ManyToOne(targetEntity="Product")
-     * @JoinColumn(name="supplier_id", referencedColumnName="id")
-     */
-
-    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $supplier_id;
 
     /**
      * @ORM\Column(type="datetime")
@@ -89,6 +80,12 @@ class Product
     private $GivenAway = false;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
      * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
@@ -126,18 +123,6 @@ class Product
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getSupplierId(): ?int
-    {
-        return $this->supplier_id;
-    }
-
-    public function setSupplierId(int $supplier_id): self
-    {
-        $this->supplier_id = $supplier_id;
-
-        return $this;
     }
 
     public function getDeadline(): ?\DateTimeInterface
@@ -233,6 +218,18 @@ class Product
     public function setGivenAway(bool $GivenAway): self
     {
         $this->GivenAway = $GivenAway;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\User;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,7 +38,8 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product->setSupplierId($this->get('security.token_storage')->getToken()->getUser()->getId());
+            $user = $this->getDoctrine()->getRepository(User::class)->findOneById($this->get('security.token_storage')->getToken()->getUser()->getId());
+            $product->setUser($user);
             $product->setCreatedAt(new \DateTime("now"));
             $product->setUpdatedAt(new \DateTime("now"));
             $entityManager = $this->getDoctrine()->getManager();

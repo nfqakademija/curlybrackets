@@ -15,10 +15,7 @@
                 <th>Username</th>
                 <td>{{ user.username }}</td>
             </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
+
             <tr>
                 <th>FirstName</th>
                 <td>{{ user.firstName }}</td>
@@ -43,14 +40,28 @@
                 <th>UpdatedAt</th>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr>
-                <th>DeletedAt</th>
-                <td>{{ user.deletedAt ? user.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
+
+
+        </tbody>
+    </table>
+    <table>
+        <h2>Produktai</h2>
+        <tbody>
+        {% for product in user.products %}
+
+        <tr>
+            <th>Produkto pavadinimas</th>
+            <td>{{ product.title}}</td>
+        </tr>
+        <tr>
+            <th>Produkto aprasymas</th>
+            <td>{{ product.description}}</td>
+        </tr>
+        <tr>
+            <th>Produkto nuotrauka</th>
+            <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square")}}" width="200" height="200"></td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 
