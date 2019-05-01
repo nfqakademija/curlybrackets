@@ -4,6 +4,32 @@ $primary: darken(#428bca, 20%);
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 
+//Main colors
+$heading: #5BA045;
+$call: #FF4B05;
+$callHover: #D13E05;
+$elements: #c1c1c1;
+
+
+body {
+  background-color: #fafafa;
+}
+
+h1{
+  font-size: 2em;
+  color: $heading;
+  margin-top: 45px;
+  margin-bottom: 0;
+}
+
+h2{
+  color: $heading;
+}
+
+h3{
+  color: $heading;
+}
+
 a {
   text-decoration: none;
   color: #171a1d;
@@ -31,13 +57,14 @@ a:hover{
 }
 
 .footer {
-  border-top: 1px solid #000000;
+  border-top: 1px solid $elements;
 }
 
 .footer span {
   display: block;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 45px;
+  padding-bottom: 45px;
+  color: $elements;
 }
 
 .login {
@@ -49,16 +76,20 @@ a:hover{
   margin-bottom: 10px;
 }
 
-.login-btn {
-  padding: 10px 20px;
-  background-color: #0f6674;
+.call-to-btn {
+  padding: 5px 20px;
+  background-color: $call;
   color: #fff;
   border: none;
   border-radius: 4px;
 }
 
-.login-btn:hover {
-  background-color: #185f74
+.call-to-btn:hover {
+  background-color: $callHover;
+}
+
+.cancel-txt {
+  margin: 0 15px;
 }
 
 .reg-input {
@@ -79,4 +110,85 @@ a:hover{
 
 .navbar-light .navbar-toggler {
   margin-top: 30px;
+}
+
+.upload-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+.up-btn {
+  border: 1px solid #CED4DA;
+  color: #6C757D;
+  background-color: #fff;
+  border-radius: 4px;
+  font-size: 1em;
+  width: 100%;
+  min-height: 86px;
+  cursor: pointer;
+}
+
+.up-btn:hover {
+  background-color: $elements;
+}
+
+.upload-btn input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.add-width {
+  margin: auto;
+}
+
+.add-btn {
+  float: right;
+  margin: 20px 0 45px;
+}
+
+.form-block {
+  margin: 45px 0;
+}
+
+.form-label label {
+  display:none;
+}
+
+.form-space {
+  margin-bottom: 10px;
+}
+
+.form-check {
+  margin-top: 20px;
+}
+
+.form-padding-right {
+  padding-right: 5px;
+}
+
+.form-padding-left {
+  padding-left: 5px;
+}
+
+.title-margin-left {
+  margin-left: 15px;
+}
+
+.form-message {
+  min-height: 150px;
+}
+
+@media screen and (max-width: 575px ) {
+  .form-padding-right {
+    padding-right: 15px;
+  }
+
+  .form-padding-left {
+    padding-left: 15px;
+  }
 }
