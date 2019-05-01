@@ -26,9 +26,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Length(
-     *     min = 6,
-     *     minMessage="Reikalingi mažiausiai 6 simboliai")
      */
     private $username;
 
@@ -240,14 +237,5 @@ class User implements UserInterface
 
     public function validate(ExecutionContextInterface $context, $payload)
     {
-        // somehow you have an array of "fake names"
-        $fakeNames = ['blet', 'kurva'];
-
-        // check if the name is actually a fake name
-//        if (in_array($this->getUsername(), $fakeNames)) {
-            $context->buildViolation('Nenaudokime keiksmažodžių!')
-                ->atPath('username')
-                ->addViolation();
-       // }
     }
 }

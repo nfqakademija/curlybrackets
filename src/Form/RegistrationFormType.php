@@ -7,6 +7,7 @@ use function PHPSTORM_META\type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -19,12 +20,17 @@ class RegistrationFormType extends AbstractType
     {
 
         $builder
-            ->add('username')
-            ->add('email', EmailType::class)
+            ->add('username', TextType::class, [
+                'label' => false
+            ])
+            ->add('email', EmailType::class, [
+                'label' => false
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                'label' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Įveskite slaptažodį',
@@ -36,9 +42,9 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                     new Regex([
-                        'pattern' => "/^.*(?=.{4,10})(?=.*\d)(?=.*[a-zA-Z]).*$/",
+                        'pattern' => "/^(?=\D*\d)\S{6,}$/",
                         'match' => true,
-                            'message' => "Jūsų vardas negali turėti skaičių"]),
+                            'message' => "Slaptažodyje reikalingas bent 1 skaitmuo"]),
 
                 ],
             ])
