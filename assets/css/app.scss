@@ -8,6 +8,7 @@ $primary: darken(#428bca, 20%);
 $heading: #5BA045;
 $call: #FF4B05;
 $callHover: #D13E05;
+$elements: #c1c1c1;
 
 
 body {
@@ -16,6 +17,15 @@ body {
 
 h1{
   font-size: 2em;
+  color: $heading;
+  margin-top: 45px;
+}
+
+h2{
+  color: $heading;
+}
+
+h3{
   color: $heading;
 }
 
@@ -46,13 +56,14 @@ a:hover{
 }
 
 .footer {
-  border-top: 1px solid #000000;
+  border-top: 1px solid $elements;
 }
 
 .footer span {
   display: block;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 45px;
+  padding-bottom: 45px;
+  color: $elements;
 }
 
 .login {
@@ -76,16 +87,8 @@ a:hover{
   background-color: $callHover;
 }
 
-.login-btn {
-  padding: 10px 20px;
-  background-color: #0f6674;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-}
-
-.login-btn:hover {
-  background-color: #185f74
+.cancel-txt {
+  margin: 0 15px;
 }
 
 .reg-input {
@@ -134,4 +137,13 @@ a:hover{
 
 .add-width {
   margin: auto;
+}
+
+.add-btn {
+  float: right;
+  margin: 20px 0 45px;
+}
+
+.form-block {
+  margin: 45px 0;
 }

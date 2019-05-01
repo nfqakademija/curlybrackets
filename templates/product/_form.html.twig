@@ -1,17 +1,17 @@
 <div>
     {{ form_start(form) }}
-        <div class="row justify-content-center">
+        <div class="row justify-content-center form-block">
             <div class="col-lg-6 col-md-8">
                 <div class="row">
                     <div class="col-md-6 col-sm-4">
                         <div class="upload-btn">
-                            <button class="up-btn">sdfsdf</button>
+                            <button class="up-btn">Pasirinkite nuotrauką</button>
                             {{ form_row(form.pictureFile, {'attr': {'placeholder': 'Nuotrauka'}})}}
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-8">
                         {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Pavadinimas'}}) }}
-                        {{ form_row(form.deadline, {'attr': {'class': 'form-control col-4', 'placeholder': 'Atsiimti iki'}}) }}
+                        {{ form_row(form.deadline, {'attr': {'class': 'form-control', 'placeholder': 'Atsiimti iki'}}) }}
                     </div>
                 </div>
 
@@ -20,8 +20,8 @@
                     {#<img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('square') }}">#}
                     {{ form_row(form.status, {'attr': {'class': 'custom-control custom-checkbox'}}) }}
 
-                    <div class="reg-btn">
-                        <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button><a href="{{ path('product_index') }}">Atšaukti</a>
+                    <div class="add-btn">
+                        <a class="cancel-txt" href="{{ path('product_index') }}">Atšaukti</a> <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button>
                     </div>
 
             </div>
