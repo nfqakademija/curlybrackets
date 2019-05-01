@@ -4,6 +4,21 @@ $primary: darken(#428bca, 20%);
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";
 
+//Main colors
+$heading: #5BA045;
+$call: #FF4B05;
+$callHover: #D13E05;
+
+
+body {
+  background-color: #fafafa;
+}
+
+h1{
+  font-size: 2em;
+  color: $heading;
+}
+
 a {
   text-decoration: none;
   color: #171a1d;
@@ -49,6 +64,18 @@ a:hover{
   margin-bottom: 10px;
 }
 
+.call-to-btn {
+  padding: 5px 20px;
+  background-color: $call;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.call-to-btn:hover {
+  background-color: $callHover;
+}
+
 .login-btn {
   padding: 10px 20px;
   background-color: #0f6674;
@@ -79,4 +106,32 @@ a:hover{
 
 .navbar-light .navbar-toggler {
   margin-top: 30px;
+}
+
+.upload-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.up-btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.add-width {
+  margin: auto;
 }

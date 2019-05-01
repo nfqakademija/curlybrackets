@@ -1,14 +1,32 @@
-{{ form_start(form) }}
-    {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Pavadinimas'}}) }}
-    {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Aprašymas'}}) }}
-    {{ form_row(form.deadline, {'attr': {'class': 'form-control col-4', 'placeholder': 'Atsiimti iki'}}) }}
-    {{ form_row(form.pictureFile, {'attr': {'class': 'form-control', 'placeholder': 'Nuotrauka'}})}}
-    {#<img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('square') }}">#}
-    {{ form_row(form.status, {'attr': {'class': 'custom-control custom-checkbox'}}) }}
+<div>
+    {{ form_start(form) }}
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="row">
+                    <div class="col-md-6 col-sm-4">
+                        <div class="upload-btn">
+                            <button class="up-btn">sdfsdf</button>
+                            {{ form_row(form.pictureFile, {'attr': {'placeholder': 'Nuotrauka'}})}}
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-8">
+                        {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Pavadinimas'}}) }}
+                        {{ form_row(form.deadline, {'attr': {'class': 'form-control col-4', 'placeholder': 'Atsiimti iki'}}) }}
+                    </div>
+                </div>
 
-<div class="reg-btn">
-    <button class="login-btn">{{ button_label|default('Įrašyti') }}</button><a href="{{ path('product_index') }}">Atšaukti</a>
+
+                    {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Aprašymas'}}) }}
+                    {#<img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('square') }}">#}
+                    {{ form_row(form.status, {'attr': {'class': 'custom-control custom-checkbox'}}) }}
+
+                    <div class="reg-btn">
+                        <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button><a href="{{ path('product_index') }}">Atšaukti</a>
+                    </div>
+
+            </div>
+        </div>
+
+    {{ form_end(form) }}
 </div>
-{{ form_end(form) }}
-
 
