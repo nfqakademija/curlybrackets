@@ -30,7 +30,8 @@
             </tr>
             <tr>
                 <th>Avatar</th>
-                <td>{{ user.avatar }}</td>
+                <td><img src="{{ (vich_uploader_asset(user, 'avatarFile'))|imagine_filter("square")}}" >
+                </td>
             </tr>
             <tr>
                 <th>CreatedAt</th>
