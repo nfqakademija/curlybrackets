@@ -7,40 +7,44 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
 
-            <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Avatar</th>
-                <td><img src="{{ (vich_uploader_asset(user, 'avatarFile'))|imagine_filter("square")}}" >
-                </td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        <tr>
+            <th>FirstName</th>
+            <td>{{ user.firstName }}</td>
+        </tr>
+        <tr>
+            <th>LastName</th>
+            <td>{{ user.lastName }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Avatar</th>
+            {% if user.avatar is not null %}
+                <td><img src="{{ (vich_uploader_asset(user, 'avatarFile'))|imagine_filter("square") }}">
+            {% else %}
+                <td>Nepasirinktas paveikslėlis</td>
+            {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>CreatedAt</th>
+            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>UpdatedAt</th>
+            <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
 
 
         </tbody>
@@ -50,18 +54,19 @@
         <tbody>
         {% for product in user.products %}
 
-        <tr>
-            <th>Produkto pavadinimas</th>
-            <td>{{ product.title}}</td>
-        </tr>
-        <tr>
-            <th>Produkto aprasymas</th>
-            <td>{{ product.description}}</td>
-        </tr>
-        <tr>
-            <th>Produkto nuotrauka</th>
-            <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square")}}" width="200" height="200"></td>
-        </tr>
+            <tr>
+                <th>Produkto pavadinimas</th>
+                <td>{{ product.title }}</td>
+            </tr>
+            <tr>
+                <th>Produkto aprasymas</th>
+                <td>{{ product.description }}</td>
+            </tr>
+            <tr>
+                <th>Produkto nuotrauka</th>
+                <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}" width="200"
+                         height="200"></td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
