@@ -25,7 +25,12 @@
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.avatar }}</td>
+
+                {% if user.avatar is not null %}
+                <td><img src="{{ (vich_uploader_asset(user, 'avatarFile'))|imagine_filter("square") }}">
+                {% else %}
+                <td>Nepasirinktas paveikslėlis</td>
+                {% endif %}
                 <td>
                     <a href="{{ path('user_show', {'id': user.id}) }}">Parodyti</a>
                     <a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>

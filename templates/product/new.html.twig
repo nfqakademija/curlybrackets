@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
+{% block title %}Naujas produktas{% endblock %}
 
 {% block body %}
-    <h1>Įkelkite naują produktą</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 title-margin-left">
+                <h1>Įkelkite naują produktą</h1>
+            </div>
+        </div>
 
-    {{ include('product/_form.html.twig') }}
+        {{ include('product/_form.html.twig') }}
+    </div>
 
 {% endblock %}

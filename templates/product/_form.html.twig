@@ -1,14 +1,37 @@
-{{ form_start(form) }}
-    {{ form_row(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Pavadinimas'}}) }}
-    {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Aprašymas'}}) }}
-    {{ form_row(form.deadline, {'attr': {'class': 'form-control col-4', 'placeholder': 'Atsiimti iki'}}) }}
-    {{ form_row(form.pictureFile, {'attr': {'class': 'form-control', 'placeholder': 'Nuotrauka'}})}}
-    {#<img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('square') }}">#}
-    {{ form_row(form.status, {'attr': {'class': 'custom-control custom-checkbox'}}) }}
 
-<div class="reg-btn">
-    <button class="login-btn">{{ button_label|default('Įrašyti') }}</button><a href="{{ path('product_index') }}">Atšaukti</a>
-</div>
+{{ form_start(form) }}
+    <div class="row justify-content-center form-block">
+        <div class="col-lg-6 col-md-8">
+            <div class="row">
+                <div class="col-md-6 col-sm-4 form-padding-right">
+                    <div class="upload-btn">
+                        <button class="up-btn">Pasirinkite nuotrauką</button>
+                        <span class="form-label">{{ form_row(form.pictureFile, {'attr': {'placeholder': 'Nuotrauka'}})}}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-8 form-padding-left">
+                    <span class="form-label">{{ form_row(form.title, {'attr': {'class': 'form-control form-space', 'placeholder': 'Pavadinimas'}}) }}</span>
+                    <span class="form-label">{{ form_row(form.deadline, {'attr': {'class': 'form-control form-space', 'placeholder': 'Atsiimti iki'}}) }}</span>
+                </div>
+            </div>
+
+
+                {{ form_row(form.description, {'attr': {'class': 'form-control form-message', 'placeholder': 'Aprašymas'}}) }}
+                {#<img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('square') }}">#}
+            <div class="row">
+                <div class="col-sm-6 col-12">
+                    <span class="form-label">{{ form_row(form.status, {'attr': {'class': ' form-control custom-checkbox form-check'}}) }}</span>
+                </div>
+                <div class="col-sm-6 col-12">
+                    <div class="add-btn">
+                        <a class="cancel-txt" href="{{ path('product_index') }}">Atšaukti</a> <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 {{ form_end(form) }}
 
 

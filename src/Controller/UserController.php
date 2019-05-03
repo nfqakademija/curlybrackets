@@ -3,13 +3,13 @@
 
 namespace App\Controller;
 
-
 use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/user")
@@ -29,13 +29,14 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }
-//
+
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $user = new User();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -66,19 +67,36 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
     {
         $form = $this->createForm(UserType::class, $user);
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if (!empty($request->request->get('user')['password'])) {
 
-            return $this->redirectToRoute('user_index', [
-                'id' => $user->getId(),
-            ]);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $newPassword = $request->request->get('user')['newPassword'];
+                $newPasswordConfirm = $request->request->get('user')['newPasswordConfirm'];
+
+                $old_pwd = $request->request->get('user')['password'];
+
+                $checkPass = $encoder->isPasswordValid($user, $old_pwd);
+
+                if (($newPassword === $newPasswordConfirm) && $checkPass) {
+
+                    $encoded = $encoder->encodePassword($user, $newPassword);
+                    $user->setPassword($encoded);
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('user_index', [
+                    'id' => $user->getId(),
+                ]);
+            }
         }
-
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
@@ -90,7 +108,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
