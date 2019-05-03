@@ -312,4 +312,8 @@ class User implements UserInterface
         return $this->avatar;
     }
 
+    public function __toString() {
+        return $this->getUsername();
+    }
+
 }
