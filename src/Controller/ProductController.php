@@ -38,7 +38,8 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getDoctrine()->getRepository(User::class)->findOneById($this->get('security.token_storage')->getToken()->getUser()->getId());
+            $user = $this->getDoctrine()->getRepository(User::class)
+                ->findOneById($this->get('security.token_storage')->getToken()->getUser()->getId());
             $product->setUser($user);
             $product->setCreatedAt(new \DateTime("now"));
             $product->setUpdatedAt(new \DateTime("now"));
@@ -52,17 +53,6 @@ class ProductController extends AbstractController
         return $this->render('product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
-        ]);
-    }
-
-
-    /**
-     * @Route("/{id}", name="product_show", methods={"GET"})
-     */
-    public function show(Product $product): Response
-    {
-        return $this->render('product/show.html.twig', [
-            'product' => $product,
         ]);
     }
 

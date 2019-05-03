@@ -32,7 +32,6 @@
                 <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <button class="btn btn-success"><a href="{{ path('product_show', {'id': product.id}) }}">show</a></button>
                     <button class="btn btn-success"><a href="{{ path('product_edit', {'id': product.id}) }}">edit</a></button>
                     <button class="btn btn-danger"><a href="{{ path('product_delete', {'id': product.id}) }}">Delete</a></button>
                 </td>
