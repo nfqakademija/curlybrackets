@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\PasswordEditType;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,37 +68,61 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
+    public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 
-        if (!empty($request->request->get('user')['password'])) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
 
-                $newPassword = $request->request->get('user')['newPassword'];
-                $newPasswordConfirm = $request->request->get('user')['newPasswordConfirm'];
+            return $this->redirectToRoute('user_index', [
+                'id' => $user->getId(),
+            ]);
 
-                $old_pwd = $request->request->get('user')['password'];
-
-                $checkPass = $encoder->isPasswordValid($user, $old_pwd);
-
-                if (($newPassword === $newPasswordConfirm) && $checkPass) {
-
-                    $encoded = $encoder->encodePassword($user, $newPassword);
-                    $user->setPassword($encoded);
-                }
-
-                $this->getDoctrine()->getManager()->flush();
-
-                return $this->redirectToRoute('user_index', [
-                    'id' => $user->getId(),
-                ]);
-            }
         }
         return $this->render('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/password", name="user_password", methods={"GET","POST"})
+     */
+    public function password(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
+    {
+        $form = $this->createForm(PasswordEditType::class, $user);
+
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $newPassword = $request->request->get('password_edit')['newPassword']['first'];
+            $newPasswordConfirm = $request->request->get('password_edit')['newPassword']['second'];
+
+            $old_pwd = $request->request->get('password_edit')['password'];
+
+            $checkPass = $encoder->isPasswordValid($user, $old_pwd);
+
+            if (($newPassword === $newPasswordConfirm) && $checkPass) {
+
+                $encoded = $encoder->encodePassword($user, $newPassword);
+
+                $user->setPassword($encoded);
+            }
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('user_show', [
+                'id' => $user->getId(),
+            ]);
+        }
+
+        return $this->render('user/passwordEdit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

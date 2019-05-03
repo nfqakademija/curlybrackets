@@ -44,52 +44,8 @@ class UserType extends AbstractType
                 'imagine_pattern' => 'square',
                 'download_uri' => false,
                 'label' => 'Pasirinkite nuotrauką',
-            ])
-            ->add('password', PasswordType::class, [
-                'mapped' => false,
-                'required' => false
-            ])
-
-            ->add('newPassword', PasswordType::class, [
-                'required' => false,
-                'mapped' => false,
-//                'constraints' => [
-//                    new NotBlank([
-//                        'message' => 'Įveskite slaptažodį',
-//                    ]),
-//                    new Length([
-//                        'min' => 6,
-//                        'minMessage' => 'Slaptažodis turi turėti bent {{ limit }} simbolius',
-//                        // max length allowed by Symfony for security reasons
-//                        'max' => 4096,
-//                    ]),
-//                    new Regex([
-//                        'pattern' => "/^(?=\D*\d)\S{6,}$/",
-//                        'match' => true,
-//                        'message' => "Slaptažodyje reikalingas bent 1 skaitmuo"]),
-//
-//                ],
-            ])
-            ->add('newPasswordConfirm', PasswordType::class, [
-                'mapped' => false,
-                'required' => false,
-//                'constraints' => [
-//                    new NotBlank([
-//                        'message' => 'Įveskite slaptažodį',
-//                    ]),
-//                    new Length([
-//                        'min' => 6,
-//                        'minMessage' => 'Slaptažodis turi turėti bent {{ limit }} simbolius',
-//                        // max length allowed by Symfony for security reasons
-//                        'max' => 4096,
-//                    ]),
-//                    new Regex([
-//                        'pattern' => "/^(?=\D*\d)\S{6,}$/",
-//                        'match' => true,
-//                        'message' => "Slaptažodyje reikalingas bent 1 skaitmuo"]),
-//
-//                ],
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
