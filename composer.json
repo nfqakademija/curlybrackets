@@ -6,6 +6,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.6",
+        "easycorp/easyadmin-bundle": "^2.1",
+        "javiereguiluz/easyadmin-bundle": "^2.1",
         "liip/imagine-bundle": "^2.1",
         "sensio/framework-extra-bundle": "^5.3",
         "sensiolabs/security-checker": "^5.0",
