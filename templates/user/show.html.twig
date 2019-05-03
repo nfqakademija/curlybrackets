@@ -3,71 +3,102 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <h1>{{ app.user.username}}</h1>
+    <button class="btn btn-success"><a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti vartotoja</a></button>
 
+    {{ include('user/_delete_form.html.twig') }}
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
 
-            <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Avatar</th>
-                <td>{{ user.avatar }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        <tr>
+            <th>FirstName</th>
+            <td>{{ user.firstName }}</td>
+        </tr>
+        <tr>
+            <th>LastName</th>
+            <td>{{ user.lastName }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Avatar</th>
+            <td>{{ user.avatar }}</td>
+        </tr>
+        <tr>
+            <th>CreatedAt</th>
+            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>UpdatedAt</th>
+            <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
 
 
         </tbody>
     </table>
-    <table>
-        <h2>Produktai</h2>
+    <hr>
+    <h2>Produktai</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Pavadinimas</th>
+            <th>Atsiimti iki</th>
+            <th>Nuotrauka</th>
+            <th>Aprašymas</th>
+            <th>Būsena</th>
+            <th>Atiduotas</th>
+            <th>Sukurta</th>
+            <th>Atnaujinta</th>
+            <th>Savininko vartotojo vardas</th>
+            <th>Savininko el. paštas</th>
+
+        </tr>
+        </thead>
         <tbody>
         {% for product in user.products %}
+            <tr>
+                <td>{{ product.title }}</td>
+                <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
+                {% if product.picture is not null %}
+                    <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
+                             width="200" height="200"
+                             alt="Food picture"></td>
+                {% else %}
+                    <td>Paveiklėlio nėra :)</td>
+                {% endif %}
+                <td>{{ product.description }}</td>
+                <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
+                <td>{{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}</td>
+                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product.user.username }}</td>
+                <td>{{ product.user.email }}</td>
 
-        <tr>
-            <th>Produkto pavadinimas</th>
-            <td>{{ product.title}}</td>
-        </tr>
-        <tr>
-            <th>Produkto aprasymas</th>
-            <td>{{ product.description}}</td>
-        </tr>
-        <tr>
-            <th>Produkto nuotrauka</th>
-            <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square")}}" width="200" height="200"></td>
-        </tr>
+
+                <td>
+                    <button class="btn btn-success"><a
+                                href="{{ path('product_edit', {'id': product.id}) }}">Redaguoti</a></button>
+                    {{ include('product/_delete_form.html.twig') }}
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('user_index') }}">back to list</a>
 
-    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('user/_delete_form.html.twig') }}
 {% endblock %}
