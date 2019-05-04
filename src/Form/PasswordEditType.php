@@ -3,7 +3,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -16,7 +15,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class PasswordEditType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('password', PasswordType::class, [
@@ -25,7 +24,7 @@ class PasswordEditType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Įveskite  seną slaptažodį',
+                        'message' => 'Įveskite seną slaptažodį',
                     ]),
 
                 ],
@@ -51,13 +50,13 @@ class PasswordEditType extends AbstractType
                     new Regex([
                         'pattern' => "/^(?=\D*\d)\S{6,}$/",
                         'match' => true,
-                        'message' => "Slaptažodyje reikalingas bent 1 skaitmuo"]),
+                        'message' => 'Slaptažodyje reikalingas bent 1 skaitmuo']),
                 ],
 
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
