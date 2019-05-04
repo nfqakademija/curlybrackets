@@ -73,19 +73,23 @@ class ProductController extends AbstractController
     public function edit(Request $request, Product $product): Response
     {
 
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $product->setUpdatedAt(new DateTime('now'));
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('product_index', [
-                'id' => $product->getId(),
+        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+            $form = $this->createForm(ProductType::class, $product);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $product->setUpdatedAt(new DateTime('now'));
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('product_index', [
+                    'id' => $product->getId(),
+                ]);
+            }
+
+            return $this->render('product/edit.html.twig', [
+                'product' => $product,
+                'form' => $form->createView(),
             ]);
         }
-        return $this->render('product/edit.html.twig', [
-            'product' => $product,
-            'form' => $form->createView(),
-        ]);
+        throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 
     /**

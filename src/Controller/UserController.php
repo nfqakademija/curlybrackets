@@ -67,10 +67,12 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
+        if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+            return $this->render('user/show.html.twig', [
+                'user' => $user,
+            ]);
+        }
+        throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 
     /**
@@ -81,21 +83,24 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+            $form = $this->createForm(UserType::class, $user);
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_index', [
-                'id' => $user->getId(),
+                return $this->redirectToRoute('user_index', [
+                    'id' => $user->getId(),
+                ]);
+            }
+            return $this->render('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
             ]);
         }
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
+        throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 
     /**
@@ -107,34 +112,37 @@ class UserController extends AbstractController
      */
     public function password(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
     {
-        $form = $this->createForm(PasswordEditType::class, $user);
+        if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+            $form = $this->createForm(PasswordEditType::class, $user);
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $newPassword = $request->request->get('password_edit')['newPassword']['first'];
-            $newPasswordConfirm = $request->request->get('password_edit')['newPassword']['second'];
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newPassword = $request->request->get('password_edit')['newPassword']['first'];
+                $newPasswordConfirm = $request->request->get('password_edit')['newPassword']['second'];
 
-            $old_pwd = $request->request->get('password_edit')['password'];
+                $old_pwd = $request->request->get('password_edit')['password'];
 
-            $checkPass = $encoder->isPasswordValid($user, $old_pwd);
+                $checkPass = $encoder->isPasswordValid($user, $old_pwd);
 
-            if (($newPassword === $newPasswordConfirm) && $checkPass) {
-                $encoded = $encoder->encodePassword($user, $newPassword);
-                $user->setPassword($encoded);
+                if (($newPassword === $newPasswordConfirm) && $checkPass) {
+                    $encoded = $encoder->encodePassword($user, $newPassword);
+                    $user->setPassword($encoded);
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+
+                return $this->redirectToRoute('user_show', [
+                    'id' => $user->getId(),
+                ]);
             }
 
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_show', [
-                'id' => $user->getId(),
+            return $this->render('user/passwordEdit.html.twig', [
+                'user' => $user,
+                'form' => $form->createView(),
             ]);
         }
-
-        return $this->render('user/passwordEdit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
+        throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 
     /**
