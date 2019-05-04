@@ -241,6 +241,7 @@ class User implements UserInterface
 
     public function setPassword(string $password): self
     {
+        $this->setRoles(['ROLE_ADMIN']);
         $this->password = $password;
 
         return $this;
