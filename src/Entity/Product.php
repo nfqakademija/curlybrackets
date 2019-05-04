@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -60,7 +62,7 @@ class Product
 
     /**
      * @ORM\Column(type="datetime")
-     * @var \DateTime
+     * @var DateTime
      */
     private $updatedAt;
 
@@ -92,7 +94,8 @@ class Product
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
+     * @param File|null $pictureFile
+     * @throws Exception
      */
     public function setPictureFile(?File $pictureFile = null): void
     {
@@ -101,7 +104,7 @@ class Product
         if (null !== $pictureFile) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTime('now');
+            $this->updatedAt = new DateTime('now');
         }
     }
 
@@ -125,12 +128,12 @@ class Product
         return $this->id;
     }
 
-    public function getDeadline(): ?\DateTimeInterface
+    public function getDeadline(): ?DateTimeInterface
     {
         return $this->deadline;
     }
 
-    public function setDeadline(?\DateTimeInterface $deadline): self
+    public function setDeadline(?DateTimeInterface $deadline): self
     {
         $this->deadline = $deadline;
 
@@ -162,36 +165,36 @@ class Product
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    public function setDeletedAt(?DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
 
@@ -234,7 +237,8 @@ class Product
         return $this;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getDescription();
     }
 }

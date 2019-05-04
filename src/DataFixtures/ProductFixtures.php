@@ -24,8 +24,3 @@ class ProductFixtures extends BaseFixtures
         $manager->flush();
     }
 }
-
-
-
-
-

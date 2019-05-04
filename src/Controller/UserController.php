@@ -36,6 +36,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -60,6 +62,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
+     * @param User $user
+     * @return Response
      */
     public function show(User $user): Response
     {
@@ -71,6 +75,9 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
     public function edit(Request $request, User $user): Response
     {
@@ -79,13 +86,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_show', [
                 'id' => $user->getId(),
             ]);
-
         }
         return $this->render('user/edit.html.twig', [
             'user' => $user,
@@ -95,22 +100,18 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/password", name="user_password", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
      */
     public function password(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
     {
         $form = $this->createForm(PasswordEditType::class, $user);
 
-        if ($user->getUsername() == 'admin3'){
-
-            $user->setRoles(['ROLE_ADMIN']);
-
-        }
-
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-
             $newPassword = $request->request->get('password_edit')['newPassword']['first'];
             $newPasswordConfirm = $request->request->get('password_edit')['newPassword']['second'];
 
@@ -119,9 +120,7 @@ class UserController extends AbstractController
             $checkPass = $encoder->isPasswordValid($user, $old_pwd);
 
             if (($newPassword === $newPasswordConfirm) && $checkPass) {
-
                 $encoded = $encoder->encodePassword($user, $newPassword);
-
                 $user->setPassword($encoded);
             }
 
@@ -140,6 +139,9 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
     public function delete(Request $request, User $user): Response
     {
