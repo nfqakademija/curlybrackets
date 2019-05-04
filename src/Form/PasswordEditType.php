@@ -4,6 +4,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Validator\CorrectPassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -26,6 +27,7 @@ class PasswordEditType extends AbstractType
                     new NotBlank([
                         'message' => 'Įveskite seną slaptažodį',
                     ]),
+                    new CorrectPassword()
 
                 ],
             ])
