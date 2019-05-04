@@ -55,7 +55,7 @@ class ProductType extends AbstractType
                 ],
                 'choices' => [
                     'Aktyvuoti produktą' => true,
-                    'Palikti neaktyvų' => false ,
+                    'Palikti neaktyvų' => false,
 
                 ]
             ])
