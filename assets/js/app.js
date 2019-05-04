@@ -1,3 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Testas from '/testas.jsx'
+
+/**
+ * @jsx React.DOM
+ */
+
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
@@ -12,3 +20,5 @@ require('../css/app.scss');
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 });
+
+ReactDOM.render(<Testas/>, document.getElementById('testas'));
