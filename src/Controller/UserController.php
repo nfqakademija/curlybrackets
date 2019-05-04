@@ -90,6 +90,7 @@ class UserController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'Jūsų informacija sėkmingai pakeista!');
 
                 return $this->redirectToRoute('user_index', [
                     'id' => $user->getId(),
@@ -131,6 +132,7 @@ class UserController extends AbstractController
                 }
 
                 $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'Jūsų slaptažodis sėkmingai pakeistas!');
 
                 return $this->redirectToRoute('user_show', [
                     'id' => $user->getId(),
@@ -157,6 +159,7 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->addFlash('danger', 'Vartotojas sėkmingai pašalintas');
         }
 
         return $this->redirectToRoute('user_index');

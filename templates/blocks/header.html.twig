@@ -25,4 +25,14 @@
             </div>
 
     </nav>
+    {% for msg in app.session.flashBag.get('success') %}
+        <div class="alert alert-success text-center">
+            {{ msg }}
+        </div>
+    {% endfor %}
+    {% for msg in app.session.flashBag.get('danger') %}
+        <div class="alert alert-danger text-center">
+            {{ msg }}
+        </div>
+    {% endfor %}
 </div>

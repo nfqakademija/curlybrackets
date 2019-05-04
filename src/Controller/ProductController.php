@@ -53,6 +53,7 @@ class ProductController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
+            $this->addFlash('success', 'Produktas sėkmingai pridėtas!');
 
             return $this->redirectToRoute('product_index');
         }
@@ -79,6 +80,7 @@ class ProductController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $product->setUpdatedAt(new DateTime('now'));
                 $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
                 return $this->redirectToRoute('product_index', [
                     'id' => $product->getId(),
                 ]);
@@ -104,6 +106,7 @@ class ProductController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($product);
             $entityManager->flush();
+            $this->addFlash('danger', 'Produktas ištrintas!');
         }
 
         return $this->redirectToRoute('product_index');

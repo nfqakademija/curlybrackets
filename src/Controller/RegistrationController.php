@@ -51,6 +51,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Sveikiname, vartotojas sukurtas!');
+
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
