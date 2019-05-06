@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\PasswordEditType;
 use App\Form\UserType;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,10 +90,11 @@ class UserController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+                $user->setUpdatedAt(new DateTime('now'));
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Jūsų informacija sėkmingai pakeista!');
 
-                return $this->redirectToRoute('user_index', [
+                return $this->redirectToRoute('user_show', [
                     'id' => $user->getId(),
                 ]);
             }
