@@ -126,7 +126,7 @@ a:hover{
   border-radius: 4px;
   font-size: 1em;
   width: 100%;
-  min-height: 86px;
+  min-height: 93px;
   cursor: pointer;
 }
 
@@ -181,6 +181,14 @@ a:hover{
 
 .form-message {
   min-height: 150px;
+}
+
+.vich-image {
+  display: none;
+}
+
+.form-not-visible {
+  display: none;
 }
 
 @media screen and (max-width: 575px ) {
