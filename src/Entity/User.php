@@ -23,7 +23,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="user")
  * @Vich\Uploadable
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
 
     /**
@@ -62,7 +62,7 @@ class User implements UserInterface
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
-     * @Vich\UploadableField(mapping="avatar", fileNameProperty="avatar")
+     * @Vich\UploadableField(mapping="avatar_image", fileNameProperty="avatar")
      * @var File
      */
     private $avatarFile;
@@ -319,5 +319,23 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array(
+
+            $this->id,
+            $this->username,
+            $this->password
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list ( $this->id, $this->username, $this->password) = unserialize($serialized, array('allowed_classes' => false));
     }
 }
