@@ -1,99 +1,81 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}{{ app.user.username}} profilis{% endblock %}
 
 {% block body %}
-    <h1>Vartotojo {{ app.user.username}} informacija</h1>
-    <button class="btn btn-success"><a href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti savo duomenis</a></button>
-    <button class="btn btn-success"><a href="#">Nustatyti savo lokalizaciją</a></button>
-    <button class="btn btn-success"><a href="{{ path('user_password', {'id': user.id}) }}">Pakeisti slaptažodį</a></button>
-
-    {{ include('user/_delete_form.html.twig') }}
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ user.id }}</td>
-        </tr>
-        <tr>
-            <th>Username</th>
-            <td>{{ user.username }}</td>
-        </tr>
-
-        <tr>
-            <th>FirstName</th>
-            <td>{{ user.firstName }}</td>
-        </tr>
-        <tr>
-            <th>LastName</th>
-            <td>{{ user.lastName }}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ user.email }}</td>
-        </tr>
-        <tr>
-            <th>Avatar</th>
-            {% if user.avatar is not null %}
-                <td><img src=" {{('/images/avatars/' ~user.avatar )  }}"
-                         width="200" height="200"
-                         alt="Avatar"></td>
-{#                <td><img src="{{ (vich_uploader_asset(avatar, 'avatarFile'))}}"#}
-{#                         alt="Avatar"></td>#}
-            {% else %}
-                <td>Paveiklėlio nėra :)</td>
-            {% endif %}
-            <td>{{ user.avatar }}</td>
-        </tr>
-        <tr>
-            <th>CreatedAt</th>
-            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        <tr>
-            <th>UpdatedAt</th>
-            <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-
-
-        </tbody>
-    </table>
-    <hr>
-    <h2>Produktai</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Pavadinimas</th>
-            <th>Atsiimti iki</th>
-            <th>Nuotrauka</th>
-            <th>Aprašymas</th>
-            <th>Būsena</th>
-            <th>Atiduotas</th>
-            <th>Sukurta</th>
-            <th>Atnaujinta</th>
-            <th>Savininko vartotojo vardas</th>
-            <th>Savininko el. paštas</th>
-
-        </tr>
-        </thead>
-        <tbody>
-        {% for product in user.products %}
-            <tr>
-                <td>{{ product.title }}</td>
-                <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
-                {% if product.picture is not null %}
-                    <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
-                             width="200" height="200"
-                             alt="Food picture"></td>
+    <div class="container">
+        <div class="row">
+            <h1>Vartotojo {{ app.user.username}} informacija</h1>
+        </div>
+        <div class="row h-100 profile-box">
+            <div class="col-2 my-auto">
+                {% if user.avatar is not null %}
+                <img src=" {{('/images/avatars/' ~user.avatar )  }}"
+                        width="78" height="78"
+                        alt="Avataras">
+                        {#<td><img src="{{ (vich_uploader_asset(avatar, 'avatarFile'))}}"#}
+                        {#alt="Avatar"></td>#}
                 {% else %}
-                    <td>Paveiklėlio nėra :)</td>
+                    <img class="no-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" alt="Avataras">
                 {% endif %}
-                <td>{{ product.description }}</td>
-                <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
-                <td>{{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}</td>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.user.username }}</td>
-                <td>{{ product.user.email }}</td>
+            </div>
+            <div class="col-3 my-auto">
+                {{ user.firstName }} {{ user.lastName }}
+            </div>
+            <div class="col-3 my-auto">
+                {{ user.email }}
+            </div>
+            <div class="col-4 my-auto profile-btn-block">
+                <div class="profile-btn-margin">
+                    <a class="call-to-btn-green" href="#">Mano vieta</a>
+                </div>
+                <div class="profile-btn-margin">
+                    <a class="call-to-btn" href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
+                </div>
+                <div class="profile-btn-margin">
+                    <a class="call-to-btn" href="{{ path('user_password', {'id': user.id}) }}">Keisti slaptažodį</a>
+                </div>
+            </div>
+        </div>
+
+        </table>
+        <hr>
+        <h2>Produktai</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Atsiimti iki</th>
+                <th>Nuotrauka</th>
+                <th>Aprašymas</th>
+                <th>Būsena</th>
+                <th>Atiduotas</th>
+                <th>Sukurta</th>
+                <th>Atnaujinta</th>
+                <th>Savininko vartotojo vardas</th>
+                <th>Savininko el. paštas</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in user.products %}
+                <tr>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
+                    {% if product.picture is not null %}
+                        <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
+                                width="200" height="200"
+                                alt="Food picture"></td>
+                    {% else %}
+                        <td>Paveiklėlio nėra :)</td>
+                    {% endif %}
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
+                    <td>{{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}</td>
+                    <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ product.user.username }}</td>
+                    <td>{{ product.user.email }}</td>
 
 
                 <td>
@@ -110,14 +92,14 @@
                     {{ include('product/_delete_form.html.twig') }}
                 </td>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-
+    </div>
 {% endblock %}
