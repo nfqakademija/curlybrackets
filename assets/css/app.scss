@@ -10,7 +10,8 @@ $headingHover: #497d38;
 $call: #FF4B05;
 $callHover: #D13E05;
 $elements: #c1c1c1;
-
+$warning: #A33004;
+$warningHover: #C2903;
 
 body {
   background-color: #fafafa;
@@ -98,6 +99,19 @@ a:hover{
 }
 .call-to-btn-green:hover {
   background-color: $headingHover;
+  color: #fff;
+}
+
+.call-to-btn-red {
+  padding: 5px 20px;
+  background-color: $warning;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.call-to-btn-red:hover {
+  background-color: $warningHover;
   color: #fff;
 }
 
@@ -220,6 +234,19 @@ a:hover{
 
 .profile-btn-margin {
   margin-bottom: 10px;
+}
+
+.user-products-list {
+  margin-bottom: 15px;
+  border-bottom: 1px solid $elements;
+}
+
+.user-products-list:last-child {
+  border-bottom: none;
+}
+
+.user-profile-list-picture {
+  padding-bottom: 15px;
 }
 
 @media screen and (max-width: 575px ) {
