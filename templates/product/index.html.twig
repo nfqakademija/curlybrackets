@@ -30,10 +30,10 @@
                 <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
                 {% if product.picture is not null %}
                     <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
-                             width="200" height="200"
                              alt="Food picture"></td>
                 {% else %}
-                    <td>Paveiklėlio nėra :)</td>
+                    <td><img src="{{ (asset('build/products/product_image.png'))}}"
+                             alt="Food picture"></td>
                 {% endif %}
                 <td>{{ product.description }}</td>
                 <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
@@ -43,13 +43,6 @@
                 <td>{{ product.user.username }}</td>
                 <td>{{ product.user.email }}</td>
 
-                {% if (app.user.id) == (product.user.id) %}
-                <td>
-                    <button class="btn btn-success"><a
-                                href="{{ path('product_edit', {'id': product.id}) }}">Redaguoti</a></button>
-                    {{ include('product/_delete_form.html.twig') }}
-                </td>
-                {% endif %}
             </tr>
         {% else %}
             <tr>
