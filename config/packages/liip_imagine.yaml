@@ -15,7 +15,7 @@ liip_imagine:
             filters: # These are the filters of the filter set, many filters can be applied
                 # Scale and shrink the image to the given size, with a possible crop of the image
                 thumbnail:
-                    size: [200, 200]
+                    size: [500, 500]
                     mode: outbound
 
         # Shrink the image to 350px wide, the image will keep aspect ratio and adapt the height accordingly
