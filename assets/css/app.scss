@@ -12,6 +12,7 @@ $callHover: #D13E05;
 $elements: #c1c1c1;
 $warning: #A33004;
 $warningHover: #C2903;
+$second: #464655;
 
 body {
   background-color: #fafafa;
@@ -254,23 +255,58 @@ a:hover{
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  margin-bottom: 15px;
+  height: 500px;
 }
 
 .product-avatar {
   width: 50px;
 }
 
-.product-user-box {
-  width: 100%;
-  background-color: #000;
-  opacity: 50%;
-  color: #000;
+.product-user {
+  position: relative;
+  top: -64px;
+  background-color: #00000057;
+  color: #fff;
+  padding: 7px;
+  min-height: 64px;
 }
 
-.product-user {
+.product-avatar-user {
+  margin-left: 5px;
+}
+
+.product-list-title {
+  margin-top: -50px;
+  padding-left: 10px;
+  color: $call;
+}
+
+.product-list-img {
+  border-top-left-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  width: 100%;
+}
+
+.product-list-description {
+  padding-left: 10px;
+  font-size: 0.9em;
+}
+
+.product-list-deadline {
   position: absolute;
-  top: 145px;
-  left: 20px;
+  bottom: 15px;
+  right: 15px;
+  padding: 10px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: $second;
+}
+
+.product-list {
+  margin-top: 45px;
 }
 
 //for other screens

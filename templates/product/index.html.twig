@@ -3,20 +3,20 @@
 {% block title %}Produktai{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <h1>Produktai</h1>
-        </div>
+    <div class="container product-list">
+{#        <div class="row">#}
+{#            <h1>Produktai</h1>#}
+{#        </div>#}
         <div class="row">
             {% for product in products %}
-                <div class="col-md-3 product-box">
-                    <div>
-                        {% if product.picture is not null %}
-                            <img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}" alt="Produkto nuotrauka">
-                        {% else %}
-                            <img src="{{ (asset('build/products/product_image.png'))}}" alt="Nėra produkto nuotraukos">
-                        {% endif %}
-                        <div class="product-user-box">
+                <div class="col-md-3">
+                    <div class="product-box">
+                        <div>
+                            {% if product.picture is not null %}
+                                <img class="product-list-img" src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}" alt="Produkto nuotrauka">
+                            {% else %}
+                                <img class="product-list-img" src="{{ (asset('build/products/product_image.png'))}}" alt="Nėra produkto nuotraukos">
+                            {% endif %}
                             <div class="product-user">
                                 {% if product.user.avatar is not null %}
                                     <img class="product-avatar" src=" {{('/images/avatars/' ~product.user.avatar )  }}"
@@ -27,18 +27,18 @@
                                 {% else %}
                                     <img class="product-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" alt="Avataras">
                                 {% endif %}
-                                <span>{{ product.user.username }}</span>
+                                <span class="product-avatar-user">{{ product.user.username }}</span>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <h4>{{ product.title }}</h4>
-                    </div>
-                    <div>
-                        {{ product.description }}
-                    </div>
-                    <div>
-                        {{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}
+                        <div class="product-list-title">
+                            <h4>{{ product.title }}</h4>
+                        </div>
+                        <div class="product-list-description">
+                            {{ product.description }}
+                        </div>
+                        <div class="product-list-deadline">
+                            Galioja iki {{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}
+                        </div>
                     </div>
                 </div>
             {% else %}
