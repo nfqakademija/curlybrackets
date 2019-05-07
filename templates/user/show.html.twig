@@ -99,6 +99,14 @@
                 <td>
                     <button class="btn btn-success"><a
                                 href="{{ path('product_edit', {'id': product.id}) }}">Redaguoti</a></button>
+                    <button class="btn btn-success"><a
+                                href="{{ path('product_give', {'id': product.id}) }}">
+                            {% if product.givenAway %}
+                            Keisti būseną į neatiduotas
+                            {% else %}
+                            Keisti būseną į atiduotas
+                            {% endif %}
+                        </a></button>
                     {{ include('product/_delete_form.html.twig') }}
                 </td>
 

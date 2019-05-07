@@ -25,8 +25,38 @@ class ProductController extends AbstractController
      */
     public function index(ProductRepository $productRepository): Response
     {
+        $today = new DateTime('now');
+        $result = $productRepository->findBy(array('GivenAway' => 0));
+
+        $products = array();
+        foreach ($result as $product) {
+            if ($product->getDeadline() > $today) {
+                $products[] = $product;
+            }
+        }
+
         return $this->render('product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+            'products' => $products
+        ]);
+    }
+
+
+    /**
+     * @Route("/{id}/give", name="product_give", methods={"GET"})
+     * @param Product $product
+     * @param User $user
+     * @return Response
+     */
+    public function giveAway(Product $product, User $user): Response
+    {
+        $product->setGivenAway(!$product->getGivenAway());
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($product);
+        $entityManager->flush();
+        $this->addFlash('success', 'Produktas atidavimo būsena pakeista!');
+
+        return $this->render('user/show.html.twig', [
+            'user' => $user,
         ]);
     }
 

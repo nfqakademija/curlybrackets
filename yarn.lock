@@ -3661,10 +3661,10 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-jquery@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
-  integrity sha512-Ubldcmxp5np52/ENotGxlLe6aGMvmF4R8S6tZjsP6Knsaxd/xp3Zrh50cG93lR6nPXyUFwzN3ZSOQI0wRJNdGg==
+jquery@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
 js-base64@^2.1.8:
   version "2.5.1"
@@ -3851,25 +3851,10 @@ locate-path@^3.0.0:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
 
-lodash.assign@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
-  integrity sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
-
-lodash.clonedeep@^4.3.2:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
-  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
-
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
-
-lodash.mergewith@^4.6.0:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
-  integrity sha512-eWw5r+PYICtEBgrBE5hhlT6aAa75f411bgDz/ZL2KZqYV03USvucsxcHUIlGTDTECs1eunpI7HOV7U+WLDvNdQ==
 
 lodash.tail@^4.1.1:
   version "4.1.1"
@@ -4211,7 +4196,7 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
-nan@^2.10.0, nan@^2.9.2:
+nan@^2.13.2, nan@^2.9.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"
   integrity sha512-TghvYc72wlMGMVMluVo9WRJc0mB8KxxF/gZ4YYFy7V2ZQX9l7rgbPg7vjS9mt6U5HXODVFVI2bOduCzwOMv/lw==
@@ -4348,10 +4333,10 @@ node-releases@^1.1.12:
   dependencies:
     semver "^5.3.0"
 
-node-sass@^4.11.0:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.11.0.tgz#183faec398e9cbe93ba43362e2768ca988a6369a"
-  integrity sha512-bHUdHTphgQJZaF1LASx0kAviPH7sGlcyNhWade4eVIpFp6tsn7SV8xNMTbsQFpEV9VXpnwTTnNYlfsZXgGgmkA==
+node-sass@^4.12.0:
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-4.12.0.tgz#0914f531932380114a30cc5fa4fa63233a25f017"
+  integrity sha512-A1Iv4oN+Iel6EPv77/HddXErL2a+gZ4uBeZUy+a8O35CFYTXhgA8MgLCWBtwpGZdCvTvQ9d+bQxX/QC36GDPpQ==
   dependencies:
     async-foreach "^0.1.3"
     chalk "^1.1.1"
@@ -4360,12 +4345,10 @@ node-sass@^4.11.0:
     get-stdin "^4.0.1"
     glob "^7.0.3"
     in-publish "^2.0.0"
-    lodash.assign "^4.2.0"
-    lodash.clonedeep "^4.3.2"
-    lodash.mergewith "^4.6.0"
+    lodash "^4.17.11"
     meow "^3.7.0"
     mkdirp "^0.5.1"
-    nan "^2.10.0"
+    nan "^2.13.2"
     node-gyp "^3.8.0"
     npmlog "^4.0.0"
     request "^2.88.0"
@@ -4414,11 +4397,6 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
-
-normalize.css@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-6.0.0.tgz#22188c2707c911fb3ad3c1aac0677ff68661bea8"
-  integrity sha1-IhiMJwfJEfs608GqwGd/9oZhvqg=
 
 npm-bundled@^1.0.1:
   version "1.0.6"
@@ -6205,125 +6183,6 @@ stylehacks@^4.0.0:
     browserslist "^4.0.0"
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
-
-suitcss-base@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss-base/-/suitcss-base-3.0.0.tgz#83dd53629c37adbdeac11ef6439a7f2ed955f05e"
-  integrity sha1-g91TYpw3rb3qwR72Q5p/LtlV8F4=
-  dependencies:
-    normalize.css "^6.0.0"
-
-suitcss-components-arrange@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/suitcss-components-arrange/-/suitcss-components-arrange-1.1.1.tgz#db0d4173737fc52b8b5ce899e31cb6cb51e0d255"
-  integrity sha1-2w1Bc3N/xSuLXOiZ4xy2y1Hg0lU=
-
-suitcss-components-button@^6.0.0:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/suitcss-components-button/-/suitcss-components-button-6.0.2.tgz#f0c4c7378054f235b5b83c32c6a03807f15044d1"
-  integrity sha512-SCPVqQ5rDgOUZ6nCsQiLBzMAA7kiLTfF/IL/GWI6oExWKxEYhOFiG4t5v5569PMLA0CnOP9T6neSIQxwXR5WBQ==
-
-suitcss-components-flex-embed@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/suitcss-components-flex-embed/-/suitcss-components-flex-embed-2.0.4.tgz#a618359128941ef51c3d268373824a2874323d44"
-  integrity sha1-phg1kSiUHvUcPSaDc4JKKHQyPUQ=
-
-suitcss-components-grid@^3.0.2:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/suitcss-components-grid/-/suitcss-components-grid-3.0.3.tgz#52e0b03659ceace60add000135b57a78b328c303"
-  integrity sha1-UuCwNlnOrOYK3QABNbV6eLMowwM=
-
-suitcss-components@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss-components/-/suitcss-components-2.0.0.tgz#e6eff5b45f93b2a983b4327cc393a1a5637527e4"
-  integrity sha1-5u/1tF+TsqmDtDJ8w5OhpWN1J+Q=
-  dependencies:
-    suitcss-components-arrange "^1.1.1"
-    suitcss-components-button "^6.0.0"
-    suitcss-components-flex-embed "^2.0.4"
-    suitcss-components-grid "^3.0.2"
-
-suitcss-utils-after@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-after/-/suitcss-utils-after-1.0.1.tgz#23086dc0a1151f236de33a4c696a7b83412f02d4"
-  integrity sha1-IwhtwKEVHyNt4zpMaWp7g0EvAtQ=
-
-suitcss-utils-align@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-align/-/suitcss-utils-align-1.0.0.tgz#8bf2b96b42c7386bc7ba3adbf14e7e6fcdd796cb"
-  integrity sha1-i/K5a0LHOGvHujrb8U5+b83Xlss=
-
-suitcss-utils-before@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-before/-/suitcss-utils-before-1.0.1.tgz#977f1b46b65db140571ebe5f767a12a4a7bc4931"
-  integrity sha1-l38bRrZdsUBXHr5fdnoSpKe8STE=
-
-suitcss-utils-display@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-display/-/suitcss-utils-display-1.0.2.tgz#cb6a4e756eab9aefb149f3e4618c76d02bbab47f"
-  integrity sha1-y2pOdW6rmu+xSfPkYYx20Cu6tH8=
-
-suitcss-utils-flex@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-flex/-/suitcss-utils-flex-2.0.1.tgz#7ddc146bb0b8d52e5181257c7f4329c495b00c5f"
-  integrity sha512-81y7h4O8vvE54oDneSPQGmWctmtC6a4p536wMCzUKknV3VjNFBD3IBOsqImVBkXhHrIeoCvtvgIWx+TyR3zzHg==
-
-suitcss-utils-layout@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-layout/-/suitcss-utils-layout-1.0.1.tgz#a6a0a3d857164b8bbe9dd7f438cc01bc178b0aac"
-  integrity sha1-pqCj2FcWS4u+ndf0OMwBvBeLCqw=
-
-suitcss-utils-link@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-link/-/suitcss-utils-link-1.0.1.tgz#93f48a5261f97a2c7b4bdcb8ecece227cbf3c96c"
-  integrity sha1-k/SKUmH5eix7S9y47OziJ8vzyWw=
-
-suitcss-utils-offset@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-offset/-/suitcss-utils-offset-1.0.0.tgz#0232b12207bd6419a837a2e4f2b4a23798e087e2"
-  integrity sha1-AjKxIge9ZBmoN6Lk8rSiN5jgh+I=
-  dependencies:
-    suitcss-utils-after "^1.0.0"
-    suitcss-utils-before "^1.0.0"
-
-suitcss-utils-position@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-position/-/suitcss-utils-position-1.0.1.tgz#28c602f3be756e9330956ad06aab04de7945c4dd"
-  integrity sha1-KMYC8751bpMwlWrQaqsE3nlFxN0=
-
-suitcss-utils-size@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-size/-/suitcss-utils-size-2.0.1.tgz#37b74154fad4b885b41eaad97e7fafdcc598b852"
-  integrity sha512-nSwISX0SIgA0vP0YzbrXU2CBKUfUv/iKfGuUeZDE4zDn/b/Byrxuhp+hi9epyjVRgs02s2z9LtcuYh7lm8wSRw==
-
-suitcss-utils-text@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss-utils-text/-/suitcss-utils-text-1.0.0.tgz#d36f83f4298952db51abad584bfab2773bb389b8"
-  integrity sha1-02+D9CmJUttRq61YS/qydzuzibg=
-
-suitcss-utils@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss-utils/-/suitcss-utils-3.0.0.tgz#bd13642a74410a508692e3b91d3859597c4afba6"
-  integrity sha1-vRNkKnRBClCGkuO5HThZWXxK+6Y=
-  dependencies:
-    suitcss-utils-align "^1.0.0"
-    suitcss-utils-display "^1.0.2"
-    suitcss-utils-flex "^2.0.0"
-    suitcss-utils-layout "^1.0.1"
-    suitcss-utils-link "^1.0.1"
-    suitcss-utils-offset "^1.0.0"
-    suitcss-utils-position "^1.0.1"
-    suitcss-utils-size "^2.0.0"
-    suitcss-utils-text "^1.0.0"
-
-suitcss@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/suitcss/-/suitcss-3.0.0.tgz#465342e9a886698fa88cda7a69e866678264dc8f"
-  integrity sha1-RlNC6aiGaY+ojNp6aehmZ4Jk3I8=
-  dependencies:
-    suitcss-base "^3.0.0"
-    suitcss-components "^2.0.0"
-    suitcss-utils "^3.0.0"
 
 supports-color@^2.0.0:
   version "2.0.0"
