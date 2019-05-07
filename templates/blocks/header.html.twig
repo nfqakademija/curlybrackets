@@ -12,7 +12,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Pradžia</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ path('product_index') }}">Produktai</a></li>
                     {% if app.user.username is defined %}
-                        <li class="nav-item"><a class="nav-link" href="{{ path('product_new') }}">Įkelti naują produktą</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('product_new') }}">Produktų įkėlimas </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Atsijungti</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('user_show', {id: app.user.id})  }}">{{ app.user.username }}</a></li>
 
