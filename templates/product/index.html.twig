@@ -1,54 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Produktai{% endblock %}
 
 {% block body %}
-    <h1>Produktai</h1>
+    <div class="container">
+        <div class="row">
+            <h1>Produktai</h1>
+        </div>
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-3 product-box">
+                    <div>
+                        {% if product.picture is not null %}
+                            <img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}" alt="Produkto nuotrauka">
+                        {% else %}
+                            <img src="{{ (asset('build/products/product_image.png'))}}" alt="Nėra produkto nuotraukos">
+                        {% endif %}
+                        <div class="product-user-box">
+                            <div class="product-user">
+                                {% if product.user.avatar is not null %}
+                                    <img class="product-avatar" src=" {{('/images/avatars/' ~product.user.avatar )  }}"
+                                         width="78" height="78"
+                                         alt="Avataras">
+                                    {#<td><img src="{{ (vich_uploader_asset(avatar, 'avatarFile'))}}"#}
+                                    {#alt="Avatar"></td>#}
+                                {% else %}
+                                    <img class="product-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" alt="Avataras">
+                                {% endif %}
+                                <span>{{ product.user.username }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4>{{ product.title }}</h4>
+                    </div>
+                    <div>
+                        {{ product.description }}
+                    </div>
+                    <div>
+                        {{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}
+                    </div>
+                </div>
+            {% else %}
+                Nėra produktų
+            {% endfor %}
+        </div>
+    </div>
 
     <table class="table">
-        <thead>
-        <tr>
-            <th>Pavadinimas</th>
-            <th>Atsiimti iki</th>
-            <th>Nuotrauka</th>
-            <th>Aprašymas</th>
-            <th>Būsena</th>
-            <th>Atiduotas</th>
-            <th>Sukurta</th>
-            <th>Atnaujinta</th>
-            <th>Savininko vartotojo vardas</th>
-            <th>Savininko el. paštas</th>
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Pavadinimas</th>#}
+{#            <th>Atsiimti iki</th>#}
+{#            <th>Nuotrauka</th>#}
+{#            <th>Aprašymas</th>#}
+{#            <th>Būsena</th>#}
+{#            <th>Atiduotas</th>#}
+{#            <th>Sukurta</th>#}
+{#            <th>Atnaujinta</th>#}
+{#            <th>Savininko vartotojo vardas</th>#}
+{#            <th>Savininko el. paštas</th>#}
 
-        </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.title }}</td>
-                <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>
-                {% if product.picture is not null %}
-                    <td><img src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
-                             alt="Food picture"></td>
-                {% else %}
-                    <td><img src="{{ (asset('build/products/product_image.png'))}}"
-                             alt="Food picture"></td>
-                {% endif %}
-                <td>{{ product.description }}</td>
-                <td>{{ product.status ? 'Įjungtas' : 'Išjungtas' }}</td>
-                <td>{{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}</td>
-                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.user.username }}</td>
-                <td>{{ product.user.email }}</td>
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for product in products %}#}
+{#            <tr>#}
+{#                <td>{{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}</td>#}
+{#
+{#                <td>{{ product.createdAt ? product.createdAt|date('Y-m-d H:i:s') : '' }}</td>#}
+{#                <td>{{ product.updatedAt ? product.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
+{#                <td>{{ product.user.username }}</td>#}
+{#                <td>{{ product.user.email }}</td>#}
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{#            </tr>#}
+{#        {% else %}#}
+{#            <tr>#}
+{#                <td colspan="10">no records found</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
 
 
 {% endblock %}
