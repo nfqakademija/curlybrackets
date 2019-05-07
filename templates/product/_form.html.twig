@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-6 col-12">
                     <div class="add-btn">
-                        <a class="cancel-txt" href="{{ path('product_index') }}">Atšaukti</a> <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button>
+                        <a class="cancel-txt" href="{{path('user_show', {id: app.user.id}) }}">Atšaukti</a> <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button>
                     </div>
                 </div>
             </div>

@@ -166,7 +166,7 @@ a:hover{
   position: absolute;
   left: 0;
   top: 0;
-  opacity: 0;
+  opacity: 1;
 }
 
 .add-width {
@@ -210,13 +210,13 @@ a:hover{
   min-height: 150px;
 }
 
-.vich-image {
-  display: none;
-}
-
-.form-not-visible {
-  display: none;
-}
+//.vich-image {
+//  display: none;
+//}
+//
+//.form-not-visible {
+//  display: none;
+//}
 
 .profile-box {
   border: 1px solid $elements;
