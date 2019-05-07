@@ -6,6 +6,7 @@ $primary: darken(#428bca, 20%);
 
 //Main colors
 $heading: #5BA045;
+$headingHover: #497d38;
 $call: #FF4B05;
 $callHover: #D13E05;
 $elements: #c1c1c1;
@@ -85,7 +86,19 @@ a:hover{
 }
 
 .call-to-btn:hover {
+  color: #fff;
   background-color: $callHover;
+}
+.call-to-btn-green {
+  padding: 5px 20px;
+  background-color: $heading;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+.call-to-btn-green:hover {
+  background-color: $headingHover;
+  color: #fff;
 }
 
 .cancel-txt {
@@ -189,6 +202,24 @@ a:hover{
 
 .form-not-visible {
   display: none;
+}
+
+.profile-box {
+  border: 1px solid $elements;
+  border-radius: 4px;
+}
+
+.no-avatar {
+  width:78px;
+}
+
+.profile-btn-block {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.profile-btn-margin {
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 575px ) {
