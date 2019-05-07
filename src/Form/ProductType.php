@@ -44,7 +44,7 @@ class ProductType extends AbstractType
                 'allow_delete' => false,
                 'imagine_pattern' => 'square',
                 'download_uri' => false,
-                'label' => 'Pasirinkite nuotrauką',
+                'label' => false,
             ])
 
 

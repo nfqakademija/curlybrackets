@@ -1,4 +1,33 @@
 {{ form_start(form,{action:path('user_edit', {id: app.user.id})}) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+
+<div class="row justify-content-center form-block">
+    <div class="col-lg-6 col-md-8">
+        <div class="row justify-content-center">
+            <div class="col-md-6 form-padding-right">
+                <div class="form-group">
+                    <span class="form-label">{{ form_row(form.firstName, {'attr': {'class': 'form-control form-space'}}) }}</span>
+                    <span class="form-label">{{ form_row(form.lastName, {'attr': {'class': 'form-control form-space'}}) }}</span>
+                </div>
+            </div>
+            <div class="col-md-6 form-padding-right">
+                <div class="form-group">
+                    <span class="">{{ form_row(form.email, {'attr': {'class': 'form-control form-space'}})}}</span>
+                    <span class="">{{ form_row(form.avatarFile, {'attr': {'class': 'form-control form-space'}})}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 form-padding-right justify">
+                <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+            </div>
+            <div class="col-md-6 form-padding-right">
+                <button class="btn btn-warning"><a href="{{ path('user_index') }}">Grįžti</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{ form_widget(form) }}
+
 {{ form_end(form) }}

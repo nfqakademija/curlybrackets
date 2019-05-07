@@ -3,10 +3,13 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Redaguoti savo duomenis</h1>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 title-margin-left">
+                <h1>Atnaujinkite savo duomenis</h1>
+            </div>
+        </div>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Atnaujinti duomenis'}) }}
-
-    <button class="btn btn-warning my-2"><a href="{{ path('user_index') }}">Grįžti</a></button>
-
+        {{ include('user/_form.html.twig', {'button_label': 'Atnaujinti duomenis'}) }}
+    </div>
 {% endblock %}
