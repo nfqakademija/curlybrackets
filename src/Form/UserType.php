@@ -17,16 +17,19 @@ class UserType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Vardas',
+                'label' => false,
+                'attr' => ['placeholder' => 'Jūsų vardas'],
                 'required' => false,
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Pavardė',
+                'label' => false,
+                'attr' => ['placeholder' => 'Jūsų pavardė'],
                 'required' => false,
 
             ])
             ->add('email', EmailType::class, [
                 'label' => false,
+                'attr' => ['placeholder' => 'Jūsų elektroninis paštas'],
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
@@ -39,7 +42,7 @@ class UserType extends AbstractType
                 'allow_delete' => false,
                 'imagine_pattern' => 'square',
                 'download_uri' => false,
-                'label' => 'Pasirinkite nuotrauką',
+                'label' => false,
             ]);
     }
 
