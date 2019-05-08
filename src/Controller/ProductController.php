@@ -133,13 +133,15 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($product);
-            $entityManager->flush();
-            $this->addFlash('danger', 'Produktas ištrintas!');
+        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+            if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($product);
+                $entityManager->flush();
+                $this->addFlash('danger', 'Produktas ištrintas!');
+            }
+            return $this->redirectToRoute('product_index');
         }
-
-        return $this->redirectToRoute('product_index');
+        throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 }

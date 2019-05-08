@@ -1,4 +1,10 @@
 liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                locator: filesystem_insecure
+                data_root: "%kernel.root_dir%/../public"
+
     # As mentioned above, gd, imagick or gmagick are possible
     driver: "gd"
 
