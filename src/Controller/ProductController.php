@@ -142,7 +142,9 @@ class ProductController extends AbstractController
                 $entityManager->flush();
                 $this->addFlash('danger', 'Produktas ištrintas!');
             }
-            return $this->redirectToRoute('product_index');
+            return $this->redirectToRoute('user_show', [
+                'id' => $product->getUser()->getId(),
+            ]);
         }
         throw $this->createNotFoundException('You are not allowed to reach this site.');
     }

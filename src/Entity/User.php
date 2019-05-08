@@ -17,8 +17,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"username"}, message="Toks vartotojo vardas jau užimtas")
+ * @UniqueEntity(fields={"email"}, message="Toks elektronins paštas jau užregistruotas")
  * @ORM\Entity
  * @ORM\Table(name="user")
  * @Vich\Uploadable
