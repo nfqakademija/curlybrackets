@@ -86,7 +86,9 @@ class ProductController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Produktas sėkmingai pridėtas!');
 
-            return $this->redirectToRoute('product_index');
+            return $this->redirectToRoute('user_show', [
+                'id' => $product->getUser()->getId(),
+            ]);
         }
 
         return $this->render('product/new.html.twig', [
@@ -112,8 +114,8 @@ class ProductController extends AbstractController
                 $product->setUpdatedAt(new DateTime('now'));
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
-                return $this->redirectToRoute('product_index', [
-                    'id' => $product->getId(),
+                return $this->redirectToRoute('user_show', [
+                    'id' => $product->getUser()->getId(),
                 ]);
             }
 
@@ -133,13 +135,15 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($product);
-            $entityManager->flush();
-            $this->addFlash('danger', 'Produktas ištrintas!');
+        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+            if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->remove($product);
+                $entityManager->flush();
+                $this->addFlash('danger', 'Produktas ištrintas!');
+            }
+            return $this->redirectToRoute('product_index');
         }
-
-        return $this->redirectToRoute('product_index');
+        throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 }

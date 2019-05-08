@@ -1,7 +1,7 @@
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="navbar-brand">
-            <img class="logo" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/food_sharing_logo.png" alt="Logotipas" />
+            <a href="/"><img class="logo" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/food_sharing_logo.png" alt="Logotipas" /></a>
         </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +12,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Pradžia</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ path('product_index') }}">Produktai</a></li>
                     {% if app.user.username is defined %}
-                        <li class="nav-item"><a class="nav-link" href="{{ path('product_new') }}">Įkelti naują produktą</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('product_new') }}">Produktų įkėlimas </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Atsijungti</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('user_show', {id: app.user.id})  }}">{{ app.user.username }}</a></li>
 

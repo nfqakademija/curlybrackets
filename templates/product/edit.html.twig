@@ -3,10 +3,15 @@
 {% block title %}Edit Product{% endblock %}
 
 {% block body %}
-    <h1>Edit Product</h1>
 
-    {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 title-margin-left">
+                <h1>Produkto duomenų keitimas</h1>
+            </div>
+        </div>
 
-    <a href="{{ path('product_index') }}">Grįžti </a>
+        {{ include('product/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
+    </div>
 
 {% endblock %}
