@@ -25,5 +25,12 @@
     </div>
 </div>
 
+<script>
+    $('#user_avatarFile_file').on('change',function(){
+        var fileName = document.getElementById('user_avatarFile_file').files[0].name;
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
+
 {{ form_widget(form)}}
 {{ form_end(form) }}

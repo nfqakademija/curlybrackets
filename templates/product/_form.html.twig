@@ -3,15 +3,17 @@
     <div class="row justify-content-center form-block">
         <div class="col-lg-6 col-md-8">
             <div class="row">
-                <div class="col-md-6 col-sm-4 form-padding-right">
-                    <div class="upload-btn">
-                        <button class="up-btn">Pasirinkite nuotrauką</button>
-                        <span class="form-label form-not-visible">{{ form_row(form.pictureFile, {'attr': {'placeholder': 'Nuotrauka'}})}}</span>
+
+                    <div class="col-md-6 form-padding-right">
+                        <div class="form-group">
+                            <span class="">{{ form_row(form.pictureFile, {'attr': {'class': 'form-control form-space', 'placeholder': 'Pavadinimas'}}) }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6 col-sm-8 form-padding-left">
+                <div class="col-md-6 form-padding-left">
+                    <div class="form-group">
                     <span class="form-label">{{ form_row(form.title, {'attr': {'class': 'form-control form-space', 'placeholder': 'Pavadinimas'}}) }}</span>
                     <span class="form-label">{{ form_row(form.deadline, {'attr': {'class': 'form-control form-space', 'placeholder': 'Atsiimti iki'}}) }}</span>
+                    </div>
                 </div>
             </div>
 
@@ -30,6 +32,13 @@
 
         </div>
     </div>
+
+<script>
+    $('#product_pictureFile_file').on('change',function(){
+        var fileName = document.getElementById('product_pictureFile_file').files[0].name;
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
 
 {{ form_end(form) }}
 
