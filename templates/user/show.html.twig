@@ -47,7 +47,6 @@
                 <div class="col-md-3 my-auto">
                     {% if product.picture is not null %}
                         <img class="user-profile-list-picture" src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
-                                 width="200" height="200"
                                  alt="Food picture">
                     {% else %}
                         Paveiklėlio nėra :)
