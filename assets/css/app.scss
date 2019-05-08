@@ -222,6 +222,7 @@ a:hover{
 .profile-box {
   border: 1px solid $elements;
   border-radius: 4px;
+  margin-top: 15px;
 }
 
 .no-avatar {
@@ -316,6 +317,11 @@ a:hover{
 
 .product-list {
   margin-top: 45px;
+}
+
+.user-profile-head-title{
+  margin-top: 45px;
+  margin-bottom: 15px;
 }
 
 //for other screens
