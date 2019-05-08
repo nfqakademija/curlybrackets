@@ -10,7 +10,7 @@
         <div class="row h-100 profile-box">
             <div class="col-2 my-auto">
                 {% if user.avatar is not null %}
-                <img src=" {{('/images/avatars/' ~user.avatar )  }}"
+                <img class="product-avatar-profile" src=" {{('/images/avatars/' ~user.avatar )  }}"
                         width="78" height="78"
                         alt="Avataras">
                         {#<td><img src="{{ (vich_uploader_asset(avatar, 'avatarFile'))}}"#}
