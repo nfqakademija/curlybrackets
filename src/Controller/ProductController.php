@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,17 +25,10 @@ class ProductController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    public function index(ProductRepository $productRepository): Response
+    public function index(ProductRepository $productRepository, EntityManagerInterface $em): Response
     {
-        $today = new DateTime('now');
-        $result = $productRepository->findBy(array('GivenAway' => 0, 'status' => 1));
-
-        $products = array();
-        foreach ($result as $product) {
-            if ($product->getDeadline() > $today) {
-                $products[] = $product;
-            }
-        }
+        $repository = $em->getRePository(Product::class);
+        $products = $repository->findByActiveProducts();
 
         return $this->render('product/index.html.twig', [
             'products' => $products
@@ -48,7 +42,7 @@ class ProductController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function giveAway(Product $product, User $user): Response
+    public function giveAway(Product $product): Response
     {
         $product->setGivenAway(!$product->getGivenAway());
         $entityManager = $this->getDoctrine()->getManager();
@@ -56,8 +50,8 @@ class ProductController extends AbstractController
         $entityManager->flush();
         $this->addFlash('success', 'Produktas atidavimo būsena pakeista!');
 
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
+        return $this->redirectToRoute('user_show', [
+            'id' => $product->getUser()->getId(),
         ]);
     }
 
