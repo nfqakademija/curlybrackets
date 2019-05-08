@@ -54,8 +54,8 @@ class ProductType extends AbstractType
                     new NotNull()
                 ],
                 'choices' => [
-                    'Aktyvuoti produktą' => true,
-                    'Palikti neaktyvų' => false,
+                    'Rodyti produktą' => true,
+                    'Nerodyti produkto' => false,
 
                 ]
             ])

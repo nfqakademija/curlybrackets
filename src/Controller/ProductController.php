@@ -27,7 +27,7 @@ class ProductController extends AbstractController
     public function index(ProductRepository $productRepository): Response
     {
         $today = new DateTime('now');
-        $result = $productRepository->findBy(array('GivenAway' => 0));
+        $result = $productRepository->findBy(array('GivenAway' => 0, 'status' => 1));
 
         $products = array();
         foreach ($result as $product) {
