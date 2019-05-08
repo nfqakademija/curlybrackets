@@ -86,7 +86,9 @@ class ProductController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Produktas sėkmingai pridėtas!');
 
-            return $this->redirectToRoute('product_index');
+            return $this->redirectToRoute('user_show', [
+                'id' => $product->getUser()->getId(),
+            ]);
         }
 
         return $this->render('product/new.html.twig', [
@@ -112,8 +114,8 @@ class ProductController extends AbstractController
                 $product->setUpdatedAt(new DateTime('now'));
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
-                return $this->redirectToRoute('product_index', [
-                    'id' => $product->getId(),
+                return $this->redirectToRoute('user_show', [
+                    'id' => $product->getUser()->getId(),
                 ]);
             }
 
