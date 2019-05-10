@@ -98,6 +98,11 @@ class User implements UserInterface, \Serializable
      */
     private $products;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Location")
+     */
+    private $location;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -337,5 +342,17 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized)
     {
         list ( $this->id, $this->username, $this->password) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
+
+        return $this;
     }
 }

@@ -25,7 +25,7 @@ class ProductController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    public function index(ProductRepository $productRepository, EntityManagerInterface $em): Response
+    public function index(EntityManagerInterface $em): Response
     {
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();

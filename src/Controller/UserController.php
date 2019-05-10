@@ -84,6 +84,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
+
         if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
             $form = $this->createForm(UserType::class, $user);
 
