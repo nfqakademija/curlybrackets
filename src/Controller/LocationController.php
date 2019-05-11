@@ -47,12 +47,13 @@ class LocationController extends AbstractController
     /**
      * @Route("/{id}/edit", name="location_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Location $location): Response
+    public function edit(Request $request, Location $location, UserInterface $user = null): Response
     {
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setLocation($location);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('location_index', [

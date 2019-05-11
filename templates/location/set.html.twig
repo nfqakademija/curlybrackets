@@ -3,9 +3,9 @@
 {% block title %}New Location{% endblock %}
 
 {% block body %}
-    <h1>Create new Location</h1>
+    <h1>Pasirinkite savo lokalizaciją</h1>
 
     {{ include('location/_form.html.twig') }}
 
-    <a href="{{ path('user_show', {'id': app.user.id}) }}">back to list</a>
+    <a href="{{ path('user_show', {'id': app.user.id}) }}">Atgal</a>
 {% endblock %}
