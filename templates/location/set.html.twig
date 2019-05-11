@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Location{% endblock %}
+{% block title %}Mano vieta{% endblock %}
 
 {% block body %}
-    <h1>Pasirinkite savo lokalizaciją</h1>
+    <div class="container">
+        <h1>Pasirinkite savo vietą</h1>
+        <div id="map"></div>
+        {{ include('location/_form.html.twig') }}
 
-    {{ include('location/_form.html.twig') }}
-
-    <a href="{{ path('user_show', {'id': app.user.id}) }}">Atgal</a>
+        <a class="back-btn" href="{{ path('user_show', {'id': app.user.id}) }}">Grįžti</a>
+    </div>
 {% endblock %}

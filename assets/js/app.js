@@ -1,4 +1,6 @@
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PickLocation from './picklocation.js';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -15,4 +17,5 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 });
 
-
+//add location
+ReactDOM.render(<PickLocation />, document.getElementById('map'));

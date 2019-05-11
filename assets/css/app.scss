@@ -324,6 +324,24 @@ a:hover{
   margin-bottom: 15px;
 }
 
+#location {
+  display: none;
+}
+
+.back-btn {
+  display: block;
+  margin: 20px 0;
+}
+
+.map-save-btn {
+  margin-top:15px;
+  float: right;
+}
+
+#map {
+  margin-top: 25px;
+}
+
 //for other screens
 
 @media screen and (max-width: 575px ) {
