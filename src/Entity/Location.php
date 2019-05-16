@@ -6,6 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
+ * @ORM\Table(name="location", indexes={
+ *     @ORM\Index(name="idx_latitude", columns={"latitude"}),
+ *     @ORM\Index(name="idx_longitude", columns={"longitude"}),
+ * })
  */
 class Location
 {
@@ -17,12 +21,12 @@ class Location
     private $id;
 
     /**
-     * @ORM\Column(type="decimal", precision=11, scale=8)
+     * @ORM\Column(type="string", length=30)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=11, scale=8)
+     * @ORM\Column(type="string", length=30)
      */
     private $longitude;
 
