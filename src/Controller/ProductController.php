@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Location;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Form\LocationType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use DateTime;
@@ -13,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/product")
@@ -61,8 +64,12 @@ class ProductController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserInterface $user = null): Response
     {
+
+        if (!$user->getLocation()) {
+            return $this->redirectToRoute('location_redirect');
+        }
 
         $product = new Product();
 
