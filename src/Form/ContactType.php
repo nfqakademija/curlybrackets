@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactType extends AbstractType
 {
@@ -14,9 +15,24 @@ class ContactType extends AbstractType
     {
         $builder
             ->add('message', TextareaType::class, [
-                'label' => 'Jūsų žinutė'])
+                'label' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Parašykite žinutę savininkui',
+                    ]),
+                ],
+                'attr' => ['placeholder' => 'Jūsų žinutė savininkui'],
+                ])
             ->add('email', EmailType::class, [
-                'label' => 'Jūsų elektroninis paštas'])
+                'label' => false,
+                'required' => true,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Įveskite e paštą',
+                    ]),
+                ],
+                'attr' => ['placeholder' => 'Jūsų elektroninis paštas'],
+            ])
         ;
     }
 

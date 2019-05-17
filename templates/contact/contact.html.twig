@@ -3,12 +3,42 @@
 {% block title %}Contact Form{% endblock %}
 
 {% block body %}
-
-    <div>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="call-to-btn map-save-btn">{{ button_label|default('Išsiųsti žinutę') }}</button>
-        {{ form_end(form) }}
+<div class="row justify-content-center form-block">
+    <div class= "container col-lg-7">
+        <div class="row">
+            <div class="col">
+                {% if product.picture is not null %}
+                    <img class="product-list-img" src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("small") }}" alt="Produkto nuotrauka">
+                {% else %}
+                    <img class="product-list-img" src="{{ (asset('build/products/product_image.png'))}}" alt="Nėra produkto nuotraukos">
+                {% endif %}
+            </div>
+            <div class="col">
+                <div class="list-group-item list-group-item-action flex-column align-items-start border-0 bg-transparent">
+                    <div class="d-flex w-100 justify-content-center">
+                        <div class="row title">
+                            <h4>{{ product.title }}</h4>
+                        </div>
+                    </div>
+                    <p class="mb-1">{{ product.description }}</p>
+                    <p>
+                        Savininkas: {{ product.user.username }}
+                        <img class="product-avatar" src=" {{('/images/avatars/' ~product.user.avatar )}}" title="{{ product.user.username }}">
+                    </p>
+                    <small>Atsiimti iki: {{ product.deadline ? product.deadline|date('Y-m-d H:i') : '' }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8 my-5">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <div class="row justify-content-center">
+                    <button class="call-to-btn map-save-btn">{{ button_label|default('Išsiųsti žinutę') }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
     </div>
-
+</div>
 {% endblock %}

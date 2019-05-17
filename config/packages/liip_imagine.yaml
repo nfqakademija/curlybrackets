@@ -28,7 +28,7 @@ liip_imagine:
         small:
             filters:
                 relative_resize:
-                    widen: 350
+                    widen: 300
 
         # Shrink/upscale the image to 800px of height, with full quality
         big:

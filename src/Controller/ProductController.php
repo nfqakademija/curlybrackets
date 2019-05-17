@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Location;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Form\ContactType;
 use App\Form\LocationType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -126,6 +127,25 @@ class ProductController extends AbstractController
             ]);
         }
         throw $this->createNotFoundException('You are not allowed to reach this site.');
+    }
+
+    /**
+     * @Route("/{id}/contact", name="contact", methods={"GET","POST"})
+     */
+    public function contact(Request $request, Product $product)
+    {
+        $form = $this->createForm(ContactType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success', 'Jūsų ž  inutė išsiųsta!');
+            return $this->redirectToRoute('product_index');
+        }
+
+        return $this->render('contact/contact.html.twig', [
+            'form' => $form->createView(),
+            'product' => $product,
+        ]);
     }
 
     /**
