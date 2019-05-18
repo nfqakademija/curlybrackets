@@ -132,13 +132,31 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/contact", name="contact", methods={"GET","POST"})
      */
-    public function contact(Request $request, Product $product)
+    public function contact(Request $request, Product $product, \Swift_Mailer $mailer)
     {
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success', 'Jūsų ž  inutė išsiųsta!');
+            $data = $form->getData();
+            $message = (new \Swift_Message('Foodsharing puslapio lankytojas ' . $form['name']->getData().
+                ' nori susisiekti su Jumis'))
+                ->setFrom('foodsharinglithuania@gmail.com')
+                ->setTo($product->getUser()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/contact.html.twig',
+                        ['data' => $data,
+                         'product' => $product]
+                    ),
+                    'text/html'
+                );
+
+                $mailer->send($message);
+
+
+
+            $this->addFlash('success', 'Jūsų žinutė išsiųsta!');
             return $this->redirectToRoute('product_index');
         }
 
