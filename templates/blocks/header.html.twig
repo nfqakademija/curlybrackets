@@ -15,7 +15,12 @@
                         <li class="nav-item"><a class="nav-link" href="{{ path('product_new') }}">Produktų įkėlimas </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Atsijungti</a></li>
                         <li><a class="nav-link" href="{{ path('user_show', {id: app.user.id})  }}">
-                                <img class="product-avatar" src=" {{('/images/avatars/' ~app.user.avatar )}}" width="44" title="{{ app.user.username }}"></a></li>
+                                {% if app.user.avatar is not null %}
+                                    <img class="product-avatar" src=" {{('/images/avatars/' ~app.user.avatar )}}" width="44" title="{{ app.user.username }}">
+                                {% else %}
+                                    <img class="no-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" width="44" title="{{ app.user.username }}" alt="Avataras" width="44">
+                                {% endif %}
+                                </a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Prisijungti</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Registruotis</a></li>
