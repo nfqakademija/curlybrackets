@@ -21,12 +21,11 @@ class Location
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="decimal", precision=14, scale=12)
      */
     private $latitude;
-
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="decimal", precision=14, scale=12)
      */
     private $longitude;
 
