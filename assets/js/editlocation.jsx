@@ -7,7 +7,6 @@ function EditMap() {
     let oldLng = document.getElementById('location_longitude').value;
     oldLat = parseFloat(oldLat.replace(/,/g, "."));
     oldLng = parseFloat(oldLng.replace(/,/g, "."));
-    console.log(typeof oldLat  + ' ' + oldLat);
 
     const [center, setCenter] = useState({ lat: oldLat, lng: oldLng });
     const refMap = useRef(null);
