@@ -83,6 +83,7 @@ class ProductController extends AbstractController
             $product->setUser($user);
             $product->setCreatedAt(new DateTime('now'));
             $product->setUpdatedAt(new DateTime('now'));
+            $product->setLocation($user->getLocation());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
