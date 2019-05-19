@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Keisti savo vietą{% endblock %}
+{% block title %}Atnaujinti vietą{% endblock %}
 
 {% block body %}
-    <h1>Atnaujinti vietą</h1>
+    <div class="container">
+        <h1>Atnaujinti vietą</h1>
 
-    {{ include('location/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
+        <div id="map-edit"></div>
 
-    <a href="{{ path('user_show', {'id': app.user.id}) }}">Atgal</a>
+        {{ include('location/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
 
+        <a class="back-btn" href="{{ path('user_show', {'id': app.user.id}) }}">Grįžti</a>
+    </div>
 {% endblock %}

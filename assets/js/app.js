@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PickLocation from './picklocation.js';
+import PickLocation from './picklocation';
+import EditLocation from './editlocation';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -19,3 +20,6 @@ $(document).ready(function() {
 
 //add location
 ReactDOM.render(<PickLocation />, document.getElementById('map'));
+
+//edit location
+ReactDOM.render(<EditLocation />, document.getElementById('map-edit'));
