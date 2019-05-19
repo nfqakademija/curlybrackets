@@ -81,8 +81,8 @@ class LocationController extends AbstractController
             $user->setLocation($location);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('location_index', [
-                'id' => $location->getId(),
+            return $this->redirectToRoute('user_show', [
+                'id' => $user->getId(),
             ]);
         }
 

@@ -26,12 +26,31 @@ class ProductRepository extends ServiceEntityRepository
     public function findByActiveProducts()
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.GivenAway = 0')
+            ->where('p.GivenAway = 0')
             ->andWhere('p.status = 1')
             ->andWhere('p.deadline > CURRENT_TIMESTAMP()')
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findProductsByLocation($parameters)
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.location', 'l')
+            ->where('l.latitude > :latitudeMin')
+            ->andWhere('l.latitude < :latitudeMax')
+            ->andWhere('l.longitude > :longitudeMin')
+            ->andWhere('l.longitude < :longitudeMax')
+            ->setParameters([
+                'latitudeMin' => $parameters['latitudeMin'],
+                'latitudeMax' => $parameters['latitudeMax'],
+                'longitudeMin' => $parameters['longitudeMin'],
+                'longitudeMax' => $parameters['longitudeMax'],
+            ])
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 
