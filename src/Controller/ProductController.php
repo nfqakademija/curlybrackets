@@ -2,21 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\Location;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ContactType;
-use App\Form\LocationType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/product")
@@ -39,6 +39,26 @@ class ProductController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/jsonIndex", name="product_json", methods={"GET"})
+     * @param ProductRepository $productRepository
+     * @return Response
+     * @throws Exception
+     */
+    public function jsonIndex(EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $repository = $em->getRePository(Product::class);
+        $products = $repository->findByActiveProducts();
+
+        $json = $serializer->serialize($products, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
+        return new JsonResponse($json);
+    }
 
     /**
      * @Route("/{id}/give", name="product_give", methods={"GET"})

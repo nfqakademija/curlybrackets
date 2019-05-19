@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Location;
 use App\Form\LocationType;
-use App\Repository\LocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
