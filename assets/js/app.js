@@ -19,7 +19,11 @@ $(document).ready(function() {
 });
 
 //add location
-ReactDOM.render(<PickLocation />, document.getElementById('map'));
+if (document.getElementById('map') !== null){
+    ReactDOM.render(<PickLocation />, document.getElementById('map'));   
+}
 
 //edit location
-ReactDOM.render(<EditLocation />, document.getElementById('map-edit'));
+if(document.getElementById('mapEdit') !== null){
+    ReactDOM.render(<EditLocation />, document.getElementById('mapEdit'));
+}
