@@ -1,29 +1,23 @@
 {{ form_start(form,{action:path('user_edit', {id: app.user.id})}) }}
 
 <div class="row justify-content-center form-block">
-    <div class="col-lg-6 col-md-8">
+    <div class="text-center">
+        <span>{{ form_row(form.firstName, {'attr': {'class': 'form-control form-space'}}) }}</span>
+        <span>{{ form_row(form.lastName, {'attr': {'class': 'form-control form-space'}}) }}</span>
+        <span>{{ form_row(form.email, {'attr': {'class': 'form-control form-space'}}) }}</span>
+        <span>{{ form_row(form.avatarFile, {'attr': {'class': 'form-control form-space'}}) }}</span>
+
         <div class="row justify-content-center">
-            <div class="col-md-6 form-padding-right">
-                <div class="form-group">
-                    <span class="form-label">{{ form_row(form.firstName, {'attr': {'class': 'form-control form-space'}}) }}</span>
-                    <span class="form-label">{{ form_row(form.lastName, {'attr': {'class': 'form-control form-space'}}) }}</span>
-                </div>
-            </div>
-            <div class="col-md-6 form-padding-right">
-                <div class="form-group">
-                    <span class="">{{ form_row(form.email, {'attr': {'class': 'form-control form-space'}}) }}</span>
-                    <span class="">{{ form_row(form.avatarFile, {'attr': {'class': 'form-control form-space'}}) }}</span>
-                </div>
-            </div>
+           <button class="btn btn-success">{{ button_label|default('Save') }}</button>
         </div>
+
         <div class="row justify-content-center">
-            <div class="col-md-6 form-padding-right justify">
-                <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-            </div>
-            <span class="col-md-6 form-padding-right"><a class="cancel-txt btn btn-warning" href="{{ path('user_show', {id: app.user.id}) }}">Grįžti</a></span>
+            <span class="mt-3"><a class="cancel-txt btn btn-danger" href="{{ path('user_show', {id: app.user.id}) }}">Grįžti</a></span>
         </div>
     </div>
 </div>
+
+
 
 <script>
     $('#user_avatarFile_file').on('change',function(){

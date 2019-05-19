@@ -17,32 +17,31 @@ class UserType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => false,
+                'label' => 'Jūsų vardas',
                 'attr' => ['placeholder' => 'Jūsų vardas'],
                 'required' => false,
             ])
             ->add('lastName', TextType::class, [
-                'label' => false,
+                'label' => 'Jūsų pavardė',
                 'attr' => ['placeholder' => 'Jūsų pavardė'],
                 'required' => false,
 
             ])
             ->add('email', EmailType::class, [
-                'label' => false,
-                'attr' => ['placeholder' => 'Jūsų elektroninis paštas'],
+                'label' => 'Jūsų elektroninis paštas',
                 'required' => true,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Įveskite e paštą',
                     ])
-                ]
+                ],
             ])
             ->add('avatarFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => false,
                 'imagine_pattern' => 'square',
                 'download_uri' => false,
-                'label' => false,
+                'label' => 'Jūsų avataras',
             ]);
     }
 
