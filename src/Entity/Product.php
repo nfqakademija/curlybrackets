@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -32,6 +33,12 @@ class Product
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
+     *  @Assert\File(
+     * maxSize="2048k",
+     * maxSizeMessage = "Maksimalus nuotraukos dydis yra 2MB",
+     * mimeTypes = {"image/png", "image/jpeg", "image/x-icon", "image/bmp", "image/jpg"},
+     * mimeTypesMessage = "Įkelkite paveikslėlį png/jpeg/jpg/x-icon/bmp formatu"
+     * )
      * @Vich\UploadableField(mapping="product_image", fileNameProperty="picture")
      *
      * @var File

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -62,6 +63,12 @@ class User implements UserInterface, \Serializable
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
+     *  @Assert\File(
+     * maxSize="2048k",
+     * maxSizeMessage = "Maksimalus nuotraukos dydis yra 2MB",
+     * mimeTypes = {"image/png", "image/jpeg", "image/x-icon", "image/bmp", "image/jpg"},
+     * mimeTypesMessage = "Įkelkite paveikslėlį png/jpeg/jpg/x-icon/bmp formatu"
+     * )
      * @Vich\UploadableField(mapping="avatar_image", fileNameProperty="avatar")
      * @var File
      */
