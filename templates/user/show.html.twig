@@ -26,19 +26,17 @@
                 {{ user.email }}
             </div>
             <div class="col-4 my-auto profile-btn-block">
-                <div class="profile-btn-margin">
+                <a class="mx-2" href="{{ path('location_edit', {'id': user.location.id}) }}">
+                    <i class="fas fa-map-marked fa-2x"
                     {% if user.location %}
-                    <a class="call-to-btn-green" href="{{ path('location_edit', {'id': user.location.id}) }}">Redaguoti vietą</a>
+                       title="Redaguoti vietą">
                     {% else %}
-                    <a class="call-to-btn-green" href="{{ path('location_set') }}">Mano vieta</a>
+                       title="Nustatyti savo vietą">
                     {% endif %}
-                </div>
-                <div class="profile-btn-margin">
-                    <a class="call-to-btn" href="{{ path('user_edit', {'id': user.id}) }}">Redaguoti</a>
-                </div>
-                <div class="profile-btn-margin">
-                    <a class="" href="{{ path('user_password', {'id': user.id}) }}"><i class="fas fa-key" title="Keisti slaptažodį"></i></a>
-                </div>
+                    </i>
+                </a>
+                <a class="mx-2" href="{{ path('user_edit', {'id': user.id}) }}"><i class="fas fa-user-edit fa-2x" title="Redaguoti vartotojo duomenis"></i></a>
+                <a class="mx-2" href="{{ path('user_password', {'id': user.id}) }}"><i class="fas fa-key fa-2x" title="Keisti slaptažodį"></i></a>
             </div>
         </div>
 
@@ -50,10 +48,10 @@
             <div class="row user-products-list">
                 <div class="col-md-3 my-auto">
                     {% if product.picture is not null %}
-                        <img class="user-profile-list-picture" src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}"
+                        <img class="user-profile-list-picture" src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("small") }}"
                                  alt="Food picture">
                     {% else %}
-                        Paveiklėlio nėra :)
+                        <img class="product-list-img" src="{{ (asset('build/products/product_image.png'))|imagine_filter("small") }}" alt="Nėra produkto nuotraukos">
                     {% endif %}
                 </div>
                 <div class="col-md-4 my-auto">
@@ -66,25 +64,22 @@
                 </div>
                 <div class="col-md-3 my-auto">
                     <div>
-                        Galioja iki {{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}
+                        <i class="fas fa-clock" title="Atsiimti iki"></i> {{ product.deadline ? product.deadline|date('Y-m-d H:i:s') : '' }}
                     </div>
                     <div>
-                        Statusas: {{ product.status ? 'Įjungtas' : 'Išjungtas' }}
-                    </div>
-                    <div>
-                        Būsena: {{ product.givenAway ? 'Atiduotas' : 'Neatiduotas' }}
+                        {{ product.status ? '<i class="fas fa-eye"></i> Skelbimas rodomas ' : '<i class="fas fa-eye-slash"></i> Skelbimas paslėptas ' }}
                     </div>
                 </div>
                 <div class="col-md-2 my-auto">
                     <div class="profile-btn-margin">
-                        <a class="call-to-btn" href="{{ path('product_edit', {'id': product.id}) }}">Redaguoti</a>
+                        <a href="{{ path('product_edit', {'id': product.id}) }}"><i class="fas fa-edit fa-2x" title="Redaguoti produktą"></i></a>
                     </div>
                     <div class="profile-btn-margin">
-                        <a class="call-to-btn" href="{{ path('product_give', {'id': product.id}) }}">
+                        <a href="{{ path('product_give', {'id': product.id}) }}">
                             {% if product.givenAway %}
-                                    Neatiduotas
-                                {% else %}
-                                    Atiduotas
+                                <i class="fas fa-undo-alt fa-2x" title="Atšaukti atidavimo veiksmą"></i>
+                            {% else %}
+                                <i class="fas fa-handshake fa-2x" title="Pakeisti būseną į atiduotas"></i>
                             {% endif %}
                         </a>
                     </div>

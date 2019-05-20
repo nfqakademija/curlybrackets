@@ -9,14 +9,8 @@
         <span>{{ form_row(form.pictureFile, {'attr': {'class': 'form-control form-space'}}) }}</span>
 {#        <img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('small') }}">#}
         <span>{{ form_row(form.status, {'attr': {'class': ' form-space'}}) }}</span>
-
-        <div class="row justify-content-center">
-            <button class="btn btn-success">{{ button_label|default('Save') }}</button>
-        </div>
-
-        <div class="row justify-content-center">
-            <span class="mt-3"><a class="cancel-txt btn btn-danger" href="{{ path('user_show', {id: app.user.id}) }}">Grįžti</a></span>
-        </div>
+        <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+        <span class="mt-3"><a class="cancel-txt btn btn-danger" href="{{ path('user_show', {id: app.user.id}) }}">Grįžti</a></span>
     </div>
 </div>
 

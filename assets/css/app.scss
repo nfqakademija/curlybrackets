@@ -293,7 +293,7 @@ a:hover{
 }
 
 .title {
-  color: $call;
+  color: $heading;
 }
 
 .product-list-img {
@@ -374,4 +374,24 @@ a:hover{
   background-color: white;
   color: black;
   border-width: 2px;
+}
+
+.fas {
+  color: $call;
+}
+
+.fas:hover {
+  color: $callHover;
+}
+
+.far{
+  color: $warning;
+}
+
+.far:hover{
+  color: $warningHover;
+}
+
+.fas.fa-envelope {
+  color: white;
 }
