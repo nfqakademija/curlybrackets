@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -29,6 +30,7 @@ class ProductRepository extends ServiceEntityRepository
             ->where('p.GivenAway = 0')
             ->andWhere('p.status = 1')
             ->andWhere('p.deadline > CURRENT_TIMESTAMP()')
+            ->orderBy('p.deadline', 'ASC')
             ->getQuery()
             ->getResult()
         ;
@@ -53,16 +55,4 @@ class ProductRepository extends ServiceEntityRepository
             ;
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?Product
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

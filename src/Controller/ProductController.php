@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Location;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ContactType;
-use App\Form\LocationType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use DateTime;
@@ -17,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/product")
@@ -24,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/", name="product_index", methods={"GET"})
+     * @Route("/index", name="product_index", methods={"GET"})
      * @param ProductRepository $productRepository
      * @return Response
      * @throws Exception
@@ -39,6 +38,29 @@ class ProductController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/jsonIndex", name="product_json", methods={"GET"})
+     * @param ProductRepository $productRepository
+     * @return Response
+     * @throws Exception
+     */
+    public function jsonIndex(EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $repository = $em->getRePository(Product::class);
+        $products = $repository->findByActiveProducts();
+
+        $json = $serializer->serialize($products, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
 
     /**
      * @Route("/{id}/give", name="product_give", methods={"GET"})
@@ -131,7 +153,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/contact", name="contact", methods={"GET","POST"})
+     * @Route("/contact/{id}", name="contact", methods={"GET","POST"})
      */
     public function contact(Request $request, Product $product, \Swift_Mailer $mailer)
     {

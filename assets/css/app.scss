@@ -357,3 +357,21 @@ a:hover{
     padding-left: 15px;
   }
 }
+
+//#centerAligned {
+//  top: 40%;
+//  left: 50%;
+//  transform: translate(-50%, -50%);
+//  position: absolute;
+//}
+
+#centerAlignedContainer {
+  position: relative;
+  height: 100vh;
+}
+
+.btn {
+  background-color: white;
+  color: black;
+  border-width: 2px;
+}

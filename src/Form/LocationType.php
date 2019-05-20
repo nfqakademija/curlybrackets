@@ -13,9 +13,14 @@ class LocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('latitude', NumberType::class)
-            ->add('longitude', NumberType::class)
-        ;
+            ->add('latitude', NumberType::class,
+                [
+                    'scale' => 12,
+                ])
+            ->add('longitude', NumberType::class,
+                [
+                    'scale' => 12,
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

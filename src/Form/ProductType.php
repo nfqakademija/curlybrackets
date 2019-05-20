@@ -4,14 +4,13 @@ namespace App\Form;
 
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotNull;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProductType extends AbstractType
@@ -20,7 +19,8 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'page.product.product_form.title',
+                'label' => 'Pavadinimas',
+                'attr' => ['placeholder' => 'Produkto pavadinimas'],
                 'translation_domain' => 'content',
                 'invalid_message' => 'page.product.product_form.invalid_message',
                 'constraints' => [
@@ -44,24 +44,18 @@ class ProductType extends AbstractType
                 'allow_delete' => false,
                 'imagine_pattern' => 'square',
                 'download_uri' => false,
-                'label' => false,
+                'label' => 'Produkto nuotrauka',
             ])
 
 
-            ->add('status', ChoiceType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotNull()
-                ],
-                'choices' => [
-                    'Rodyti produktą' => true,
-                    'Nerodyti produkto' => false,
-
-                ]
+            ->add('status', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Ar rodyti produktą viešam sąraše?',
             ])
 
             ->add('description', TextareaType::class, [
-                'label' => false,
+                'label' => 'Aprašymas',
+                'attr' => ['placeholder' => 'Pateikite trumpą produkto aprašymą'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Nurodykite bent trumpą aprašymą',
