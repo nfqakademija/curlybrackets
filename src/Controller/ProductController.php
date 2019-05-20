@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Carbon\Carbon;
 
 /**
  * @Route("/product")
@@ -32,6 +33,11 @@ class ProductController extends AbstractController
     {
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();
+
+        Carbon::setLocale('lt');
+        foreach ($products as $product) {
+            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
+        }
 
         return $this->render('product/index.html.twig', [
             'products' => $products
@@ -182,6 +188,9 @@ class ProductController extends AbstractController
             $this->addFlash('success', 'Jūsų žinutė išsiųsta!');
             return $this->redirectToRoute('product_index');
         }
+
+        Carbon::setLocale('lt');
+        $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
 
         return $this->render('contact/contact.html.twig', [
             'form' => $form->createView(),
