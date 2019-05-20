@@ -3,6 +3,27 @@
 {% block title %}{{ 'Food Sharing - maisto dalijimosi platforma'}}{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div id="centerAlignedContainer">
+            <div class="position-absolute" id="centerAligned">
+            <h1 class="display-4 text-center mb-4">Sveiki atvykę į maisto dalijimosi svetainę</h1>
+            <p class="lead" id="typewriter"><em>Kasdien Lietuvoje iššvaistoma beveik milijonas (1000000) kilogramų maisto! Kiekvienas iš mūsų
+                    galime pradėti nuo savęs. Prisipirkote per daug maisto arba vykstate atostogų, bet šaldytuvas
+                    vis dar pilnas. Mūsų svetainėje Jūs galite pranešti apie maisto perteklių ir pasidalinti juo su kitais.
+                    Taipogi, peržiūrėkite jau esamus skelbimus - gal kažką rasite sau :)</em></p>
+            <hr class="my-4">
+            <p class="lead text-center">
+                <a class="btn btn-primary" href="{{ path('product_new') }}" role="button">Pasiūlykite maisto</a>
+                <a class="btn btn-primary" href="{{ path('product_index') }}" role="button">Gaukite maisto</a>
+                <a class="btn btn-success my-3" href= "#foodWasting" role="button">Daugiau informacijos apie maisto švaistymą</a>
+            </p>
+            <hr class="my-4">
+        </div>
+        </div>
+    <div class="text-center" id="foodWasting" >
+        <img width="100%" src= "http://www.europarl.europa.eu/resources/library/images/20170512PHT74423/20170512PHT74423_original.jpg">
+    </div>
+    </div>
 
 {% endblock %}
 
