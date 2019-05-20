@@ -3,15 +3,12 @@
 {% block title %}Edit Product{% endblock %}
 
 {% block body %}
-
-    <div class="container">
+    <div>
         <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-8 title-margin-left">
+            <div class="col-lg-6 col-md-8 text-center">
                 <h1>Produkto duomenų keitimas</h1>
             </div>
         </div>
-
-        {{ include('product/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
+        {{ include('product/_form.html.twig'), {'button_label': 'Atnaujinti'} }}
     </div>
-
 {% endblock %}

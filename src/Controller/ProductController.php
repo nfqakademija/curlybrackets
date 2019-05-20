@@ -57,7 +57,10 @@ class ProductController extends AbstractController
             }
         ]);
 
-        return new JsonResponse($json);
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**
