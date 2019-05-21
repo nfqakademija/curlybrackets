@@ -183,8 +183,6 @@ class ProductController extends AbstractController
 
                 $mailer->send($message);
 
-
-
             $this->addFlash('success', 'Jūsų žinutė išsiųsta!');
             return $this->redirectToRoute('product_index');
         }

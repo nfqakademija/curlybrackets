@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="navbar-brand">
+        <a href="http://curlybrackets.projektai.nfqakademija.lt"><img class="logo" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/food_sharing_logo.png" alt="Logotipas" height="50" /></a>    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 title-margin-left">
+            <h3>Sveikiname! Jūs užsiregistravote Foodsharing svetainėje. Jūsų vartotojo vardas: {{ user.username }}.</h3>
+            <h3> Prisijungti galite paspaudę nuorodą: <a href="{{ absolute_url(path('app_login'))}}">Prisijungti</a></h3>
+        </div>
+    </div>
+</div>

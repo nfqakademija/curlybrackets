@@ -29,7 +29,8 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator
+        LoginFormAuthenticator $authenticator,
+        \Swift_Mailer $mailer
     ): Response {
 
         $user = new User();
@@ -50,6 +51,19 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $message = (new \Swift_Message('Foodsharing paskyra sukurta vartotojui: ' . $form['username']->getData()))
+                ->setFrom('foodsharinglithuania@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'emails/register.html.twig',
+                        ['user' => $user]
+                    ),
+                    'text/html'
+                );
+
+            $mailer->send($message);
 
             $this->addFlash('success', 'Sveikiname, vartotojas sukurtas!');
 
