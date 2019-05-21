@@ -12,6 +12,7 @@
                 <div class="reg-btn">
                     <button class="call-to-btn">Registruotis</button> <a href="{{ path('home') }}">Atšaukti</a>
                 </div>
+                {{ form_row(registrationForm.agreeTerms) }}
             {{ form_end(registrationForm) }}
         </div>
     </div>
