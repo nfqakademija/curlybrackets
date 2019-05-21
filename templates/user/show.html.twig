@@ -26,12 +26,12 @@
                 {{ user.email }}
             </div>
             <div class="col-4 my-auto profile-btn-block">
-                <a class="mx-2" href="{{ path('location_edit', {'id': user.location.id}) }}">
-                    <i class="fas fa-map-marked fa-2x"
-                    {% if user.location %}
-                       title="Redaguoti vietą">
-                    {% else %}
-                       title="Nustatyti savo vietą">
+                {% if user.location %}
+                    <a class="mx-2" href="{{ path('location_edit', {'id': user.location.id}) }}">
+                    <i class="fas fa-map-marked fa-2x" title="Redaguoti vietą">
+                {% else %}
+                    <a class="mx-2" href="{{ path('location_set')}}">
+                    <i class="fas fa-map-marked fa-2x" title="Nustatyti savo vietą">
                     {% endif %}
                     </i>
                 </a>
