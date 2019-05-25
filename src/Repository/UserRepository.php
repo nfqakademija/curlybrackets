@@ -22,19 +22,17 @@ class UserRepository extends ServiceEntityRepository
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByregistrationHash($hash)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('u.registrationHash = :hash')
+            ->setParameter('val', $hash)
             ->getQuery()
-            ->getResult()
+            ->getSingleResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?User

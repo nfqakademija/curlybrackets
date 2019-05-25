@@ -3,34 +3,45 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\UserRegisteredEvent;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Exception;
+use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use DateTime;
+use Twig\Environment;
 
+/**
+ * Class RegistrationController
+ *
+ * @package App\Controller
+ */
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
+     * @param Swift_Mailer $mailer
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param Environment $templating
      * @return Response
      * @throws Exception
      */
     public function register(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
-        GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator,
-        \Swift_Mailer $mailer
+        Swift_Mailer $mailer,
+        EventDispatcherInterface $eventDispatcher,
+        Environment $templating
     ): Response {
 
         $user = new User();
@@ -51,31 +62,17 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $eventDispatcher->dispatch(
+                'user.registered',
+                new UserRegisteredEvent($form, $user, $mailer, $templating)
+            );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $message = (new \Swift_Message('Foodsharing paskyra sukurta vartotojui: ' . $form['username']->getData()))
-                ->setFrom('foodsharinglithuania@gmail.com')
-                ->setTo($user->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'emails/register.html.twig',
-                        ['user' => $user]
-                    ),
-                    'text/html'
-                );
-
-            $mailer->send($message);
-
             $this->addFlash('success', 'Sveikiname, vartotojas sukurtas!');
 
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+            return $this->render('registration/needConfirmation.html.twig');
         }
 
         return $this->render('registration/register.html.twig', [

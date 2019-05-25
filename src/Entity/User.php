@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use Serializable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="user")
  * @Vich\Uploadable
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, Serializable
 {
 
     /**
@@ -114,6 +115,16 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="datetime")
      */
     private $agreedTermsAt;
+
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $registrationHash;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $activated = 0;
 
     public function __construct()
     {
@@ -351,9 +362,10 @@ class User implements UserInterface, \Serializable
         ));
     }
 
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
-        list ( $this->id, $this->username, $this->password) = unserialize($serialized, array('allowed_classes' => false));
+        [$this->id, $this->username, $this->password] =
+            unserialize($serialized, array('allowed_classes' => false));
     }
 
     public function getLocation(): ?Location
@@ -368,14 +380,38 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getAgreedTermsAt(): ?\DateTimeInterface
+    public function getAgreedTermsAt(): ?DateTimeInterface
     {
         return $this->agreedTermsAt;
     }
 
     public function agreeToTerms(): self
     {
-        $this->agreedTermsAt = new \DateTime();
+        $this->agreedTermsAt = new DateTime();
+
+        return $this;
+    }
+
+    public function getRegistrationHash(): ?string
+    {
+        return $this->registrationHash;
+    }
+
+    public function setRegistrationHash(?string $registrationHash): self
+    {
+        $this->registrationHash = $registrationHash;
+
+        return $this;
+    }
+
+    public function getActivated(): ?bool
+    {
+        return $this->activated;
+    }
+
+    public function setActivated(?bool $activated): self
+    {
+        $this->activated = $activated;
 
         return $this;
     }
