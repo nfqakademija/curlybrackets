@@ -110,6 +110,11 @@ class User implements UserInterface, \Serializable
      */
     private $location;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $agreedTermsAt;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -359,6 +364,18 @@ class User implements UserInterface, \Serializable
     public function setLocation(?Location $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getAgreedTermsAt(): ?\DateTimeInterface
+    {
+        return $this->agreedTermsAt;
+    }
+
+    public function agreeToTerms(): self
+    {
+        $this->agreedTermsAt = new \DateTime();
 
         return $this;
     }
