@@ -2,19 +2,22 @@ import React, {useCallback, useState, useRef} from 'react';
 import { GoogleMap, withGoogleMap, withScriptjs, Marker } from 'react-google-maps';
 
 function ProductMap() {
-    const [center, setCenter] = useState({ lat: 54.68916, lng: 25.2798 });
     const refMap = useRef(null);
- 
+    
+    //getting viewport locations of map
     const mapBounds = () => {
         const bounds = refMap.current.getBounds();
         let NE = bounds.getNorthEast();
         let SW = bounds.getSouthWest();
-
         console.log(`Siaures rytai ${NE}`);
         console.log(`Pietvakariai ${SW}`);
-
         return;
     }
+    
+    //getting API
+    // let url = 'http://curlybrackets.projektai.nfqakademija.lt/product/jsonIndex';
+    // let username = 'admin3';
+    // let password = 'admin3';
   
     return (
       <GoogleMap
@@ -23,7 +26,7 @@ function ProductMap() {
         defaultCenter={{ lat: 54.68916, lng: 25.2798 }}
         onBoundsChanged={useCallback(mapBounds)}
       >
-        <Marker position={center} />
+        <Marker />
       </GoogleMap>
     );
   }
