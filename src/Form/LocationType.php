@@ -10,20 +10,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('latitude', NumberType::class,
+            ->add(
+                'latitude',
+                NumberType::class,
                 [
                     'scale' => 12,
-                ])
-            ->add('longitude', NumberType::class,
+                ]
+            )
+            ->add(
+                'longitude',
+                NumberType::class,
                 [
                     'scale' => 12,
-                ]);
+                ]
+            );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Location::class,

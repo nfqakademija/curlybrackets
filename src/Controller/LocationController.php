@@ -90,5 +90,4 @@ class LocationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }
