@@ -84,7 +84,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user): Response
     {
-
+//todo galima iskelt i servisa
         if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
             $form = $this->createForm(UserType::class, $user);
 
@@ -120,7 +120,7 @@ class UserController extends AbstractController
             $form = $this->createForm(PasswordEditType::class, $user);
 
             $form->handleRequest($request);
-
+// todo gal i servisa
             if ($form->isSubmitted() && $form->isValid()) {
                 $newPassword = $request->request->get('password_edit')['newPassword']['first'];
                 $newPasswordConfirm = $request->request->get('password_edit')['newPassword']['second'];

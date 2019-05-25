@@ -48,7 +48,6 @@ class LocationController extends AbstractController
      */
     public function setRedirect(Request $request, UserInterface $user = null): Response
     {
-
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
@@ -59,6 +58,7 @@ class LocationController extends AbstractController
             $entityManager->flush();
             $user->setLocation($location);
             $this->getDoctrine()->getManager()->flush();
+
             return $this->redirectToRoute('product_new');
         }
 

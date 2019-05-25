@@ -105,6 +105,8 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
+
+        //$user pasiimamaas antra karta
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getDoctrine()->getRepository(User::class)
                 ->findOneById($this->getUser()->getId());
@@ -137,7 +139,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
-
+// todo if iskelti i metoda apacioj
         if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
             $form = $this->createForm(ProductType::class, $product);
             $form->handleRequest($request);
@@ -155,6 +157,7 @@ class ProductController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
+        //todo 404 instead
         throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
 
