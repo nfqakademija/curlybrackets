@@ -69,6 +69,31 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/jsonMap", name="product_map", methods={"GET"})
+     * @param ProductRepository $productRepository
+     * @return Response
+     * @throws Exception
+     */
+    public function activeMap(EntityManagerInterface $em, SerializerInterface $serializer, Request $request): Response
+    {
+//        todo calculate coordinates
+        $parameter = $request->get('firstCoordinate');
+        $repository = $em->getRePository(Product::class);
+        $products = $repository->findProductsByLocation($parameter);
+
+        $json = $serializer->serialize($products, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+
+        $response = new Response($json);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    /**
      * @Route("/{id}/give", name="product_give", methods={"GET"})
      * @param Product $product
      * @param User $user
