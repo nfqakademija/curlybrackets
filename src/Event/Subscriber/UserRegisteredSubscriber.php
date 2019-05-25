@@ -44,7 +44,6 @@ class UserRegisteredSubscriber implements EventSubscriberInterface
     public function sendMail(UserRegisteredEvent $event): void
     {
         $hash = $this->createHash();
-        dump($event);
         $event->user->setRegistrationHash($hash);
             $message = (new Swift_Message('Foodsharing paskyra sukurta vartotojui: '
                 . $event->form['username']->getData()))

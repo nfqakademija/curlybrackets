@@ -56,8 +56,8 @@ class SecurityController extends AbstractController
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $authenticator
     ) {
-        $repository = $em->getRePository(User::class);
-        if ($user = $repository->findByregistrationHash($hash)) {
+        $repository = $em->getRepository(User::class);
+        if ($user = $repository->findByRegistrationHash($hash)) {
             $user[0]->setActivated(true);
 
             $this->addFlash('success', 'Sveikiname, vartotojas sėkmingai aktyvuotas!');

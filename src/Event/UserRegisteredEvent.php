@@ -10,7 +10,6 @@ use Twig\Environment;
 
 /**
  * @property User user
- * @property  form
  * @property Environment templating
  * @property  form
  * @property Swift_Mailer mailer
