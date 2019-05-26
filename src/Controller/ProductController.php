@@ -164,7 +164,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
-// todo if iskelti i metoda apacioj
+// todo if iskelti i metoda apacioj (getuser)
         if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
             $form = $this->createForm(ProductType::class, $product);
             $form->handleRequest($request);

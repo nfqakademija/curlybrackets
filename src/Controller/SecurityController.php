@@ -58,7 +58,13 @@ class SecurityController extends AbstractController
     ) {
         $repository = $em->getRepository(User::class);
         if ($user = $repository->findByRegistrationHash($hash)) {
+            if ($user[0]->getActivated()){
+                $this->addFlash('danger', 'Vartotojas jau aktyvuotas');
+                return $this->redirectToRoute('app_login');
+            }
+
             $user[0]->setActivated(true);
+            $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Sveikiname, vartotojas sėkmingai aktyvuotas!');
             return $guardHandler->authenticateUserAndHandleSuccess(
