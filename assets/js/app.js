@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PickLocation from './picklocation';
 import EditLocation from './editlocation';
+import ProductLocation from './productMap'
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -26,4 +27,9 @@ if (document.getElementById('map') !== null){
 //edit location
 if(document.getElementById('mapEdit') !== null){
     ReactDOM.render(<EditLocation />, document.getElementById('mapEdit'));
+}
+
+//maps of products
+if(document.getElementById('product-map') !== null){
+    ReactDOM.render(<ProductLocation />, document.getElementById('product-map'));
 }
