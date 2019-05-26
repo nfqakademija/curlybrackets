@@ -11,21 +11,38 @@ use App\Repository\ProductRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Carbon\Carbon;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @Route("/product")
  */
 class ProductController extends AbstractController
 {
+
+    /**
+     * ProductController constructor.
+     *
+     * @param UploaderHelper $uploadHelper
+     * @param FilterHelper $filterHelper
+     */
+    public function __construct(UploaderHelper $uploadHelper, FilterHelper $filterHelper)
+    {
+        $this->uploadHelper = $uploadHelper;
+        $this->filterHelper = $filterHelper;
+    }
+
+
     /**
      * @Route("/index", name="product_index", methods={"GET"})
      * @param EntityManagerInterface $em
@@ -35,12 +52,10 @@ class ProductController extends AbstractController
     {
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();
-
         Carbon::setLocale('lt');
         foreach ($products as $product) {
             $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
         }
-
         return $this->render('product/index.html.twig', [
             'products' => $products
         ]);
@@ -49,21 +64,41 @@ class ProductController extends AbstractController
     /**
      * @Route("/jsonIndex", name="product_json", methods={"GET"})
      * @param EntityManagerInterface $em
-     * @param SerializerInterface $serializer
      * @return Response
      */
-    public function jsonIndex(EntityManagerInterface $em, SerializerInterface $serializer): Response
+    public function jsonIndex(EntityManagerInterface $em): Response
     {
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();
 
-        $json = $serializer->serialize($products, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]);
+        Carbon::setLocale('lt');
+        foreach ($products as $product) {
+            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
+        }
 
-        $response = new Response($json);
+        $data = [];
+
+        foreach ($products as $product) {
+            if ($product->getPicture()) {
+                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'square');
+            } else {
+                $image = null;
+            }
+
+            $data[] = [
+                'title' => $product->getTitle(),
+                'description' => $product->getDescription(),
+                'image' => $image,
+                'deadline' => $product->timeLeft,
+                'latitude' => $product->getLocation()->getLatitude(),
+                'longitude' => $product->getLocation()->getLongitude(),
+                'owner_id' => $product->getUser()->getId(),
+                'owner_email' => $product->getUser()->getEmail()
+            ];
+        }
+        $dataJson = json_encode($data);
+
+        $response = new Response($dataJson);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -72,13 +107,11 @@ class ProductController extends AbstractController
     /**
      * @Route("/jsonMap", name="product_map", methods={"GET"})
      * @param EntityManagerInterface $em
-     * @param SerializerInterface $serializer
      * @param Request $request
      * @return Response
      */
     public function activeMap(
         EntityManagerInterface $em,
-        SerializerInterface $serializer,
         Request $request
     ): Response {
 
@@ -89,13 +122,34 @@ class ProductController extends AbstractController
         $repository = $em->getRePository(Product::class);
         $products = $repository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
 
-        $json = $serializer->serialize($products, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]);
+        Carbon::setLocale('lt');
+        foreach ($products as $product) {
+            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
+        }
 
-        $response = new Response($json);
+        $data = [];
+
+        foreach ($products as $product) {
+            if ($product->getPicture()) {
+                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'square');
+            } else {
+                $image = null;
+            }
+
+            $data[] = [
+                'title' => $product->getTitle(),
+                'description' => $product->getDescription(),
+                'image' => $image,
+                'deadline' => $product->timeLeft,
+                'latitude' => $product->getLocation()->getLatitude(),
+                'longitude' => $product->getLocation()->getLongitude(),
+                'owner_id' => $product->getUser()->getId(),
+                'owner_email' => $product->getUser()->getEmail()
+            ];
+        }
+        $dataJson = json_encode($data);
+
+        $response = new Response($dataJson);
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
@@ -199,7 +253,7 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $product
      * @param Swift_Mailer $mailer
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function contact(Request $request, Product $product, Swift_Mailer $mailer)
     {
