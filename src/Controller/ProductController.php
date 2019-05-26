@@ -92,8 +92,7 @@ class ProductController extends AbstractController
                 'deadline' => $product->timeLeft,
                 'latitude' => $product->getLocation()->getLatitude(),
                 'longitude' => $product->getLocation()->getLongitude(),
-                'owner_id' => $product->getUser()->getId(),
-                'owner_email' => $product->getUser()->getEmail()
+                'owner_id' => $product->getUser()->getId()
             ];
         }
         $dataJson = json_encode($data);
@@ -143,8 +142,7 @@ class ProductController extends AbstractController
                 'deadline' => $product->timeLeft,
                 'latitude' => $product->getLocation()->getLatitude(),
                 'longitude' => $product->getLocation()->getLongitude(),
-                'owner_id' => $product->getUser()->getId(),
-                'owner_email' => $product->getUser()->getEmail()
+                'owner_id' => $product->getUser()->getId()
             ];
         }
         $dataJson = json_encode($data);
