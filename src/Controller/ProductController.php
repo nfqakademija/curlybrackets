@@ -8,6 +8,9 @@ use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Service\CheckOwnershipService;
+use App\Service\ProductJsonService;
+use App\Service\TokenGeneratorService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -20,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Carbon\Carbon;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
@@ -31,15 +33,37 @@ class ProductController extends AbstractController
 {
 
     /**
+     * @var ProductJsonService
+     */
+    private $productJsonService;
+
+    /**
+     * @var UploaderHelper
+     */
+    private $uploadHelper;
+
+    /**
+     * @var FilterHelper
+     */
+    private $filterHelper;
+
+    /**
      * ProductController constructor.
      *
      * @param UploaderHelper $uploadHelper
      * @param FilterHelper $filterHelper
+     * @param ProductJsonService $productJsonService
      */
-    public function __construct(UploaderHelper $uploadHelper, FilterHelper $filterHelper)
-    {
+    public function __construct(
+        UploaderHelper $uploadHelper,
+        FilterHelper $filterHelper,
+        ProductJsonService $productJsonService,
+        CheckOwnershipService $checkOwnershipService
+    ) {
         $this->uploadHelper = $uploadHelper;
         $this->filterHelper = $filterHelper;
+        $this->productJsonService = $productJsonService;
+        $this->checkOwnerShip = $checkOwnershipService;
     }
 
 
@@ -71,36 +95,7 @@ class ProductController extends AbstractController
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();
 
-        Carbon::setLocale('lt');
-        foreach ($products as $product) {
-            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
-        }
-
-        $data = [];
-
-        foreach ($products as $product) {
-            if ($product->getPicture()) {
-                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'square');
-            } else {
-                $image = null;
-            }
-
-            $data[] = [
-                'title' => $product->getTitle(),
-                'description' => $product->getDescription(),
-                'image' => $image,
-                'deadline' => $product->timeLeft,
-                'latitude' => $product->getLocation()->getLatitude(),
-                'longitude' => $product->getLocation()->getLongitude(),
-                'owner_id' => $product->getUser()->getId()
-            ];
-        }
-        $dataJson = json_encode($data);
-
-        $response = new Response($dataJson);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return $this->productJsonService->createJson($products);
     }
 
     /**
@@ -121,36 +116,7 @@ class ProductController extends AbstractController
         $repository = $em->getRePository(Product::class);
         $products = $repository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
 
-        Carbon::setLocale('lt');
-        foreach ($products as $product) {
-            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
-        }
-
-        $data = [];
-
-        foreach ($products as $product) {
-            if ($product->getPicture()) {
-                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'square');
-            } else {
-                $image = null;
-            }
-
-            $data[] = [
-                'title' => $product->getTitle(),
-                'description' => $product->getDescription(),
-                'image' => $image,
-                'deadline' => $product->timeLeft,
-                'latitude' => $product->getLocation()->getLatitude(),
-                'longitude' => $product->getLocation()->getLongitude(),
-                'owner_id' => $product->getUser()->getId()
-            ];
-        }
-        $dataJson = json_encode($data);
-
-        $response = new Response($dataJson);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return $this->productJsonService->createJson($products);
     }
 
     /**
@@ -191,7 +157,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
 
-        //$user pasiimamaas antra karta
+        //todo $user pasiimamaas antra karta
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getDoctrine()->getRepository(User::class)
                 ->findOneById($this->getUser()->getId());
@@ -224,8 +190,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
-// todo if iskelti i metoda apacioj (getuser)
-        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+        if ($this->checkOwnerShip->isProductOwner($product)) {
             $form = $this->createForm(ProductType::class, $product);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -296,7 +261,7 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+        if ($this->checkOwnerShip->isProductOwner($product)) {
             if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($product);
@@ -309,4 +274,5 @@ class ProductController extends AbstractController
         }
         throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
+
 }
