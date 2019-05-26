@@ -9,11 +9,19 @@ function ProductMap() {
         const bounds = refMap.current.getBounds();
         let NE = bounds.getNorthEast();
         let SW = bounds.getSouthWest();
+        let NELat = NE.lat();
+        let NELng = NE.lng();
+        let SWLat = SW.lat();
+        let SWLng = SW.lng();
+
         console.log(`Siaures rytai ${NE}`);
+        console.log(`Siaures rytai latitude ${NELat}`);
+        console.log(`Siaures rytai longitude ${NELng}`);
         console.log(`Pietvakariai ${SW}`);
+        console.log(`Pietvakariai latitude ${SWLat}`);
+        console.log(`Pietvakariai longitude ${SWLng}`);
         return;
     }
-    
     //getting API
     // let url = 'http://curlybrackets.projektai.nfqakademija.lt/product/jsonIndex';
     // let username = 'admin3';
