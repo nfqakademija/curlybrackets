@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\Coordinate;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ContactType;
@@ -81,17 +82,12 @@ class ProductController extends AbstractController
         Request $request
     ): Response {
 
-        $parameters = [
-            'latitudeMin' => $request->get('latitudeSE'),
-            'latitudeMax' => $request->get('latitudeNW'),
-            'longitudeMin' => $request->get('longitudeNW'),
-            'longitudeMax' => $request->get('longitudeSE')
-        ];
-
+        $leftTopCorner = new Coordinate($request->get('latitudeSE'), $request->get('longitudeSE'));
+        $bottomRightCorner = new Coordinate($request->get('latitudeNW'), $request->get('longitudeNW'));
 
         /** @var ProductRepository $repository */
         $repository = $em->getRePository(Product::class);
-        $products = $repository->findProductsByLocation($parameters);
+        $products = $repository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
 
         $json = $serializer->serialize($products, 'json', [
             'circular_reference_handler' => function ($object) {

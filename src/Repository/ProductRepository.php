@@ -36,7 +36,7 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findProductsByLocation($parameters)
+    public function findProductsByLocation($leftTopCorner, $rightBottomCorner)
     {
         return $this->createQueryBuilder('p')
             ->innerJoin('p.location', 'l')
@@ -45,10 +45,10 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('l.longitude > :longitudeMin')
             ->andWhere('l.longitude < :longitudeMax')
             ->setParameters([
-                'latitudeMin' => $parameters['latitudeMin'],
-                'latitudeMax' => $parameters['latitudeMax'],
-                'longitudeMin' => $parameters['longitudeMin'],
-                'longitudeMax' => $parameters['longitudeMax'],
+                'latitudeMin' => $leftTopCorner->getLatitude(),
+                'latitudeMax' => $rightBottomCorner->getLatitude(),
+                'longitudeMin' => $rightBottomCorner->getLongitude(),
+                'longitudeMax' => $leftTopCorner->getLongitude()
             ])
             ->getQuery()
             ->getResult()
