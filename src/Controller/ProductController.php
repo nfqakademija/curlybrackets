@@ -10,6 +10,8 @@ use App\Repository\ProductRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +27,8 @@ class ProductController extends AbstractController
 {
     /**
      * @Route("/index", name="product_index", methods={"GET"})
-     * @param ProductRepository $productRepository
+     * @param EntityManagerInterface $em
      * @return Response
-     * @throws Exception
      */
     public function index(EntityManagerInterface $em): Response
     {
@@ -44,12 +45,11 @@ class ProductController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/jsonIndex", name="product_json", methods={"GET"})
-     * @param ProductRepository $productRepository
+     * @param EntityManagerInterface $em
+     * @param SerializerInterface $serializer
      * @return Response
-     * @throws Exception
      */
     public function jsonIndex(EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
@@ -70,16 +70,28 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/jsonMap", name="product_map", methods={"GET"})
-     * @param ProductRepository $productRepository
+     * @param EntityManagerInterface $em
+     * @param SerializerInterface $serializer
+     * @param Request $request
      * @return Response
-     * @throws Exception
      */
-    public function activeMap(EntityManagerInterface $em, SerializerInterface $serializer, Request $request): Response
-    {
-//        todo calculate coordinates
-        $parameter = $request->get('firstCoordinate');
+    public function activeMap(
+        EntityManagerInterface $em,
+        SerializerInterface $serializer,
+        Request $request
+    ): Response {
+
+        $parameters = [
+            'latitudeMin' => $request->get('latitudeSE'),
+            'latitudeMax' => $request->get('latitudeNW'),
+            'longitudeMin' => $request->get('longitudeNW'),
+            'longitudeMax' => $request->get('longitudeSE')
+        ];
+
+
+        /** @var ProductRepository $repository */
         $repository = $em->getRePository(Product::class);
-        $products = $repository->findProductsByLocation($parameter);
+        $products = $repository->findProductsByLocation($parameters);
 
         $json = $serializer->serialize($products, 'json', [
             'circular_reference_handler' => function ($object) {
@@ -96,7 +108,6 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/give", name="product_give", methods={"GET"})
      * @param Product $product
-     * @param User $user
      * @return Response
      */
     public function giveAway(Product $product): Response
@@ -115,6 +126,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/new", name="product_new", methods={"GET","POST"})
      * @param Request $request
+     * @param UserInterface|null $user
      * @return Response
      * @throws Exception
      */
@@ -188,15 +200,19 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/contact/{id}", name="contact", methods={"GET","POST"})
+     * @param Request $request
+     * @param Product $product
+     * @param Swift_Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function contact(Request $request, Product $product, \Swift_Mailer $mailer)
+    public function contact(Request $request, Product $product, Swift_Mailer $mailer)
     {
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $message = (new \Swift_Message('Foodsharing puslapio lankytojas ' . $form['name']->getData().
+            $message = (new Swift_Message('Foodsharing puslapio lankytojas ' . $form['name']->getData().
                 ' nori susisiekti su Jumis'))
                 ->setFrom('foodsharinglithuania@gmail.com')
                 ->setTo($product->getUser()->getEmail())

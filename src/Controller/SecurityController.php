@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +12,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Class SecurityController
+ *
+ * @package App\Controller
+ */
 class SecurityController extends AbstractController
 {
     /**
@@ -44,31 +49,31 @@ class SecurityController extends AbstractController
      * @Route("/confirm/{hash}", name="confirmation")
      * @param $hash
      * @param Request $request
-     * @param EntityManagerInterface $em
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response|null
+     * @param UserRepository $userRepository
+     * @return RedirectResponse|Response|null
      */
     public function confirmation(
         $hash,
         Request $request,
-        EntityManagerInterface $em,
         GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator
+        LoginFormAuthenticator $authenticator,
+        UserRepository $userRepository
     ) {
-        $repository = $em->getRepository(User::class);
-        if ($user = $repository->findByRegistrationHash($hash)) {
-            if ($user[0]->getActivated()){
+
+        if ($user = $userRepository->findOneByRegistratingHash($hash)) {
+            if ($user->getActivated()) {
                 $this->addFlash('danger', 'Vartotojas jau aktyvuotas');
                 return $this->redirectToRoute('app_login');
             }
 
-            $user[0]->setActivated(true);
+            $user->setActivated(true);
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Sveikiname, vartotojas sėkmingai aktyvuotas!');
             return $guardHandler->authenticateUserAndHandleSuccess(
-                $user[0],
+                $user,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
