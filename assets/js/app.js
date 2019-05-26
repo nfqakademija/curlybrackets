@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PickLocation from './picklocation';
 import EditLocation from './editlocation';
-import ProductLocation from './productMap'
+import ProductLocation from './productMap';
+import 'bootstrap-datetime-picker';
+import 'bootstrap-less';
 
 const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
@@ -16,6 +18,8 @@ require('../css/app.scss');
 // require('bootstrap/js/dist/popover');
 
 $(document).ready(function() {
+    $('.datetimepicker').datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+
     $('[data-toggle="popover"]').popover();
 });
 

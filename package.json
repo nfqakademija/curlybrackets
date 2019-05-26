@@ -19,6 +19,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "bootstrap-datetime-picker": "^2.4.4",
+        "bootstrap-less": "^3.3.8",
         "prop-types": "^15.7.2",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
