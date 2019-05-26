@@ -1,7 +1,9 @@
 import React, {useCallback, useState, useRef} from 'react';
 import { GoogleMap, withGoogleMap, withScriptjs, Marker } from 'react-google-maps';
+import fetchData from './ajax';
 
 function ProductMap() {
+    
     const refMap = useRef(null);
     
     //getting viewport locations of map
@@ -14,7 +16,7 @@ function ProductMap() {
         let SWLat = SW.lat();
         let SWLng = SW.lng();
 
-
+        fetchData(NELat, NELng, SWLat, SWLng);
 
         console.log(`Siaures rytai ${NE}`);
         console.log(`Siaures rytai latitude ${NELat}`);
@@ -33,6 +35,14 @@ function ProductMap() {
             return mapBounds();
         }
     }
+
+    // function addMarkers(){
+    //     fetchData();
+    //     console.log(`paleido markeri ir json ${data}`)
+    //     return(
+    //         <Marker position={{lat: 54.68916, lng: 25.2798}}></Marker>
+    //     )
+    // }
   
     return (
       <GoogleMap
@@ -42,7 +52,8 @@ function ProductMap() {
         onBoundsChanged={useCallback(initialLoad)}
         onDragEnd={useCallback(mapBounds)}
       >
-        <Marker />
+         {/* {addMarkers()} */}
+         {fetchData()}
       </GoogleMap>
     );
   }
