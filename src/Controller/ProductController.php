@@ -2,29 +2,71 @@
 
 namespace App\Controller;
 
+use App\DTO\Coordinate;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Service\CheckOwnershipService;
+use App\Service\ProductJsonService;
+use App\Service\TokenGeneratorService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Carbon\Carbon;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @Route("/product")
  */
 class ProductController extends AbstractController
 {
+
+    /**
+     * @var ProductJsonService
+     */
+    private $productJsonService;
+
+    /**
+     * @var UploaderHelper
+     */
+    private $uploadHelper;
+
+    /**
+     * @var FilterHelper
+     */
+    private $filterHelper;
+
+    /**
+     * ProductController constructor.
+     *
+     * @param UploaderHelper $uploadHelper
+     * @param FilterHelper $filterHelper
+     * @param ProductJsonService $productJsonService
+     */
+    public function __construct(
+        UploaderHelper $uploadHelper,
+        FilterHelper $filterHelper,
+        ProductJsonService $productJsonService,
+        CheckOwnershipService $checkOwnershipService
+    ) {
+        $this->uploadHelper = $uploadHelper;
+        $this->filterHelper = $filterHelper;
+        $this->productJsonService = $productJsonService;
+        $this->checkOwnerShip = $checkOwnershipService;
+    }
+
+
     /**
      * @Route("/index", name="product_index", methods={"GET"})
      * @param EntityManagerInterface $em
@@ -34,12 +76,10 @@ class ProductController extends AbstractController
     {
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();
-
         Carbon::setLocale('lt');
         foreach ($products as $product) {
             $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
         }
-
         return $this->render('product/index.html.twig', [
             'products' => $products
         ]);
@@ -48,61 +88,35 @@ class ProductController extends AbstractController
     /**
      * @Route("/jsonIndex", name="product_json", methods={"GET"})
      * @param EntityManagerInterface $em
-     * @param SerializerInterface $serializer
      * @return Response
      */
-    public function jsonIndex(EntityManagerInterface $em, SerializerInterface $serializer): Response
+    public function jsonIndex(EntityManagerInterface $em): Response
     {
         $repository = $em->getRePository(Product::class);
         $products = $repository->findByActiveProducts();
 
-        $json = $serializer->serialize($products, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]);
-
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return $this->productJsonService->createJson($products);
     }
 
     /**
      * @Route("/jsonMap", name="product_map", methods={"GET"})
      * @param EntityManagerInterface $em
-     * @param SerializerInterface $serializer
      * @param Request $request
      * @return Response
      */
     public function activeMap(
         EntityManagerInterface $em,
-        SerializerInterface $serializer,
         Request $request
     ): Response {
 
-        $parameters = [
-            'latitudeMin' => $request->get('latitudeSE'),
-            'latitudeMax' => $request->get('latitudeNW'),
-            'longitudeMin' => $request->get('longitudeNW'),
-            'longitudeMax' => $request->get('longitudeSE')
-        ];
-
+        $leftTopCorner = new Coordinate($request->get('latitudeSE'), $request->get('longitudeSE'));
+        $bottomRightCorner = new Coordinate($request->get('latitudeNW'), $request->get('longitudeNW'));
 
         /** @var ProductRepository $repository */
         $repository = $em->getRePository(Product::class);
-        $products = $repository->findProductsByLocation($parameters);
+        $products = $repository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
 
-        $json = $serializer->serialize($products, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]);
-
-        $response = new Response($json);
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return $this->productJsonService->createJson($products);
     }
 
     /**
@@ -143,7 +157,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
 
-        //$user pasiimamaas antra karta
+        //todo $user pasiimamaas antra karta
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getDoctrine()->getRepository(User::class)
                 ->findOneById($this->getUser()->getId());
@@ -176,8 +190,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
-// todo if iskelti i metoda apacioj (getuser)
-        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+        if ($this->checkOwnerShip->isProductOwner($product)) {
             $form = $this->createForm(ProductType::class, $product);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -203,7 +216,7 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param Product $product
      * @param Swift_Mailer $mailer
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function contact(Request $request, Product $product, Swift_Mailer $mailer)
     {
@@ -248,7 +261,7 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($product->getUser()->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+        if ($this->checkOwnerShip->isProductOwner($product)) {
             if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->remove($product);
@@ -261,4 +274,5 @@ class ProductController extends AbstractController
         }
         throw $this->createNotFoundException('You are not allowed to reach this site.');
     }
+
 }

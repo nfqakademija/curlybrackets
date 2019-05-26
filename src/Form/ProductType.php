@@ -32,6 +32,7 @@ class ProductType extends AbstractType
             ->add('deadline', DateTimeType::class, [
                 'label' => 'Atsiimti iki',
                 'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd hh:ii',
                 'required' => true,
                 'invalid_message' => 'Įveskite laiką',
                 'constraints' => [
