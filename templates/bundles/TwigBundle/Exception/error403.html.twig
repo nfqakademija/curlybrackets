@@ -1,0 +1,13 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container text-center">
+        <h1 class="alert alert-danger">Jūs neturite teisių, kad matytumėte šitą puslapį.</h1>
+        <img src="https://media.giphy.com/media/njYrp176NQsHS/giphy.gif">
+        <p>Galite kreiptis į mus el. paštu:</p>
+        <a href="mailto:foodsharinglithuania@gmail.com" class="btn-outline-primary">foodsharingLithuania@gmail.com</a>
+        <p>arba</p>
+        <a href="{{ path('app_login') }}" class="btn btn-primary">Prisijungti kitu naudotoju</a>
+    </div>
+{% endblock %}

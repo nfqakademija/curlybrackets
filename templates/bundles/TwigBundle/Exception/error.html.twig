@@ -1,0 +1,13 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container text-center">
+        <h1 class="alert alert-danger">Įvyko klaida</h1>
+        <img src="https://www.maketecheasier.com/assets/uploads/2019/04/fix-500-Internal-Server-Error-Website-featured.jpg">
+        <p class="mt-5">Su mumis galite susisiekti el. paštu:</p>
+        <a href="mailto:foodsharinglithuania@gmail.com" class="btn-outline-primary">foodsharingLithuania@gmail.com</a>
+        <p>arba</p>
+        <a href="{{ path('home') }}" class="btn btn-primary">Grįžti į pradinį puslapį</a>
+    </div>
+{% endblock %}
