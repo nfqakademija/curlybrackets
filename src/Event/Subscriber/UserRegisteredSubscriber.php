@@ -5,7 +5,6 @@ namespace App\Event\Subscriber;
 
 use App\Event\UserRegisteredEvent;
 use Exception;
-use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -45,18 +44,12 @@ class UserRegisteredSubscriber implements EventSubscriberInterface
     {
         $hash = $this->createHash();
         $event->user->setRegistrationHash($hash);
-            $message = (new Swift_Message('Foodsharing paskyra sukurta vartotojui: '
-                . $event->form['username']->getData()))
-                ->setFrom('foodsharinglithuania@gmail.com')
-                ->setTo($event->user->getEmail())
-                ->setBody(
-                    $event->templating->render(
-                        'emails/register.html.twig',
-                        ['user' => $event->user]
-                    ),
-                    'text/html'
-                );
+        $subject = 'Foodsharing paskyra sukurta vartotojui: '
+            . $event->form['username']->getData();
+        $recipient = $event->user->getEmail();
+        $data = $event->user;
+        $twig = 'emails/register.html.twig';
 
-            $event->mailer->send($message);
+        $event->mailingService->sendMail($data, $recipient, $subject, $twig);
     }
 }

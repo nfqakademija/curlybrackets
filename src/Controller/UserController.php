@@ -33,7 +33,7 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-        if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
+        if ($this->checkOwnerShip->isCorrectUser($user)) {
             return $this->render('user/show.html.twig', [
                 'user' => $user,
             ]);

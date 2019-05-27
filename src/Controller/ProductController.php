@@ -4,19 +4,15 @@ namespace App\Controller;
 
 use App\DTO\Coordinate;
 use App\Entity\Product;
-use App\Entity\User;
 use App\Form\ContactType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Service\CheckOwnershipService;
+use App\Service\MailingService;
 use App\Service\ProductJsonService;
-use App\Service\TokenGeneratorService;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\DoctrineActionsService;
 use Exception;
-use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Swift_Mailer;
-use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Carbon\Carbon;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * @Route("/product")
@@ -38,48 +33,34 @@ class ProductController extends AbstractController
     private $productJsonService;
 
     /**
-     * @var UploaderHelper
-     */
-    private $uploadHelper;
-
-    /**
-     * @var FilterHelper
-     */
-    private $filterHelper;
-
-    /**
      * ProductController constructor.
      *
-     * @param UploaderHelper $uploadHelper
-     * @param FilterHelper $filterHelper
      * @param ProductJsonService $productJsonService
+     * @param CheckOwnershipService $checkOwnershipService
      */
     public function __construct(
-        UploaderHelper $uploadHelper,
-        FilterHelper $filterHelper,
         ProductJsonService $productJsonService,
-        CheckOwnershipService $checkOwnershipService
+        CheckOwnershipService $checkOwnershipService,
+        ProductRepository $productRepository,
+        DoctrineActionsService $doctrineActions,
+        MailingService $mailingService
     ) {
-        $this->uploadHelper = $uploadHelper;
-        $this->filterHelper = $filterHelper;
         $this->productJsonService = $productJsonService;
         $this->checkOwnerShip = $checkOwnershipService;
+        $this->productRepository = $productRepository;
+        $this->doctrineActions = $doctrineActions;
+        $this->mailingService = $mailingService;
     }
-
 
     /**
      * @Route("/index", name="product_index", methods={"GET"})
-     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function index(EntityManagerInterface $em): Response
+    public function index(): Response
     {
-        $repository = $em->getRePository(Product::class);
-        $products = $repository->findByActiveProducts();
-        Carbon::setLocale('lt');
-        foreach ($products as $product) {
-            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
-        }
+        $products = $this->productRepository->findByActiveProducts();
+        $this->timeLeftForEach($products);
+
         return $this->render('product/index.html.twig', [
             'products' => $products
         ]);
@@ -87,34 +68,28 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/jsonIndex", name="product_json", methods={"GET"})
-     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function jsonIndex(EntityManagerInterface $em): Response
+    public function jsonIndex(): Response
     {
-        $repository = $em->getRePository(Product::class);
-        $products = $repository->findByActiveProducts();
+        $products = $this->productRepository->findByActiveProducts();
+        $this->timeLeftForEach($products);
 
         return $this->productJsonService->createJson($products);
     }
 
     /**
      * @Route("/jsonMap", name="product_map", methods={"GET"})
-     * @param EntityManagerInterface $em
      * @param Request $request
      * @return Response
      */
-    public function activeMap(
-        EntityManagerInterface $em,
-        Request $request
-    ): Response {
-
+    public function activeMap(Request $request): Response
+    {
         $leftTopCorner = new Coordinate($request->get('latitudeSE'), $request->get('longitudeSE'));
         $bottomRightCorner = new Coordinate($request->get('latitudeNW'), $request->get('longitudeNW'));
 
-        /** @var ProductRepository $repository */
-        $repository = $em->getRePository(Product::class);
-        $products = $repository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
+        $products = $this->productRepository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
+        $this->timeLeftForEach($products);
 
         return $this->productJsonService->createJson($products);
     }
@@ -127,9 +102,8 @@ class ProductController extends AbstractController
     public function giveAway(Product $product): Response
     {
         $product->setGivenAway(!$product->getGivenAway());
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($product);
-        $entityManager->flush();
+
+        $this->doctrineActions->save($product);
         $this->addFlash('success', 'Produktas atidavimo būsena pakeista!');
 
         return $this->redirectToRoute('user_show', [
@@ -146,28 +120,19 @@ class ProductController extends AbstractController
      */
     public function new(Request $request, UserInterface $user = null): Response
     {
-
         if (!$user->getLocation()) {
             return $this->redirectToRoute('location_redirect');
         }
 
         $product = new Product();
 
-        $form = $this->createForm(ProductType::class, $product);
-        $form->handleRequest($request);
+        $form = $this->makeForm($product, $request);
 
-
-        //todo $user pasiimamaas antra karta
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getDoctrine()->getRepository(User::class)
-                ->findOneById($this->getUser()->getId());
             $product->setUser($user);
-            $product->setCreatedAt(new DateTime('now'));
-            $product->setUpdatedAt(new DateTime('now'));
             $product->setLocation($user->getLocation());
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($product);
-            $entityManager->flush();
+
+            $this->doctrineActions->save($product);
             $this->addFlash('success', 'Produktas sėkmingai pridėtas!');
 
             return $this->redirectToRoute('user_show', [
@@ -191,12 +156,12 @@ class ProductController extends AbstractController
     public function edit(Request $request, Product $product): Response
     {
         if ($this->checkOwnerShip->isProductOwner($product)) {
-            $form = $this->createForm(ProductType::class, $product);
-            $form->handleRequest($request);
+            $form = $this->makeForm($product, $request);
+
             if ($form->isSubmitted() && $form->isValid()) {
-                $product->setUpdatedAt(new DateTime('now'));
-                $this->getDoctrine()->getManager()->flush();
+                $this->doctrineActions->save($product);
                 $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
+
                 return $this->redirectToRoute('user_show', [
                     'id' => $product->getUser()->getId(),
                 ]);
@@ -204,7 +169,7 @@ class ProductController extends AbstractController
 
             return $this->render('product/edit.html.twig', [
                 'product' => $product,
-                'form' => $form->createView(),
+                'form' => $form->createView()
             ]);
         }
         //todo 404 instead
@@ -225,27 +190,20 @@ class ProductController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $message = (new Swift_Message('Foodsharing puslapio lankytojas ' . $form['name']->getData().
-                ' nori susisiekti su Jumis'))
-                ->setFrom('foodsharinglithuania@gmail.com')
-                ->setTo($product->getUser()->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'emails/contact.html.twig',
-                        ['data' => $data,
-                         'product' => $product]
-                    ),
-                    'text/html'
-                );
+            $data['productTitle'] = $product->getTitle();
 
-                $mailer->send($message);
+            $message = 'Foodsharing puslapio lankytojas ' . $form['name']->getData().' nori susisiekti su Jumis';
+            $recipient = $product->getUser()->getEmail();
+            $twig = 'emails/contact.html.twig';
+
+            $this->mailingService->sendMail($data, $recipient, $message, $twig);
 
             $this->addFlash('success', 'Jūsų žinutė išsiųsta!');
             return $this->redirectToRoute('product_index');
         }
 
         Carbon::setLocale('lt');
-        $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
+        $this->timeLeft($product);
 
         return $this->render('contact/contact.html.twig', [
             'form' => $form->createView(),
@@ -263,9 +221,7 @@ class ProductController extends AbstractController
     {
         if ($this->checkOwnerShip->isProductOwner($product)) {
             if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($product);
-                $entityManager->flush();
+                $this->doctrineActions->remove($product);
                 $this->addFlash('danger', 'Produktas ištrintas!');
             }
             return $this->redirectToRoute('user_show', [
@@ -273,6 +229,27 @@ class ProductController extends AbstractController
             ]);
         }
         throw $this->createNotFoundException('You are not allowed to reach this site.');
+    }
+
+    private function timeLeft(Product $product): string
+    {
+        return $product->timeLeft = Carbon::parse($product->getDeadline())->diffForHumans();
+    }
+
+    public function timeLeftForEach($products)
+    {
+        Carbon::setLocale('lt');
+        foreach ($products as $product) {
+            $this->timeleft($product);
+        }
+        return $products;
+    }
+
+    private function makeForm($product, $request)
+    {
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        return $form;
     }
 
 }

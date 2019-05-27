@@ -1,7 +1,6 @@
 <?php
 namespace App\Service;
 
-use Carbon\Carbon;
 use Liip\ImagineBundle\Templating\Helper\FilterHelper;
 use Symfony\Component\HttpFoundation\Response;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -16,11 +15,6 @@ class ProductJsonService
 
     public function createJson($products): Response
     {
-        Carbon::setLocale('lt');
-        foreach ($products as $product) {
-            $product->timeLeft =  Carbon::parse($product->getDeadline())->diffForHumans();
-        }
-
         $data = [];
 
         foreach ($products as $product) {
@@ -31,6 +25,7 @@ class ProductJsonService
             }
 
             $data[] = [
+                'product_id' => $product->getId(),
                 'title' => $product->getTitle(),
                 'description' => $product->getDescription(),
                 'image' => $image,

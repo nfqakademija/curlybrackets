@@ -7,7 +7,7 @@ use App\Event\UserRegisteredEvent;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Exception;
-use Swift_Mailer;
+use App\Service\MailingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use DateTime;
-use Twig\Environment;
 
 /**
  * Class RegistrationController
@@ -29,9 +28,7 @@ class RegistrationController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param LoginFormAuthenticator $authenticator
-     * @param Swift_Mailer $mailer
      * @param EventDispatcherInterface $eventDispatcher
-     * @param Environment $templating
      * @return Response
      * @throws Exception
      */
@@ -39,9 +36,8 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         LoginFormAuthenticator $authenticator,
-        Swift_Mailer $mailer,
         EventDispatcherInterface $eventDispatcher,
-        Environment $templating
+        MailingService $mailingService
     ): Response {
 
         $user = new User();
@@ -64,7 +60,7 @@ class RegistrationController extends AbstractController
 
             $eventDispatcher->dispatch(
                 'user.registered',
-                new UserRegisteredEvent($form, $user, $mailer, $templating)
+                new UserRegisteredEvent($form, $user, $mailingService)
             );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

@@ -4,9 +4,8 @@
 namespace App\Event;
 
 use App\Entity\User;
-use Swift_Mailer;
+use App\Service\MailingService;
 use Symfony\Component\EventDispatcher\Event;
-use Twig\Environment;
 
 /**
  * @property User user
@@ -23,12 +22,15 @@ class UserRegisteredEvent extends Event
      * @param User $user
      * @param Swift_Mailer $mailer
      * @param Environment $templating
+     * @param MailingService $mailingService
      */
-    public function __construct($form, User $user, Swift_Mailer $mailer, Environment $templating)
-    {
+    public function __construct(
+        $form,
+        User $user,
+        MailingService $mailingService
+    ) {
         $this->form = $form;
         $this->user = $user;
-        $this->mailer = $mailer;
-        $this->templating = $templating;
+        $this->mailingService = $mailingService;
     }
 }
