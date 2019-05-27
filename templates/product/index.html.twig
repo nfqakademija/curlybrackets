@@ -13,7 +13,7 @@
                     <div class="product-box">
                         <div>
                             {% if product.picture is not null %}
-                                <img class="product-list-img" src="{{ (vich_uploader_asset(product, 'pictureFile'))|imagine_filter("square") }}" alt="Produkto nuotrauka">
+                                <img class="product-list-img" src="{{ (vich_uploader_asset(product, 'pictureFile')) }}" alt="Produkto nuotrauka">
                             {% else %}
                                 <img class="product-list-img" src="{{ (asset('build/products/product_image.png'))}}" alt="Nėra produkto nuotraukos">
                             {% endif %}

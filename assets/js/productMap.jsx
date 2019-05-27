@@ -1,7 +1,9 @@
 import React, {useCallback, useState, useRef} from 'react';
 import { GoogleMap, withGoogleMap, withScriptjs, Marker } from 'react-google-maps';
+import fetchData from './ajax';
 
 function ProductMap() {
+    
     const refMap = useRef(null);
     
     //getting viewport locations of map
@@ -14,6 +16,8 @@ function ProductMap() {
         let SWLat = SW.lat();
         let SWLng = SW.lng();
 
+        fetchData(NELat, NELng, SWLat, SWLng);
+
         console.log(`Siaures rytai ${NE}`);
         console.log(`Siaures rytai latitude ${NELat}`);
         console.log(`Siaures rytai longitude ${NELng}`);
@@ -22,19 +26,34 @@ function ProductMap() {
         console.log(`Pietvakariai longitude ${SWLng}`);
         return;
     }
-    //getting API
-    // let url = 'http://curlybrackets.projektai.nfqakademija.lt/product/jsonIndex';
-    // let username = 'admin3';
-    // let password = 'admin3';
+
+    let loaded = false;
+    const initialLoad = () => {
+        if(!loaded){
+            console.log('uzkrove');
+            loaded = true;
+            return mapBounds();
+        }
+    }
+
+    // function addMarkers(){
+    //     fetchData();
+    //     console.log(`paleido markeri ir json ${data}`)
+    //     return(
+    //         <Marker position={{lat: 54.68916, lng: 25.2798}}></Marker>
+    //     )
+    // }
   
     return (
       <GoogleMap
         ref={refMap}
         defaultZoom={13}
         defaultCenter={{ lat: 54.68916, lng: 25.2798 }}
-        onBoundsChanged={useCallback(mapBounds)}
+        onBoundsChanged={useCallback(initialLoad)}
+        onDragEnd={useCallback(mapBounds)}
       >
-        <Marker />
+         {/* {addMarkers()} */}
+         {fetchData()}
       </GoogleMap>
     );
   }
