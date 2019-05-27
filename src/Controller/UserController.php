@@ -69,7 +69,7 @@ class UserController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
-        throw $this->createNotFoundException('You are not allowed to reach this site.');
+        throw $this->createAccessDeniedException();
     }
 
     /**
@@ -112,7 +112,7 @@ class UserController extends AbstractController
                 'form' => $form->createView(),
             ]);
         }
-        throw $this->createNotFoundException('You are not allowed to reach this site.');
+        throw $this->createAccessDeniedException();
     }
 
     /**
@@ -134,6 +134,6 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
-        throw $this->createNotFoundException('You are not allowed to reach this site.');
+        throw $this->createAccessDeniedException();
     }
 }

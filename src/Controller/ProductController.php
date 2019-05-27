@@ -173,7 +173,7 @@ class ProductController extends AbstractController
             ]);
         }
         //todo 404 instead
-        throw $this->createNotFoundException('You are not allowed to reach this site.');
+        throw $this->createAccessDeniedException();
     }
 
     /**
@@ -228,7 +228,7 @@ class ProductController extends AbstractController
                 'id' => $product->getUser()->getId(),
             ]);
         }
-        throw $this->createNotFoundException('You are not allowed to reach this site.');
+        throw $this->createAccessDeniedException();
     }
 
     private function timeLeft(Product $product): string
