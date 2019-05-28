@@ -212,14 +212,6 @@ a:hover{
   min-height: 150px;
 }
 
-//.vich-image {
-//  display: none;
-//}
-//
-//.form-not-visible {
-//  display: none;
-//}
-
 .profile-box {
   border: 1px solid $elements;
   border-radius: 4px;
@@ -347,6 +339,18 @@ a:hover{
   margin-top: 25px;
 }
 
+.info-window-title {
+  color: $call;
+  font-weight:bold;
+  padding-bottom: 10px;
+}
+
+.info-window-profile-btn {
+  padding-top: 10px;
+  margin: 5px 0;
+  text-align: center;
+}
+
 //for other screens
 
 @media screen and (max-width: 575px ) {
@@ -358,13 +362,6 @@ a:hover{
     padding-left: 15px;
   }
 }
-
-//#centerAligned {
-//  top: 40%;
-//  left: 50%;
-//  transform: translate(-50%, -50%);
-//  position: absolute;
-//}
 
 #centerAlignedContainer {
   position: relative;
