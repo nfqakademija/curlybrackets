@@ -8,10 +8,9 @@
             <h1>Vartotojo {{ app.user.username}} informacija</h1>
         </div>
         <div class="row h-100 profile-box">
-            <div class="col-2 my-auto">
+            <div class="col-md-2 col-sm-3 my-auto">
                 {% if user.avatar is not null %}
                 <img class="product-avatar-profile" src=" {{('/images/avatars/' ~user.avatar )  }}"
-                        width="78" height="78"
                         alt="Avataras">
                         {#<td><img src="{{ (vich_uploader_asset(avatar, 'avatarFile'))}}"#}
                         {#alt="Avatar"></td>#}
@@ -19,13 +18,17 @@
                         <img class="no-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" alt="Avataras">
                 {% endif %}
             </div>
-            <div class="col-3 my-auto">
-                {{ user.firstName }} {{ user.lastName }}
+            <div class="col-md-6 col-sm-5">
+                <div class="row h-100 align-middle">
+                    <div class="col-md-4 my-auto">
+                        {{ user.firstName }} {{ user.lastName }}
+                    </div>
+                    <div class="col-md-3 my-auto">
+                        {{ user.email }}
+                    </div>
+                </div>
             </div>
-            <div class="col-3 my-auto">
-                {{ user.email }}
-            </div>
-            <div class="col-4 my-auto profile-btn-block">
+            <div class="col-md-4 col-sm-4 my-auto profile-btn-block user-icons">
                 {% if user.location %}
                     <a class="mx-2" href="{{ path('location_edit', {'id': user.location.id}) }}">
                     <i class="fas fa-map-marked fa-2x" title="Redaguoti vietą">
@@ -70,7 +73,7 @@
                         {{ product.status ? '<i class="fas fa-eye"></i> Skelbimas rodomas ' : '<i class="fas fa-eye-slash"></i> Skelbimas paslėptas ' }}
                     </div>
                 </div>
-                <div class="col-md-2 my-auto">
+                <div class="col-md-2 my-auto user-icons">
                     <div class="profile-btn-margin">
                         <a href="{{ path('product_edit', {'id': product.id}) }}"><i class="fas fa-edit fa-2x" title="Redaguoti produktą"></i></a>
                     </div>
