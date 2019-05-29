@@ -4,7 +4,6 @@ import isEmpty from 'lodash.isempty';
 import GoogleMap from './components/GoogleMap';
 import {update} from './actions'
 import {connect} from 'react-redux';
-const LOS_ANGELES_CENTER = [54.687839, 25.28784];
 
 const InfoWindow = (props) => {
     const { place } = props;
@@ -25,17 +24,20 @@ const InfoWindow = (props) => {
                 {place.title}
             </div>
             <div>
-              <img src={place.image} />
+              {place.description}
+            </div>
+            <div className="info-window-deadline">
+                Baigia galioti {place.deadline}
             </div>
             <div className="info-window-profile-btn">
-                <a target="_blank" className="call-to-btn-green" href="{{ path('contact', {'id': product.id}) }}">
+                <a target="_blank" className="call-to-btn-green" href={place.contact_url}>
                   Susisiekti <i className="fas fa-envelope"></i>
                 </a>
             </div>
         </div>
     );
 };
-// Marker component
+
 const Marker = (props) => {
     const markerStyle = {
         border: '1px solid white',
@@ -62,7 +64,6 @@ class MarkerInfoWindow extends Component {
         };
     }
     componentDidMount() {
-        console.log('fetching init');
         fetch('/product/jsonIndex')
             .then(response => response.json())
             .then((data) => {
@@ -74,45 +75,35 @@ class MarkerInfoWindow extends Component {
     }
     updateMarkers = (props, dispatch) => {
       this.props.onAddPost(this.state.places);
-        console.log('fetching update');
-        console.log(props);
-        // dispatch(update(input.value));
         fetch('/product/jsonIndex')
             .then(response => response.json())
             .then((data) => {
                 data.forEach((result) => {
-                    result.show = false; // eslint-disable-line no-param-reassign
+                    result.show = false;
                     result.lock = false;
                 });
                 this.setState({ places: data });
             });
     };
-    // onChildClick callback can take two arguments: key and childProps
+
     onChildClickCallback = (key) => {
-        console.log('clicked child');
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-            state.places[index].lock = !state.places[index].lock; // eslint-disable-line no-param-reassign
+            state.places[index].lock = !state.places[index].lock; 
             return { places: state.places };
         });
     };
     _onChildMouseEnter = (key, childProps) => {
-        console.log('hover effect');
-        console.log(key);
-        console.log(childProps);
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-            state.places[index].show = !state.places[index].show; // eslint-disable-line no-param-reassign
+            state.places[index].show = !state.places[index].show; 
             return { places: state.places };
         });
     }
     _onChildMouseLeave = (key, childProps) => {
-        console.log('hover leave');
-        console.log(key);
-        console.log(childProps);
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-            state.places[index].show = !state.places[index].show; // eslint-disable-line no-param-reassign
+            state.places[index].show = !state.places[index].show;
             return { places: state.places };
         });
     }
@@ -123,7 +114,7 @@ class MarkerInfoWindow extends Component {
                 {!isEmpty(places) && (
                     <GoogleMap
                         defaultZoom={13}
-                        defaultCenter={LOS_ANGELES_CENTER}
+                        defaultCenter={{lat: 54.687839, lng: 25.28784}}
                         bootstrapURLKeys={{ key: 'AIzaSyB3_YPiJ8Pa2l8tFzKQ_hqK57qjnu5-KmM' }}
                         yesIWantToUseGoogleMapApiInternals
                         onChildClick={this.onChildClickCallback}
@@ -171,7 +162,6 @@ Marker.propTypes = {
 const mapDispatchToProps = dispatch => {
   return {
       onAddPost: places => {
-          console.log(places);
           dispatch(update(places));
       }
   };

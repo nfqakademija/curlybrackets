@@ -8,7 +8,7 @@ import 'bootstrap-less';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import Card from './components/Card';
-import rootReducer from './reducers'
+import rootReducer from './reducers';
 
 const $ = require('jquery');
 require('bootstrap');
