@@ -14,7 +14,8 @@
                     {% if app.user.username is defined %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('product_new') }}">Produktų įkėlimas </a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Atsijungti</a></li>
-                        <li><a class="nav-link" href="{{ path('user_show', {id: app.user.id})  }}">
+                        <li><a class="nav-link header-user" href="{{ path('user_show', {id: app.user.id})  }}">
+                                <span>{{ app.user }}</span>
                                 {% if app.user.avatar is not null %}
                                     <img class="product-avatar" src=" {{('/images/avatars/' ~app.user.avatar )}}" width="44" title="{{ app.user.username }}">
                                 {% else %}

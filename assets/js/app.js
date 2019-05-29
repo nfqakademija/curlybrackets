@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PickLocation from './picklocation';
 import EditLocation from './editlocation';
-import ProductLocation from './productMap';
+import ProductMap from './productMap';
 import 'bootstrap-datetime-picker';
 import 'bootstrap-less';
 
@@ -35,5 +35,5 @@ if(document.getElementById('mapEdit') !== null){
 
 //maps of products
 if(document.getElementById('product-map') !== null){
-    ReactDOM.render(<ProductLocation />, document.getElementById('product-map'));
+    ReactDOM.render(<ProductMap />, document.getElementById('product-map'));
 }
