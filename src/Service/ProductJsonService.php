@@ -26,7 +26,7 @@ class ProductJsonService
         foreach ($products as $product) {
             if ($product->getPicture()) {
                 //todo change to small filter (100x100)
-                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'square');
+                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'mini');
             } else {
                 $image = null;
             }
