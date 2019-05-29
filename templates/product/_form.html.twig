@@ -5,7 +5,7 @@
     <div class="text-center">
         <span>{{ form_row(form.title, {'attr': {'class': 'form-control form-space'}}) }}</span>
         <span>{{ form_row(form.description, {'attr': {'class': 'form-control form-space'}}) }}</span>
-        <span>{{ form_row(form.deadline, {'attr': {'class': 'form-control form-space datetimepicker'}}) }}</span>
+        <span>{{ form_row(form.deadline, {'attr': {'class': 'form-control form-space datetimepicker', 'autocomplete': 'off'}}) }}</span>
         <span>{{ form_row(form.pictureFile, {'attr': {'class': 'form-control form-space'}}) }}</span>
 {#        <img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('small') }}">#}
         <span>{{ form_row(form.status, {'attr': {'class': ' form-space'}}) }}</span>

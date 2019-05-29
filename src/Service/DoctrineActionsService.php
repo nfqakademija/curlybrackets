@@ -35,6 +35,5 @@ class DoctrineActionsService
     {
         $this->entityManager->remove($entity);
         $this->entityManager->flush();
-//        todo how to use flash in here???
     }
 }

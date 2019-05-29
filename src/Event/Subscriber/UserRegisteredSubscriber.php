@@ -4,6 +4,7 @@
 namespace App\Event\Subscriber;
 
 use App\Event\UserRegisteredEvent;
+use App\Service\MailingService;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,6 +15,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class UserRegisteredSubscriber implements EventSubscriberInterface
 {
+
+    private $mailingService;
+
+    public function __construct(MailingService $mailingService)
+    {
+        $this->mailingService = $mailingService;
+    }
 
     /**
      * @return array
@@ -31,6 +39,7 @@ class UserRegisteredSubscriber implements EventSubscriberInterface
      * @return string
      * @throws Exception
      */
+    //todo jei daryti slaptazodzio priminima, naudoti statine klase arba servisa
     private function createHash(): string
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
@@ -50,6 +59,6 @@ class UserRegisteredSubscriber implements EventSubscriberInterface
         $data = $event->user;
         $twig = 'emails/register.html.twig';
 
-        $event->mailingService->sendMail($data, $recipient, $subject, $twig);
+        $this->mailingService->sendMail($data, $recipient, $subject, $twig);
     }
 }
