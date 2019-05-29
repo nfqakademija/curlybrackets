@@ -404,6 +404,10 @@ a:hover{
   color: white;
 }
 
+.product-box-margin {
+  margin-top: 15px;
+}
+
 //for other screens
 
 @media screen and (max-width: 575px ) {
@@ -419,9 +423,5 @@ a:hover{
 @media screen and (max-width: 768px){
   .user-contact{
     margin:0 !important;
-  }
-
-  .product-box-margin {
-    margin-top: 15px;
   }
 }
