@@ -344,6 +344,7 @@ a:hover{
   color: $call;
   font-weight:bold;
   padding-bottom: 10px;
+  font-size: 1.1em;
 }
 
 .info-window-profile-btn {
@@ -358,16 +359,16 @@ a:hover{
 
 .header-user span{
   margin-right: 5px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .user-icons {
   font-size: 12px;
 }
 
-.user-details {
-  display: flex;
-  align-items: center;
+.info-window-deadline{
+  margin: 15px 0;
+  font-weight: 600;
 }
 
 //for other screens
@@ -375,6 +376,12 @@ a:hover{
 @media screen and (max-width: 575px ) {
   .form-padding-right {
     padding-right: 15px;
+  }
+
+  @media screen and (max-width: 768px){
+    .user-contact{
+      margin:0 !important;
+    }
   }
 
   .form-padding-left {
