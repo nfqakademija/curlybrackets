@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+const DummyImage = require('../../images/products/product_image.png');
+
 const styles = {
     borderBottom: '2px solid #eee',
     background: '#fafafa',
@@ -11,11 +13,19 @@ const styles = {
 };
 
 const Item = ({ place }) => {
+    const isPicture = place.image;
+    let productPicture;
+
+    if (isPicture !== null ){
+        productPicture = <img className='product-list-img' src={place.image} alt='Produkto nuotrauka' />;
+    } else {
+        productPicture = <img className='product-list-img' src={DummyImage} alt='Produkto nuotrauka' />
+    }
     return (
         <div className='col-md-3 product-box-margin'>
             <div className='product-box'>
                 <div>
-                    <img className='product-list-img' src={place.image} alt='Produkto nuotrauka' />
+                    {productPicture}
                 </div>
                 <div className='product-user'>
                     <img className='product-avatar' src="#" alt="Avataras" />
