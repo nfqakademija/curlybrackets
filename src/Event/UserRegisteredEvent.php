@@ -7,12 +7,6 @@ use App\Entity\User;
 use App\Service\MailingService;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * @property User user
- * @property Environment templating
- * @property  form
- * @property Swift_Mailer mailer
- */
 class UserRegisteredEvent extends Event
 {
     /**
@@ -26,11 +20,10 @@ class UserRegisteredEvent extends Event
      */
     public function __construct(
         $form,
-        User $user,
-        MailingService $mailingService
+        User $user
+
     ) {
         $this->form = $form;
         $this->user = $user;
-        $this->mailingService = $mailingService;
     }
 }

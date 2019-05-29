@@ -24,6 +24,14 @@ liip_imagine:
                     size: [500, 500]
                     mode: outbound
 
+        mini: # The name of the filter, can be later used in the twig template
+            quality: 75 # Compression quality, this image will be 75% the quality
+            filters: # These are the filters of the filter set, many filters can be applied
+                # Scale and shrink the image to the given size, with a possible crop of the image
+                thumbnail:
+                    size: [100, 100]
+                    mode: outbound
+
         # Shrink the image to 350px wide, the image will keep aspect ratio and adapt the height accordingly
         small:
             filters:

@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
 
             $eventDispatcher->dispatch(
                 'user.registered',
-                new UserRegisteredEvent($form, $user, $mailingService)
+                new UserRegisteredEvent($form, $user)
             );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);

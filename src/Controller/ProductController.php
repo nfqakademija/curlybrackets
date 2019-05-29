@@ -37,6 +37,9 @@ class ProductController extends AbstractController
      *
      * @param ProductJsonService $productJsonService
      * @param CheckOwnershipService $checkOwnershipService
+     * @param ProductRepository $productRepository
+     * @param DoctrineActionsService $doctrineActions
+     * @param MailingService $mailingService
      */
     public function __construct(
         ProductJsonService $productJsonService,
@@ -59,7 +62,6 @@ class ProductController extends AbstractController
     public function index(): Response
     {
         $products = $this->productRepository->findByActiveProducts();
-        $this->timeLeftForEach($products);
 
         return $this->render('product/index.html.twig', [
             'products' => $products
@@ -73,7 +75,7 @@ class ProductController extends AbstractController
     public function jsonIndex(): Response
     {
         $products = $this->productRepository->findByActiveProducts();
-        $this->timeLeftForEach($products);
+//        $this->timeLeftForEach($products);
 
         return $this->productJsonService->createJson($products);
     }
@@ -155,25 +157,27 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
-        if ($this->checkOwnerShip->isProductOwner($product)) {
-            $form = $this->makeForm($product, $request);
+        if (!$this->checkOwnerShip->isProductOwner($product)) {
+            throw $this->createAccessDeniedException();
+        }
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->doctrineActions->save($product);
-                $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
+        $form = $this->makeForm($product, $request);
 
-                return $this->redirectToRoute('user_show', [
-                    'id' => $product->getUser()->getId(),
-                ]);
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            return $this->render('product/edit.html.twig', [
-                'product' => $product,
-                'form' => $form->createView()
+            // todo perkelti servisa i repositorija (this->product Reposituri ...)
+            $this->doctrineActions->save($product);
+            $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
+
+            return $this->redirectToRoute('user_show', [
+                'id' => $product->getUser()->getId(),
             ]);
         }
-        //todo 404 instead
-        throw $this->createAccessDeniedException();
+
+        return $this->render('product/edit.html.twig', [
+            'product' => $product,
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -199,6 +203,7 @@ class ProductController extends AbstractController
             $this->mailingService->sendMail($data, $recipient, $message, $twig);
 
             $this->addFlash('success', 'Jūsų žinutė išsiųsta!');
+            // todo 1 eilute pries return
             return $this->redirectToRoute('product_index');
         }
 
@@ -231,19 +236,19 @@ class ProductController extends AbstractController
         throw $this->createAccessDeniedException();
     }
 
-    private function timeLeft(Product $product): string
-    {
-        return $product->timeLeft = Carbon::parse($product->getDeadline())->diffForHumans();
-    }
-
-    public function timeLeftForEach($products)
-    {
-        Carbon::setLocale('lt');
-        foreach ($products as $product) {
-            $this->timeleft($product);
-        }
-        return $products;
-    }
+//    private function timeLeft(Product $product): string
+//    {
+//
+//    }
+//
+//    public function timeLeftForEach($products)
+//    {
+//        Carbon::setLocale('lt');
+//        foreach ($products as $product) {
+//            $this->timeleft($product);
+//        }
+//        return $products;
+//    }
 
     private function makeForm($product, $request)
     {
