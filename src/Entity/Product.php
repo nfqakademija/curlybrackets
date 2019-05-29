@@ -121,31 +121,50 @@ class Product
         }
     }
 
+    /**
+     * @return File|null
+     */
     public function getPictureFile(): ?File
     {
         return $this->pictureFile;
     }
 
+    /**
+     * @param string|null $picture
+     */
     public function setPicture(?string $picture): void
     {
         $this->picture = $picture;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPicture(): ?string
     {
         return $this->picture;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getDeadline(): ?DateTimeInterface
     {
         return $this->deadline;
     }
 
+    /**
+     * @param DateTimeInterface|null $deadline
+     * @return Product
+     */
     public function setDeadline(?DateTimeInterface $deadline): self
     {
         $this->deadline = $deadline;
@@ -154,11 +173,18 @@ class Product
     }
 
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string|null $description
+     * @return Product
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -166,11 +192,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getStatus(): ?bool
     {
         return $this->status;
     }
 
+    /**
+     * @param bool $status
+     * @return Product
+     */
     public function setStatus(bool $status): self
     {
         $this->status = $status;
@@ -178,6 +211,9 @@ class Product
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
@@ -186,11 +222,14 @@ class Product
     /** @ORM\PrePersist */
     public function setCreatedAt(): self
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
 
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
@@ -200,16 +239,23 @@ class Product
     * @ORM\PrePersist */
     public function setUpdatedAt(): self
     {
-        $this->updatedAt =new \DateTime();
+        $this->updatedAt =new DateTime();
 
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deletedAt;
     }
 
+    /**
+     * @param DateTimeInterface|null $deletedAt
+     * @return Product
+     */
     public function setDeletedAt(?DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
@@ -217,11 +263,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string|null $title
+     * @return Product
+     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -229,11 +282,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getGivenAway(): ?bool
     {
         return $this->GivenAway;
     }
 
+    /**
+     * @param bool $GivenAway
+     * @return Product
+     */
     public function setGivenAway(bool $GivenAway): self
     {
         $this->GivenAway = $GivenAway;
@@ -241,11 +301,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return Product
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -253,16 +320,26 @@ class Product
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function __toString()
     {
         return $this->getDescription();
     }
 
+    /**
+     * @return Location|null
+     */
     public function getLocation(): ?Location
     {
         return $this->location;
     }
 
+    /**
+     * @param Location|null $location
+     * @return Product
+     */
     public function setLocation(?Location $location): self
     {
         $this->location = $location;

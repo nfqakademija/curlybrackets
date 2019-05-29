@@ -6,9 +6,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\PasswordEditType;
 use App\Form\UserType;
+use App\Repository\UserRepository;
+use App\Service\ChangePasswordService;
 use App\Service\CheckOwnershipService;
-use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,11 +22,36 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
+    /**
+     * @var CheckOwnershipService
+     */
+    private $checkOwnershipService;
 
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @var ChangePasswordService
+     */
+    private $changePasswordService;
+
+    /**
+     * UserController constructor.
+     *
+     * @param CheckOwnershipService $checkOwnershipService
+     * @param UserRepository $userRepository
+     * @param ChangePasswordService $changePasswordService
+     */
     public function __construct(
-        CheckOwnershipService $checkOwnershipService
+        CheckOwnershipService $checkOwnershipService,
+        UserRepository $userRepository,
+        ChangePasswordService $changePasswordService
     ) {
-        $this->checkOwnerShip = $checkOwnershipService;
+        $this->checkOwnershipService = $checkOwnershipService;
+        $this->userRepository = $userRepository;
+        $this->changePasswordService = $changePasswordService;
     }
 
     /**
@@ -33,12 +61,12 @@ class UserController extends AbstractController
      */
     public function show(User $user): Response
     {
-        if ($this->checkOwnerShip->isCorrectUser($user)) {
+        if ($this->checkOwnershipService->isCorrectUser($user)) {
             return $this->render('user/show.html.twig', [
                 'user' => $user,
             ]);
         }
-        throw $this->createNotFoundException('You are not allowed to reach this site.');
+        throw $this->createAccessDeniedException();
     }
 
     /**
@@ -46,60 +74,48 @@ class UserController extends AbstractController
      * @param Request $request
      * @param User $user
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function edit(Request $request, User $user): Response
     {
-        if ($this->checkOwnerShip->isCorrectUser($user)) {
-            $form = $this->createForm(UserType::class, $user);
+        if (!$this->checkOwnershipService->isCorrectUser($user)) {
+            throw $this->createAccessDeniedException();
+        }
 
-            $form->handleRequest($request);
+        $form = $this->makeForm(UserType::class, $request, $user);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $user->setUpdatedAt(new DateTime('now'));
-                $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('success', 'Jūsų informacija sėkmingai pakeista!');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->userRepository->save($user);
 
-                return $this->redirectToRoute('user_show', [
-                    'id' => $user->getId(),
-                ]);
-            }
-            return $this->render('user/edit.html.twig', [
-                'user' => $user,
-                'form' => $form->createView(),
+            $this->addFlash('success', 'Jūsų informacija sėkmingai pakeista!');
+
+            return $this->redirectToRoute('user_show', [
+                'id' => $user->getId(),
             ]);
         }
-        throw $this->createAccessDeniedException();
+
+        return $this->render('user/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
      * @Route("/{id}/password", name="user_password", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
-     * @param UserPasswordEncoderInterface $encoder
      * @return Response
      */
-    public function password(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
+    public function password(Request $request, User $user): Response
     {
         if ($user->getId() === $this->get('security.token_storage')->getToken()->getUser()->getId()) {
-            $form = $this->createForm(PasswordEditType::class, $user);
+            $form = $this->makeForm(PasswordEditType::class, $request, $user);
 
-            $form->handleRequest($request);
-// todo gal i servisa
             if ($form->isSubmitted() && $form->isValid()) {
-                $newPassword = $request->request->get('password_edit')['newPassword']['first'];
-                $newPasswordConfirm = $request->request->get('password_edit')['newPassword']['second'];
+                $this->changePasswordService->changePassword($request, $user);
 
-                $old_pwd = $request->request->get('password_edit')['password'];
+                $this->userRepository->save($user);
 
-                $checkPass = $encoder->isPasswordValid($user, $old_pwd);
-
-                if (($newPassword === $newPasswordConfirm) && $checkPass) {
-                    $encoded = $encoder->encodePassword($user, $newPassword);
-                    $user->setPassword($encoded);
-                }
-
-                $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Jūsų slaptažodis sėkmingai pakeistas!');
 
                 return $this->redirectToRoute('user_show', [
@@ -123,17 +139,27 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->checkOwnerShip->isCorrectUser($user)) {
+        if ($this->checkOwnershipService->isCorrectUser($user)) {
             if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->remove($user);
-                $entityManager->flush();
+                $this->userRepository->remove($user);
+
                 $this->addFlash('danger', 'Vartotojas sėkmingai pašalintas');
             }
-
             return $this->redirectToRoute('user_index');
         }
-
         throw $this->createAccessDeniedException();
+    }
+
+    /**
+     * @param $type
+     * @param $request
+     * @param $entity
+     * @return FormInterface
+     */
+    private function makeForm($type, $request, $entity): FormInterface
+    {
+        $form = $this->createForm($type, $entity);
+        $form->handleRequest($request);
+        return $form;
     }
 }

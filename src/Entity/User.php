@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="user")
  * @Vich\Uploadable
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, Serializable
 {
@@ -126,11 +127,17 @@ class User implements UserInterface, Serializable
      */
     private $activated = 0;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -146,6 +153,10 @@ class User implements UserInterface, Serializable
         return (string) $this->username;
     }
 
+    /**
+     * @param string $username
+     * @return User
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -165,6 +176,10 @@ class User implements UserInterface, Serializable
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return User
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -197,11 +212,18 @@ class User implements UserInterface, Serializable
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string|null $firstName
+     * @return User
+     */
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
@@ -209,11 +231,18 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string|null $lastName
+     * @return User
+     */
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
@@ -221,11 +250,18 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string|null $email
+     * @return User
+     */
     public function setEmail(?string $email): self
     {
         $this->email = $email;
@@ -234,35 +270,51 @@ class User implements UserInterface, Serializable
     }
 
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeInterface $createdAt): self
+    /** @ORM\PrePersist */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTime();
 
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeInterface $updatedAt): self
+    /** @ORM\PreUpdate
+     * @ORM\PrePersist */
+    public function setUpdatedAt(): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt =new DateTime();
 
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deletedAt;
     }
 
+    /**
+     * @param DateTimeInterface|null $deletedAt
+     * @return User
+     */
     public function setDeletedAt(?DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
@@ -270,6 +322,10 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @param string $password
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -277,6 +333,10 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @param ExecutionContextInterface $context
+     * @param $payload
+     */
     public function validate(ExecutionContextInterface $context, $payload): void
     {
     }
@@ -289,6 +349,10 @@ class User implements UserInterface, Serializable
         return $this->products;
     }
 
+    /**
+     * @param Product $product
+     * @return User
+     */
     public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
@@ -299,6 +363,10 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @param Product $product
+     * @return User
+     */
     public function removeProduct(Product $product): self
     {
         if ($this->products->contains($product)) {
@@ -331,19 +399,34 @@ class User implements UserInterface, Serializable
             $this->updatedAt = new DateTime('now');
         }
     }
+
+    /**
+     * @return File|null
+     */
     public function getAvatarFile(): ?File
     {
         return $this->avatarFile;
     }
+
+    /**
+     * @param string|null $avatar
+     */
     public function setAvatar(?string $avatar): void
     {
         $this->avatar = $avatar;
     }
+
+    /**
+     * @return string|null
+     */
     public function getAvatar(): ?string
     {
         return $this->avatar;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getUsername();
@@ -362,17 +445,27 @@ class User implements UserInterface, Serializable
         ));
     }
 
+    /**
+     * @param string $serialized
+     */
     public function unserialize($serialized): void
     {
         [$this->id, $this->username, $this->password] =
             unserialize($serialized, array('allowed_classes' => false));
     }
 
+    /**
+     * @return Location|null
+     */
     public function getLocation(): ?Location
     {
         return $this->location;
     }
 
+    /**
+     * @param Location|null $location
+     * @return User
+     */
     public function setLocation(?Location $location): self
     {
         $this->location = $location;
@@ -380,11 +473,18 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getAgreedTermsAt(): ?DateTimeInterface
     {
         return $this->agreedTermsAt;
     }
 
+    /**
+     * @return User
+     * @throws Exception
+     */
     public function agreeToTerms(): self
     {
         $this->agreedTermsAt = new DateTime();
@@ -392,11 +492,18 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getRegistrationHash(): ?string
     {
         return $this->registrationHash;
     }
 
+    /**
+     * @param string|null $registrationHash
+     * @return User
+     */
     public function setRegistrationHash(?string $registrationHash): self
     {
         $this->registrationHash = $registrationHash;
@@ -404,11 +511,18 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getActivated(): ?bool
     {
         return $this->activated;
     }
 
+    /**
+     * @param bool|null $activated
+     * @return User
+     */
     public function setActivated(?bool $activated): self
     {
         $this->activated = $activated;

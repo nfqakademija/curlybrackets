@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,15 +15,29 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * UserRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
+
         parent::__construct($registry, User::class);
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-
+    /**
+     * @param $hash
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findOneByRegistratingHash($hash)
     {
         return $this->createQueryBuilder('u')
@@ -33,16 +48,21 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?User
+    /**
+     * @param $entity
+     */
+    public function save($entity): void
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
-    */
+
+    /**
+     * @param $entity
+     */
+    public function remove($entity): void
+    {
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
+    }
 }

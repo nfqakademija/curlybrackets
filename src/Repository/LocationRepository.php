@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,37 +15,39 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class LocationRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * LocationRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
+
         parent::__construct($registry, Location::class);
     }
 
-    // /**
-    //  * @return Location[] Returns an array of Location objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param $entity
+     */
+    public function save($entity): void
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Location
+    /**
+     * @param $entity
+     */
+    public function remove($entity): void
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
     }
-    */
 }

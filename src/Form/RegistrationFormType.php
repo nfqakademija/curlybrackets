@@ -15,8 +15,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 
+/**
+ * Class RegistrationFormType
+ *
+ * @package App\Form
+ */
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -28,8 +37,6 @@ class RegistrationFormType extends AbstractType
                 'label' => false
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'label' => false,
                 'constraints' => [
@@ -46,22 +53,23 @@ class RegistrationFormType extends AbstractType
                         'pattern' => "/^(?=\D*\d)\S{6,}$/",
                         'match' => true,
                             'message' => 'Slaptažodyje reikalingas bent 1 skaitmuo']),
-
                 ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'required' => true,
                 'mapped' => false,
-                'label' => "Sutinku su taisyklėmis",
+                'label' => 'Sutinku su taisyklėmis',
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Jūs turite sutikti su taisyklėmis'
                     ])
                 ]
-                ])
-        ;
+                ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

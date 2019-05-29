@@ -4,9 +4,13 @@
 namespace App\Event;
 
 use App\Entity\User;
-use App\Service\MailingService;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class UserRegisteredEvent
+ *
+ * @package App\Event
+ */
 class UserRegisteredEvent extends Event
 {
     /**
@@ -14,9 +18,6 @@ class UserRegisteredEvent extends Event
      *
      * @param $form
      * @param User $user
-     * @param Swift_Mailer $mailer
-     * @param Environment $templating
-     * @param MailingService $mailingService
      */
     public function __construct(
         $form,
