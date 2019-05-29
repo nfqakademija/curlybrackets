@@ -17,12 +17,11 @@ require('../css/app.scss');
 const mapStore = createStore(rootReducer);
 render(
     <Provider store={mapStore} >
-        <ProductMap/>
+        <ProductMap />
         <Card />
     </Provider>,
     document.getElementById('product-map')
 );
-
 
 $(document).ready(function() {
     $('.datetimepicker').datetimepicker({format: 'yyyy-mm-dd hh:ii'});
