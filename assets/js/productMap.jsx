@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash.isempty';
-// examples:
 import GoogleMap from './components/GoogleMap';
-// consts: [34.0522, -118.2437]
+import {update} from './actions'
+import {connect} from 'react-redux';
 const LOS_ANGELES_CENTER = [54.687839, 25.28784];
-// InfoWindow component
+
 const InfoWindow = (props) => {
     const { place } = props;
     const infoWindowStyle = {
@@ -73,6 +73,7 @@ class MarkerInfoWindow extends Component {
             });
     }
     updateMarkers = (props, dispatch) => {
+      this.props.onAddPost(this.state.places);
         console.log('fetching update');
         console.log(props);
         // dispatch(update(input.value));
@@ -167,4 +168,16 @@ Marker.propTypes = {
     }).isRequired,
 };
 
-export default MarkerInfoWindow;
+const mapDispatchToProps = dispatch => {
+  return {
+      onAddPost: places => {
+          console.log(places);
+          dispatch(update(places));
+      }
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(MarkerInfoWindow);
