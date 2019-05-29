@@ -12,7 +12,7 @@ const styles = {
 
 const Item = ({ place }) => {
     return (
-        <div className='col-md-3'>
+        <div className='col-md-3 product-box-margin'>
             <div className='product-box'>
                 <div>
                     <img className='product-list-img' src={place.image} alt='Produkto nuotrauka' />
@@ -31,11 +31,9 @@ const Item = ({ place }) => {
                     Baigia galioti {place.deadline}
                 </div>
                 <div className="profile-btn-block">
-                    <div className="profile-btn-margin">
-                        <a target="_blank" className="call-to-btn-green" href={place.contact_url}>
-                            Susisiekti <i className="fas fa-envelope"></i>
-                        </a>
-                    </div>
+                    <a target="_blank" className="call-to-btn-green" href={place.contact_url}>
+                        Susisiekti <i className="fas fa-envelope"></i>
+                    </a>
                 </div>
             </div>
         </div>
