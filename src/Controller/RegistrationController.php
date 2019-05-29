@@ -5,16 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Event\UserRegisteredEvent;
 use App\Form\RegistrationFormType;
-use App\Security\LoginFormAuthenticator;
+use App\Repository\UserRepository;
 use Exception;
-use App\Service\MailingService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use DateTime;
 
 /**
  * Class RegistrationController
@@ -24,25 +22,47 @@ use DateTime;
 class RegistrationController extends AbstractController
 {
     /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * RegistrationController constructor.
+     *
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param UserRepository $userRepository
+     */
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        EventDispatcherInterface $eventDispatcher,
+        UserRepository $userRepository
+    ) {
+        $this->passwordEncoder = $passwordEncoder;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->userRepository = $userRepository;
+    }
+
+    /**
      * @Route("/register", name="app_register")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param LoginFormAuthenticator $authenticator
-     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      * @throws Exception
      */
-    public function register(
-        Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        LoginFormAuthenticator $authenticator,
-        EventDispatcherInterface $eventDispatcher,
-        MailingService $mailingService
-    ): Response {
-
+    public function register(Request $request): Response
+    {
         $user = new User();
-        $user->setCreatedAt(new DateTime());
-        $user->setUpdatedAt(new DateTime());
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -52,19 +72,17 @@ class RegistrationController extends AbstractController
             }
             // encode the plain password
             $user->setPassword(
-                $passwordEncoder->encodePassword(
+                $this->passwordEncoder->encodePassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
 
-            $eventDispatcher->dispatch(
+            $this->eventDispatcher->dispatch(
                 'user.registered',
                 new UserRegisteredEvent($form, $user)
             );
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->userRepository->save($user);
 
             $this->addFlash('success', 'Sveikiname, vartotojas sukurtas!');
 

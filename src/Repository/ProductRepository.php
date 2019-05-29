@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Product;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -15,8 +15,22 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ProductRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * ProductRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
+
         parent::__construct($registry, Product::class);
     }
 
@@ -24,7 +38,7 @@ class ProductRepository extends ServiceEntityRepository
       * @return Product[] Returns an array of Product objects
       */
 
-    public function findByActiveProducts()
+    public function findByActiveProducts(): array
     {
         return $this->createQueryBuilder('p')
             ->where('p.GivenAway = 0')
@@ -36,6 +50,11 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @param $leftTopCorner
+     * @param $rightBottomCorner
+     * @return mixed
+     */
     public function findProductsByLocation($leftTopCorner, $rightBottomCorner)
     {
         return $this->createQueryBuilder('p')
@@ -56,5 +75,23 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    /**
+     * @param $entity
+     */
+    public function save($entity): void
+    {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param $entity
+     */
+    public function remove($entity): void
+    {
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
     }
 }

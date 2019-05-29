@@ -4,13 +4,39 @@ namespace App\Service;
 use App\Entity\Product;
 use Carbon\Carbon;
 use Liip\ImagineBundle\Templating\Helper\FilterHelper;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
+/**
+ * Class ProductJsonService
+ *
+ * @package App\Service
+ */
 class ProductJsonService
 {
+    /**
+     * @var UploaderHelper
+     */
+    private $uploadHelper;
+
+    /**
+     * @var FilterHelper
+     */
+    private $filterHelper;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * ProductJsonService constructor.
+     *
+     * @param UploaderHelper $uploadHelper
+     * @param FilterHelper $filterHelper
+     * @param RouterInterface $router
+     */
     public function __construct(UploaderHelper $uploadHelper, FilterHelper $filterHelper, RouterInterface $router)
     {
         $this->uploadHelper = $uploadHelper;
@@ -18,6 +44,10 @@ class ProductJsonService
         $this->router = $router;
     }
 
+    /**
+     * @param $products
+     * @return Response
+     */
     public function createJson($products): Response
     {
         $data = [];

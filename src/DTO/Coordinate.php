@@ -3,9 +3,21 @@
 
 namespace App\DTO;
 
+/**
+ * Class Coordinate
+ *
+ * @package App\DTO
+ */
 class Coordinate
 {
+    /**
+     * @var
+     */
     private $latitude;
+
+    /**
+     * @var
+     */
     private $longitude;
 
     /**
@@ -40,6 +52,12 @@ class Coordinate
         $this->longitude = $longitude;
     }
 
+    /**
+     * Coordinate constructor.
+     *
+     * @param $latitude
+     * @param $longitude
+     */
     public function __construct($latitude, $longitude)
     {
         $this->latitude = $latitude;

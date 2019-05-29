@@ -16,8 +16,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class UserRegisteredSubscriber implements EventSubscriberInterface
 {
 
+    /**
+     * @var MailingService
+     */
     private $mailingService;
 
+    /**
+     * UserRegisteredSubscriber constructor.
+     *
+     * @param MailingService $mailingService
+     */
     public function __construct(MailingService $mailingService)
     {
         $this->mailingService = $mailingService;
@@ -39,7 +47,6 @@ class UserRegisteredSubscriber implements EventSubscriberInterface
      * @return string
      * @throws Exception
      */
-    //todo jei daryti slaptazodzio priminima, naudoti statine klase arba servisa
     private function createHash(): string
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');

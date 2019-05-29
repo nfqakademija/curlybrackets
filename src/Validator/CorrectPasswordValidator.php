@@ -19,16 +19,11 @@ class CorrectPasswordValidator extends ConstraintValidator
         $this->user = $tokenStorage->getToken()->getUser();
     }
 
-
     public function validate($value, Constraint $constraint): void
     {
-
-
         $checkPass = $this->encoder->isPasswordValid($this->user, $value);
 
         /* @var $constraint CorrectPassword */
-
-
         if ($checkPass) {
             return;
         }

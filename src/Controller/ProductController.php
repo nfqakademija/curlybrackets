@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpUndefinedMethodInspection */
+<?php
 
 namespace App\Controller;
 
@@ -10,16 +10,14 @@ use App\Repository\ProductRepository;
 use App\Service\CheckOwnershipService;
 use App\Service\MailingService;
 use App\Service\ProductJsonService;
-use App\Service\DoctrineActionsService;
 use Exception;
-use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Carbon\Carbon;
 
 /**
  * @Route("/product")
@@ -33,25 +31,37 @@ class ProductController extends AbstractController
     private $productJsonService;
 
     /**
+     * @var CheckOwnershipService
+     */
+    private $checkOwnershipService;
+
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
+     * @var MailingService
+     */
+    private $mailingService;
+
+    /**
      * ProductController constructor.
      *
      * @param ProductJsonService $productJsonService
      * @param CheckOwnershipService $checkOwnershipService
      * @param ProductRepository $productRepository
-     * @param DoctrineActionsService $doctrineActions
      * @param MailingService $mailingService
      */
     public function __construct(
         ProductJsonService $productJsonService,
         CheckOwnershipService $checkOwnershipService,
         ProductRepository $productRepository,
-        DoctrineActionsService $doctrineActions,
         MailingService $mailingService
     ) {
         $this->productJsonService = $productJsonService;
-        $this->checkOwnerShip = $checkOwnershipService;
+        $this->checkOwnershipService = $checkOwnershipService;
         $this->productRepository = $productRepository;
-        $this->doctrineActions = $doctrineActions;
         $this->mailingService = $mailingService;
     }
 
@@ -75,7 +85,6 @@ class ProductController extends AbstractController
     public function jsonIndex(): Response
     {
         $products = $this->productRepository->findByActiveProducts();
-//        $this->timeLeftForEach($products);
 
         return $this->productJsonService->createJson($products);
     }
@@ -91,7 +100,6 @@ class ProductController extends AbstractController
         $bottomRightCorner = new Coordinate($request->get('latitudeNW'), $request->get('longitudeNW'));
 
         $products = $this->productRepository->findProductsByLocation($leftTopCorner, $bottomRightCorner);
-        $this->timeLeftForEach($products);
 
         return $this->productJsonService->createJson($products);
     }
@@ -105,7 +113,7 @@ class ProductController extends AbstractController
     {
         $product->setGivenAway(!$product->getGivenAway());
 
-        $this->doctrineActions->save($product);
+        $this->productRepository->save($product);
         $this->addFlash('success', 'Produktas atidavimo būsena pakeista!');
 
         return $this->redirectToRoute('user_show', [
@@ -134,7 +142,7 @@ class ProductController extends AbstractController
             $product->setUser($user);
             $product->setLocation($user->getLocation());
 
-            $this->doctrineActions->save($product);
+            $this->productRepository->save($product);
             $this->addFlash('success', 'Produktas sėkmingai pridėtas!');
 
             return $this->redirectToRoute('user_show', [
@@ -157,16 +165,14 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
-        if (!$this->checkOwnerShip->isProductOwner($product)) {
+        if (!$this->checkOwnershipService->isProductOwner($product)) {
             throw $this->createAccessDeniedException();
         }
 
         $form = $this->makeForm($product, $request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // todo perkelti servisa i repositorija (this->product Reposituri ...)
-            $this->doctrineActions->save($product);
+            $this->productRepository->save($product);
             $this->addFlash('success', 'Produktas sėkmingai pakeistas!');
 
             return $this->redirectToRoute('user_show', [
@@ -184,10 +190,9 @@ class ProductController extends AbstractController
      * @Route("/contact/{id}", name="contact", methods={"GET","POST"})
      * @param Request $request
      * @param Product $product
-     * @param Swift_Mailer $mailer
      * @return RedirectResponse|Response
      */
-    public function contact(Request $request, Product $product, Swift_Mailer $mailer)
+    public function contact(Request $request, Product $product)
     {
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
@@ -203,12 +208,9 @@ class ProductController extends AbstractController
             $this->mailingService->sendMail($data, $recipient, $message, $twig);
 
             $this->addFlash('success', 'Jūsų žinutė išsiųsta!');
-            // todo 1 eilute pries return
+
             return $this->redirectToRoute('product_index');
         }
-
-        Carbon::setLocale('lt');
-        $this->timeLeft($product);
 
         return $this->render('contact/contact.html.twig', [
             'form' => $form->createView(),
@@ -224,9 +226,9 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($this->checkOwnerShip->isProductOwner($product)) {
+        if ($this->checkOwnershipService->isProductOwner($product)) {
             if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
-                $this->doctrineActions->remove($product);
+                $this->productRepository->remove($product);
                 $this->addFlash('danger', 'Produktas ištrintas!');
             }
             return $this->redirectToRoute('user_show', [
@@ -236,25 +238,15 @@ class ProductController extends AbstractController
         throw $this->createAccessDeniedException();
     }
 
-//    private function timeLeft(Product $product): string
-//    {
-//
-//    }
-//
-//    public function timeLeftForEach($products)
-//    {
-//        Carbon::setLocale('lt');
-//        foreach ($products as $product) {
-//            $this->timeleft($product);
-//        }
-//        return $products;
-//    }
-
-    private function makeForm($product, $request)
+    /**
+     * @param $product
+     * @param $request
+     * @return FormInterface
+     */
+    private function makeForm($product, $request): FormInterface
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         return $form;
     }
-
 }

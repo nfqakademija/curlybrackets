@@ -29,16 +29,26 @@ class Location
      */
     private $longitude;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLatitude()
     {
         return $this->latitude;
     }
 
+    /**
+     * @param $latitude
+     * @return Location
+     */
     public function setLatitude($latitude): self
     {
         $this->latitude = $latitude;
@@ -46,11 +56,18 @@ class Location
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLongitude()
     {
         return $this->longitude;
     }
 
+    /**
+     * @param $longitude
+     * @return Location
+     */
     public function setLongitude($longitude): self
     {
         $this->longitude = $longitude;

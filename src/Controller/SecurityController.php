@@ -44,7 +44,6 @@ class SecurityController extends AbstractController
     {
     }
 
-
     /**
      * @Route("/confirm/{hash}", name="confirmation")
      * @param $hash
