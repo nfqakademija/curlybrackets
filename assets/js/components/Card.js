@@ -23,7 +23,7 @@ const Item = ({ place }) => {
     }
     
     return (
-        <div className='col-md-3 product-box-margin'>
+        <div className='col-md-4 col-lg-3 product-box-margin'>
             <div className='card product-box'>
                 <div>
                     {productPicture}
