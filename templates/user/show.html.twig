@@ -8,7 +8,7 @@
             <h1>Vartotojo {{ app.user.username}} informacija</h1>
         </div>
         <div class="row h-100 profile-box">
-            <div class="col-md-2 col-sm-3 my-auto">
+            <div class="col-md-2 col-sm-6 my-auto text-center">
                 {% if user.avatar is not null %}
                 <img class="product-avatar-profile" src=" {{('/images/avatars/' ~user.avatar )  }}"
                         alt="Avataras">
@@ -16,7 +16,7 @@
                         <img class="no-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" alt="Avataras">
                 {% endif %}
             </div>
-            <div class="col-md-6 col-sm-5">
+            <div class="col-md-6 col-sm-6 text-center">
                 <div class="row h-100 align-middle">
                     <div class="col-md-4 my-auto user-contact">
                         {{ user.firstName }} {{ user.lastName }}
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-4 my-auto profile-btn-block user-icons">
+            <div class="col-md-4 col-sm-12 my-auto profile-btn-block user-icons text-center">
                 {% if user.location %}
                     <a class="mx-2" href="{{ path('location_edit', {'id': user.location.id}) }}">
                     <i class="fas fa-map-marked fa-2x" title="Redaguoti vietą">
@@ -43,6 +43,7 @@
 
         <div class="row user-profile-head-title">
             <h2>Mano produktai</h2>
+            <div><a class="nav-link" href="{{ path('product_new') }}">Produktų įkėlimas </a></div>
         </div>
 
         {% for product in user.products %}

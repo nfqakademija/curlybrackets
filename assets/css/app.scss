@@ -418,6 +418,11 @@ a:hover{
   background-color: white;
 }
 
+.profile-box .no-avatar{
+  width: 78px;
+  padding: 15px 0;
+}
+
 //for other screens
 
 @media screen and (max-width: 575px ) {
@@ -431,7 +436,7 @@ a:hover{
 }
 
 @media screen and (max-width: 768px){
-  .user-contact{
-    margin:0 !important;
-  }
+ .profile-btn-block{
+   margin-bottom: 15px !important;
+ }
 }
