@@ -22,11 +22,11 @@ class SecurityController extends AbstractController
     /**
      * @var GuardAuthenticatorHandler
      */
-    private $guardAuthenticatorHandler;
+    private $guardHandler;
     /**
      * @var LoginFormAuthenticator
      */
-    private $loginFormAuthenticator;
+    private $authenticator;
     /**
      * @var UserRepository
      */
@@ -39,21 +39,21 @@ class SecurityController extends AbstractController
     /**
      * SecurityController constructor.
      *
-     * @param GuardAuthenticatorHandler $guardAuthenticatorHandler
-     * @param LoginFormAuthenticator $loginFormAuthenticator
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
      * @param UserRepository $userRepository
      * @param AuthenticationUtils $authenticationUtils
      */
     public function __construct(
-        GuardAuthenticatorHandler $guardAuthenticatorHandler,
-        LoginFormAuthenticator $loginFormAuthenticator,
+        GuardAuthenticatorHandler $guardHandler,
+        LoginFormAuthenticator $authenticator,
         UserRepository $userRepository,
         AuthenticationUtils $authenticationUtils
     ) {
-       $this->guardAuthenticatorHandler = $guardAuthenticatorHandler;
-       $this->loginFormAuthenticator  = $loginFormAuthenticator;
-       $this->userRepository = $userRepository;
-       $this->authenticationUtils = $authenticationUtils;
+        $this->guardHandler = $guardHandler;
+        $this->authenticator  = $authenticator;
+        $this->userRepository = $userRepository;
+        $this->authenticationUtils = $authenticationUtils;
     }
 
     /**
