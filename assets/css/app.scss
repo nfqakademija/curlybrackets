@@ -427,6 +427,10 @@ a:hover{
   float: left;
 }
 
+.add-new-product-user{
+  margin: 40px 0;
+}
+
 //for other screens
 
 @media screen and (max-width: 575px ) {
@@ -446,8 +450,18 @@ a:hover{
 
  .profile-btn-block a{
   float: none;
+  }
+  .profile-btn-block div{
+    display: inline;
+  }
+
+  .title-small-screen{
+    margin-top: 30px !important;
+  }
 }
-.profile-btn-block div{
-  display: inline;
-}
+
+@media screen and (max-width: 991px){
+  .user-new-line-icons{
+    margin-top:30px !important;
+  }
 }
