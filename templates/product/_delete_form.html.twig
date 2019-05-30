@@ -1,5 +1,5 @@
 <form method="post" action="{{ path('product_delete', {'id': product.id}) }}" onsubmit="return confirm('Ar tikrai norite ištrinti šį produktą');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
-    <button style="background: none; border:none"><i class="far fa-trash-alt fa-2x" title="Ištrinti produktą"></i></button>
+    <a href="{{ path('product_delete', {'id': product.id}) }}"  style="background: none; border:none"><i class="far fa-trash-alt fa-2x" title="Ištrinti produktą"></i></a>
 </form>
