@@ -67,7 +67,6 @@ class MarkerInfoWindow extends Component {
                 data.forEach((result) => {
                     result.show = false;
                 });
-                console.log(data);
                 this.props.onAddPost(this.state.places);
             });
     }

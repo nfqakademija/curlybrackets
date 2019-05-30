@@ -247,6 +247,7 @@ a:hover{
 }
 
 .product-box {
+  position: relative;
   border: 1px solid $elements;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -300,12 +301,12 @@ a:hover{
 }
 
 .product-list-description {
-  padding-left: 10px;
+  padding: 0 10px;
   font-size: 0.9em;
 }
 
 .product-list-deadline {
-  padding: 20px 10px;
+  padding: 0 10px 20px;
   font-size: 0.8em;
   font-weight: bold;
   color: $second;
@@ -406,6 +407,12 @@ a:hover{
 
 .product-box-margin {
   margin-top: 15px;
+}
+
+.product-list-contact {
+  padding: 0 0 15px;
+  background: #fff;
+  border-top: none;
 }
 
 //for other screens

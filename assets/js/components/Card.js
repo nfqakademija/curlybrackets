@@ -24,27 +24,29 @@ const Item = ({ place }) => {
     
     return (
         <div className='col-md-3 product-box-margin'>
-            <div className='product-box'>
+            <div className='card product-box'>
                 <div>
                     {productPicture}
                 </div>
                 <div className='product-user'>
-                    <img className='product-avatar' src="#" alt="Avataras" />
-                    <span className='product-avatar-user'>User name</span>
+                    <img className='product-avatar' src={place.avatar} alt="Avataras" />
+                    <span className='product-avatar-user'>{place.username}</span>
                 </div>
                 <div className='product-list-title'>
                     <h4>{place.title}</h4>
                 </div>
-                <div className="product-list-description">
+                <div className="card-body product-list-description">
                     {place.description}
                 </div>
-                <div className="product-list-deadline">
-                    Baigia galioti {place.deadline}
-                </div>
-                <div className="profile-btn-block">
-                    <a target="_blank" className="call-to-btn-green" href={place.contact_url}>
-                        Susisiekti <i className="fas fa-envelope"></i>
-                    </a>
+                <div className='card-footer product-list-contact'>
+                    <div className="product-list-deadline">
+                        Baigia galioti {place.deadline}
+                    </div>
+                    <div className="profile-btn-block">
+                        <a target="_blank" className="call-to-btn-green" href={place.contact_url}>
+                            Susisiekti <i className="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
