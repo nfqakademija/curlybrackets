@@ -67,7 +67,7 @@
                         <img class="product-list-img" src="{{ (asset('build/products/product_image.png'))|imagine_filter("small") }}" alt="Nėra produkto nuotraukos">
                     {% endif %}
                 </div>
-                <div class="col-lg-2 col-md-8 my-auto title-small-screen">
+                <div class="col-lg-4 col-md-8 my-auto title-small-screen">
                     <div class="text-break">
                         <h4>{{ product.title }}</h4>
                     </div>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-8 my-auto user-icons row user-new-line-icons">
+                <div class="col-lg-3 col-md-8 my-auto user-icons row user-new-line-icons">
                     <div class="profile-btn-margin col-sm-6 col-lg-12">
                         <a href="{{ path('product_edit', {'id': product.id}) }}"><i class="fas fa-edit fa-2x mr-3" title="Redaguoti produktą"></i>Redaguoti</a>
                     </div>
