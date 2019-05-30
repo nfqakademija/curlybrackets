@@ -51,8 +51,7 @@ const Marker = (props) => {
     return (
         <Fragment>
             <div style={markerStyle} />
-            {props.show && <InfoWindow place={props.place} />}
-            {props.lock && <InfoWindow place={props.place} />}
+            {(props.lock || props.show) && <InfoWindow place={props.place} />}
         </Fragment>
     );
 };
@@ -97,14 +96,14 @@ class MarkerInfoWindow extends Component {
     _onChildMouseEnter = (key, childProps) => {
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-                state.places[index].show = !state.places[index].show; 
+                state.places[index].show = true; 
             return { places: state.places };
         });
     }
     _onChildMouseLeave = (key, childProps) => {
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-            state.places[index].show = !state.places[index].show;
+            state.places[index].show = false;
             return { places: state.places };
         });
     }
