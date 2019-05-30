@@ -122,6 +122,23 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/visibility", name="product_visibility", methods={"GET"})
+     * @param Product $product
+     * @return Response
+     */
+    public function changeVisibility(Product $product): Response
+    {
+        $product->setStatus(!$product->getstatus());
+
+        $this->productRepository->save($product);
+        $this->addFlash('success', 'Produktas matomumas pakeistas!');
+
+        return $this->redirectToRoute('user_show', [
+            'id' => $product->getUser()->getId(),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="product_new", methods={"GET","POST"})
      * @param Request $request
      * @param UserInterface|null $user
