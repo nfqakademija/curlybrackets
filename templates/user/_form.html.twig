@@ -1,7 +1,7 @@
 {{ form_start(form,{action:path('user_edit', {id: app.user.id})}) }}
 
     <div class="row justify-content-center form-block">
-        <div class="text-center">
+        <div class="col-md-5 text-left">
             <span>{{ form_row(form.firstName, {'attr': {'class': 'form-control form-space'}}) }}</span>
             <span>{{ form_row(form.lastName, {'attr': {'class': 'form-control form-space'}}) }}</span>
             <span>{{ form_row(form.email, {'attr': {'class': 'form-control form-space'}}) }}</span>

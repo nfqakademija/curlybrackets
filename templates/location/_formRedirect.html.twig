@@ -1,4 +1,8 @@
+
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="call-to-btn map-save-btn">{{ button_label|default('Išsaugoti') }}</button>
+    <div class="row justify-content-center my-5">
+        <div class="col-md-6 text-right">
+            <button class="btn btn-success">{{ button_label|default('Išsaugoti') }}</button>
+        </div>
 {{ form_end(form) }}
