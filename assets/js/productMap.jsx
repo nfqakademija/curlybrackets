@@ -9,8 +9,8 @@ const InfoWindow = (props) => {
     const { place } = props;
     const infoWindowStyle = {
         position: 'relative',
-        bottom: 150,
-        left: '-45px',
+        // bottom: 150,
+        left: '10px',
         width: 220,
         backgroundColor: 'white',
         boxShadow: '0 2px 7px 1px rgba(0, 0, 0, 0.3)',
@@ -93,10 +93,11 @@ class MarkerInfoWindow extends Component {
             return { places: state.places };
         });
     };
+
     _onChildMouseEnter = (key, childProps) => {
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-            state.places[index].show = !state.places[index].show; 
+                state.places[index].show = !state.places[index].show; 
             return { places: state.places };
         });
     }
