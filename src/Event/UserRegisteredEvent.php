@@ -22,7 +22,6 @@ class UserRegisteredEvent extends Event
     public function __construct(
         $form,
         User $user
-
     ) {
         $this->form = $form;
         $this->user = $user;

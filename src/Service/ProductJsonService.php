@@ -57,7 +57,8 @@ class ProductJsonService
         /** @var Product $product */
         foreach ($products as $product) {
             if ($product->getPicture()) {
-                $image = $this->filterHelper->filter($this->uploadHelper->asset($product, 'pictureFile'), 'mini');
+                $image = $this->filterHelper->
+                filter($this->uploadHelper->asset($product, 'pictureFile'), 'mini');
             } else {
                 $image = null;
             }
