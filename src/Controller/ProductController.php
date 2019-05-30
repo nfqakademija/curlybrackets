@@ -214,6 +214,12 @@ class ProductController extends AbstractController
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
+        $products = $this->productRepository->findByActiveProducts();
+        if (!in_array($product, $products)) {
+            $this->addFlash('danger', 'Produktas nepasiekiamas!');
+            return $this->redirectToRoute('product_index');
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $data['productTitle'] = $product->getTitle();
