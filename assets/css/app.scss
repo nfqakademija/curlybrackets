@@ -374,11 +374,6 @@ a:hover{
   margin-top: 35px;
 }
 
-#centerAlignedContainer {
-  position: relative;
-  height: 100vh;
-}
-
 .btn {
   background-color: white;
   color: black;
@@ -413,6 +408,14 @@ a:hover{
   padding: 0 0 15px;
   background: #fff;
   border-top: none;
+}
+
+.split-colored-background {
+  background-color: #FFDC5A;
+}
+
+.white-background {
+  background-color: white;
 }
 
 //for other screens
