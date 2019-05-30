@@ -64,8 +64,6 @@ class ProductJsonService
 
             if ($product->getUser()->getAvatar()) {
                 $avatar = $this->kernel->getProjectDir().'/../images/avatars/'. $product->getUser()->getAvatar() ;
-                dump($avatar);
-                die();
             } else {
                 $avatar = null;
             }
