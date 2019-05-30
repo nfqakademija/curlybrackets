@@ -32,11 +32,17 @@ class ProductJsonService
     private $router;
 
     /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
      * ProductJsonService constructor.
      *
      * @param UploaderHelper $uploadHelper
      * @param FilterHelper $filterHelper
      * @param RouterInterface $router
+     * @param KernelInterface $kernel
      */
     public function __construct(
         UploaderHelper $uploadHelper,

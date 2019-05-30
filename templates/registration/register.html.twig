@@ -12,10 +12,7 @@
                 <div class="reg-btn">
                     <button class="call-to-btn">Registruotis</button> <a href="{{ path('home') }}">Atšaukti</a>
                 </div>
-                {{ form_errors(registrationForm.agreeTerms) }}
-                {{ form_widget(registrationForm.agreeTerms) }}
-            <label for="registration_form_agreeTerms">Sutikti su taisyklėmis</label>
-            {{ form_end(registrationForm) }}
+            {{ form_row(registrationForm.agreeTerms) }}
         </div>
     </div>
 {% endblock %}
