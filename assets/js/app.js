@@ -18,9 +18,16 @@ const mapStore = createStore(rootReducer);
 render(
     <Provider store={mapStore} >
         <ProductMap />
-        <Card />
+        {/* <Card /> */}
     </Provider>,
     document.getElementById('product-map')
+);
+
+render(
+    <Provider store={mapStore} >
+        <Card />
+    </Provider>,
+    document.getElementById('product-list')
 );
 
 $(document).ready(function() {
