@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     pictures_directory: '%kernel.project_dir%/public/uploads/productPictures'
+    project_dir: '%kernel.project_dir%'
 
 services:
 
@@ -31,4 +32,5 @@ services:
     # please note that last definitions always *replace* previous ones
 
     Liip\ImagineBundle\Templating\Helper\FilterHelper: '@liip_imagine.templating.filter_helper'
+
 
