@@ -15,20 +15,25 @@ require('bootstrap');
 require('../css/app.scss');
 
 const mapStore = createStore(rootReducer);
-render(
-    <Provider store={mapStore} >
-        <ProductMap />
-        {/* <Card /> */}
-    </Provider>,
-    document.getElementById('product-map')
-);
 
-render(
-    <Provider store={mapStore} >
-        <Card />
-    </Provider>,
-    document.getElementById('product-list')
-);
+if (document.getElementById('product-map') !== null){
+    ReactDOM.render(
+        <Provider store={mapStore} >
+            <ProductMap />
+            {/* <Card /> */}
+        </Provider>,
+        document.getElementById('product-map')
+    );
+}
+
+if (document.getElementById('product-list') !== null){
+    ReactDOM.render(
+        <Provider store={mapStore} >
+            <Card />
+        </Provider>,
+        document.getElementById('product-list')
+    );
+}
 
 $(document).ready(function() {
     $('.datetimepicker').datetimepicker({format: 'yyyy-mm-dd hh:ii'});

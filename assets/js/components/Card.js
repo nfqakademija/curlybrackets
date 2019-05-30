@@ -21,6 +21,7 @@ const Item = ({ place }) => {
     } else {
         productPicture = <img className='product-list-img' src={DummyImage} alt='Produkto nuotrauka' />
     }
+    
     return (
         <div className='col-md-3 product-box-margin'>
             <div className='product-box'>
