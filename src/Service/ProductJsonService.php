@@ -38,8 +38,12 @@ class ProductJsonService
      * @param FilterHelper $filterHelper
      * @param RouterInterface $router
      */
-    public function __construct(UploaderHelper $uploadHelper, FilterHelper $filterHelper, RouterInterface $router, KernelInterface $kernel)
-    {
+    public function __construct(
+        UploaderHelper $uploadHelper,
+        FilterHelper $filterHelper,
+        RouterInterface $router,
+        KernelInterface $kernel
+    ) {
         $this->uploadHelper = $uploadHelper;
         $this->filterHelper = $filterHelper;
         $this->router = $router;
