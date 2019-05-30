@@ -9,10 +9,9 @@
                 {{ form_row(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Vartotojo vardas'}}) }}
                 {{ form_row(registrationForm.plainPassword,  {'attr': {'class': 'form-control', 'placeholder': 'Slaptažodis'}}) }}
                 {{ form_row(registrationForm.email,  {'attr': {'class': 'form-control', 'placeholder': 'El.paštas'}}) }}
-                <div class="reg-btn">
-                    <button class="call-to-btn">Registruotis</button>
-                </div>
-            {{ form_row(registrationForm.agreeTerms) }}
+                {{ form_row(registrationForm.agreeTerms) }}
+            <button class="call-to-btn">Registruotis</button>
+            {{ form_end(registrationForm) }}
         </div>
     </div>
 {% endblock %}
