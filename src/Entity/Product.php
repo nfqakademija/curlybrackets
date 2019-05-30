@@ -75,11 +75,6 @@ class Product
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $deletedAt;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
@@ -244,24 +239,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getDeletedAt(): ?DateTimeInterface
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * @param DateTimeInterface|null $deletedAt
-     * @return Product
-     */
-    public function setDeletedAt(?DateTimeInterface $deletedAt): self
-    {
-        $this->deletedAt = $deletedAt;
-
-        return $this;
-    }
 
     /**
      * @return string|null

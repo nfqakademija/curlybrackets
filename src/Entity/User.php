@@ -93,11 +93,6 @@ class User implements UserInterface, Serializable
     private $updatedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $deletedAt;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $password;
@@ -299,25 +294,6 @@ class User implements UserInterface, Serializable
     public function setUpdatedAt(): self
     {
         $this->updatedAt =new DateTime();
-
-        return $this;
-    }
-
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getDeletedAt(): ?DateTimeInterface
-    {
-        return $this->deletedAt;
-    }
-
-    /**
-     * @param DateTimeInterface|null $deletedAt
-     * @return User
-     */
-    public function setDeletedAt(?DateTimeInterface $deletedAt): self
-    {
-        $this->deletedAt = $deletedAt;
 
         return $this;
     }

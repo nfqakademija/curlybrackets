@@ -58,7 +58,7 @@ class RegistrationFormType extends AbstractType
             ->add('agreeTerms', CheckboxType::class, [
                 'required' => true,
                 'mapped' => false,
-                'label' => 'Sutinku su taisyklėmis',
+                'label' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Jūs turite sutikti su taisyklėmis'
