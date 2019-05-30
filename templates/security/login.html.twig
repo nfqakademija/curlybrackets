@@ -13,7 +13,6 @@
             <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Vartotojo vardas" required autofocus>
             <label for="inputPassword" class="sr-only">Slaptažodis</label>
             <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Slaptažodis" required>
-
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div class="checkbox mb-3">

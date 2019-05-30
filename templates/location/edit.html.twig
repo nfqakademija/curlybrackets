@@ -5,11 +5,8 @@
 {% block body %}
     <div class="container">
         <h1>Atnaujinti vietą</h1>
-
         <div id="mapEdit"></div>
-
         {{ include('location/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
-
         <a class="back-btn" href="{{ path('user_show', {'id': app.user.id}) }}">Grįžti</a>
     </div>
 {% endblock %}

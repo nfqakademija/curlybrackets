@@ -7,7 +7,6 @@
         <h1>Pasirinkite savo vietą</h1>
         <div id="map"></div>
         {{ include('location/_formRedirect.html.twig') }}
-
         <a class="back-btn" href="{{ path('user_show', {'id': app.user.id}) }}">Grįžti</a>
     </div>
 {% endblock %}

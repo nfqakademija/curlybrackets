@@ -12,8 +12,6 @@
                 {% if user.avatar is not null %}
                 <img class="product-avatar-profile" src=" {{('/images/avatars/' ~user.avatar )  }}"
                         alt="Avataras">
-                        {#<td><img src="{{ (vich_uploader_asset(avatar, 'avatarFile'))}}"#}
-                        {#alt="Avatar"></td>#}
                 {% else %}
                         <img class="no-avatar" src="https://s3.eu-north-1.amazonaws.com/food-sharing/media/avataras.png" alt="Avataras">
                 {% endif %}
@@ -102,7 +100,6 @@
                     </div>
                 </div>
             </div>
-
         {% endfor %}
     </div>
 {% endblock %}

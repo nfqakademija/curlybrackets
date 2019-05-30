@@ -7,48 +7,13 @@
         <span>{{ form_row(form.description, {'attr': {'class': 'form-control form-space'}}) }}</span>
         <span>{{ form_row(form.deadline, {'attr': {'class': 'form-control form-space datetimepicker', 'autocomplete': 'off'}}) }}</span>
         <span>{{ form_row(form.pictureFile, {'attr': {'class': 'form-control form-space'}}) }}</span>
-{#        <img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('small') }}">#}
         <span>{{ form_row(form.status, {'attr': {'class': ' form-space'}}) }}</span>
         <button class="btn btn-success">{{ button_label|default('Save') }}</button>
         <span class="mt-3"><a class="cancel-txt btn btn-danger" href="{{ path('user_show', {id: app.user.id}) }}">Grįžti</a></span>
     </div>
 </div>
 
-{#    <div class="row justify-content-center form-block">#}
-{#        <div class="col-lg-6 col-md-8">#}
-{#            <div class="row">#}
-
-{#                    <div class="col-md-6 form-padding-right">#}
-{#                        <div class="form-group">#}
-{#                            <span class=  "">{{ form_row(form.pictureFile, {'attr': {'class': 'form-control form-space', 'placeholder': 'Pavadinimas'}}) }}</span>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                <div class="col-md-6 form-padding-left">#}
-{#                    <div class="form-group">#}
-{#                    <span class="">{{ form_row(form.title, {'attr': {'class': 'form-control form-space', 'placeholder': 'Pavadinimas'}}) }}</span>#}
-{#                    <span class="">{{ form_row(form.deadline, {'attr': {'class': 'form-control form-space', 'placeholder': 'Atsiimti iki'}}) }}</span>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-
-{#                {{ form_row(form.description, {'attr': {'class': 'form-control form-message', 'placeholder': 'Aprašymas'}}) }}#}
-{#                #}{#<img src="{{ vich_uploader_asset(product, 'pictureFile')|imagine_filter('square') }}">#}
-{#            <div class="row">#}
-{#                <div class="col-sm-6 col-12">#}
-{#                    <span class="">{{ form_row(form.status, {'attr': {'class': ' form-control custom-checkbox form-check'}}) }}</span>#}
-{#                </div>#}
-{#                <div class="col-sm-6 col-12">#}
-{#                    <div class="add-btn">#}
-{#                        <a class="cancel-txt" href="{{path('user_show', {id: app.user.id}) }}">Atšaukti</a> <button class="call-to-btn">{{ button_label|default('Įrašyti') }}</button>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-
-{#        </div>#}
-{#    </div>#}
-
 <script>
-
     $('#product_pictureFile_file').on('change',function(){
         var fileName = document.getElementById('product_pictureFile_file').files[0].name;
         $(this).next('.custom-file-label').html(fileName);
