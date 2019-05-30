@@ -361,8 +361,8 @@ a:hover{
   font-weight: 500;
 }
 
-.user-icons {
-  font-size: 12px;
+.user-icons i{
+  font-size: 18px;
 }
 
 .info-window-deadline{
@@ -423,6 +423,10 @@ a:hover{
   padding: 15px 0;
 }
 
+.profile-btn-block a{
+  float: left;
+}
+
 //for other screens
 
 @media screen and (max-width: 575px ) {
@@ -439,4 +443,11 @@ a:hover{
  .profile-btn-block{
    margin-bottom: 15px !important;
  }
+
+ .profile-btn-block a{
+  float: none;
+}
+.profile-btn-block div{
+  display: inline;
+}
 }
