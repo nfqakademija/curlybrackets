@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash.isempty';
 import GoogleMap from './components/GoogleMap';
 import {update} from './actions'
 import {connect} from 'react-redux';
@@ -9,7 +8,6 @@ const InfoWindow = (props) => {
     const { place } = props;
     const infoWindowStyle = {
         position: 'relative',
-        // bottom: 150,
         left: '10px',
         width: 220,
         backgroundColor: 'white',
@@ -62,19 +60,25 @@ class MarkerInfoWindow extends Component {
             places: [],
         };
     }
-    componentDidMount() {
+    componentDidMount(props) {
         fetch('/product/jsonIndex')
             .then(response => response.json())
             .then((data) => {
                 data.forEach((result) => {
                     result.show = false;
                 });
-                this.setState({ places: data });
+                console.log(data);
+                this.props.onAddPost(this.state.places);
             });
     }
     updateMarkers = (props, dispatch) => {
-      this.props.onAddPost(this.state.places);
-        fetch('/product/jsonIndex')
+      const latitudeSE = props.bounds.se.lat;
+      const longitudeSE = props.bounds.se.lng;
+      const latitudeNW = props.bounds.nw.lat;
+      const longitudeNW = props.bounds.nw.lng;
+
+      const url = '/product/jsonMap?latitudeSE=' + latitudeSE + '&longitudeSE=' + longitudeSE + '&latitudeNW=' + latitudeNW + '&longitudeNW=' + longitudeNW;
+        fetch(url)
             .then(response => response.json())
             .then((data) => {
                 data.forEach((result) => {
@@ -82,21 +86,21 @@ class MarkerInfoWindow extends Component {
                     result.lock = false;
                 });
                 this.setState({ places: data });
+                this.props.onAddPost(this.state.places);
             });
     };
 
     onChildClickCallback = (key) => {
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-            state.places[index].lock = !state.places[index].lock; 
+            state.places[index].lock = !state.places[index].lock;
             return { places: state.places };
         });
     };
-
     _onChildMouseEnter = (key, childProps) => {
         this.setState((state) => {
             const index = state.places.findIndex(e => e.product_id == key);
-                state.places[index].show = true; 
+            state.places[index].show = true;
             return { places: state.places };
         });
     }
@@ -111,7 +115,7 @@ class MarkerInfoWindow extends Component {
         const { places } = this.state;
         return (
             <Fragment>
-                {!isEmpty(places) && (
+                {(
                     <GoogleMap
                         defaultZoom={13}
                         defaultCenter={{lat: 54.687839, lng: 25.28784}}
