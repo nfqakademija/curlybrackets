@@ -20,16 +20,52 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @var GuardAuthenticatorHandler
+     */
+    private $guardAuthenticatorHandler;
+    /**
+     * @var LoginFormAuthenticator
+     */
+    private $loginFormAuthenticator;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var AuthenticationUtils
+     */
+    private $authenticationUtils;
+
+    /**
+     * SecurityController constructor.
+     *
+     * @param GuardAuthenticatorHandler $guardAuthenticatorHandler
+     * @param LoginFormAuthenticator $loginFormAuthenticator
+     * @param UserRepository $userRepository
      * @param AuthenticationUtils $authenticationUtils
+     */
+    public function __construct(
+        GuardAuthenticatorHandler $guardAuthenticatorHandler,
+        LoginFormAuthenticator $loginFormAuthenticator,
+        UserRepository $userRepository,
+        AuthenticationUtils $authenticationUtils
+    ) {
+       $this->guardAuthenticatorHandler = $guardAuthenticatorHandler;
+       $this->loginFormAuthenticator  = $loginFormAuthenticator;
+       $this->userRepository = $userRepository;
+       $this->authenticationUtils = $authenticationUtils;
+    }
+
+    /**
+     * @Route("/login", name="app_login")
      * @return Response
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(): Response
     {
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $this->authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = $this->authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
@@ -48,20 +84,14 @@ class SecurityController extends AbstractController
      * @Route("/confirm/{hash}", name="confirmation")
      * @param $hash
      * @param Request $request
-     * @param GuardAuthenticatorHandler $guardHandler
-     * @param LoginFormAuthenticator $authenticator
-     * @param UserRepository $userRepository
      * @return RedirectResponse|Response|null
      */
     public function confirmation(
         $hash,
-        Request $request,
-        GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator,
-        UserRepository $userRepository
+        Request $request
     ) {
 
-        if ($user = $userRepository->findOneByRegistratingHash($hash)) {
+        if ($user = $this->userRepository->findOneByRegistratingHash($hash)) {
             if ($user->getActivated()) {
                 $this->addFlash('danger', 'Vartotojas jau aktyvuotas');
                 return $this->redirectToRoute('app_login');
@@ -71,10 +101,10 @@ class SecurityController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Sveikiname, vartotojas sėkmingai aktyvuotas!');
-            return $guardHandler->authenticateUserAndHandleSuccess(
+            return $this->guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
-                $authenticator,
+                $this->authenticator,
                 'main' // firewall name in security.yaml
             );
         }
