@@ -116,6 +116,10 @@ class ProductController extends AbstractController
         $this->productRepository->save($product);
         $this->addFlash('success', 'Produktas atidavimo būsena pakeista!');
 
+        if ($product->getGivenAway()) {
+            $this->addFlash('success', 'Atiduotas produktas pašalinamas iš bendro sąrašo!');
+        }
+
         return $this->redirectToRoute('user_show', [
             'id' => $product->getUser()->getId(),
         ]);

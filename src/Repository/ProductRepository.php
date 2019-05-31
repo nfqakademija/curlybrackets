@@ -72,6 +72,7 @@ class ProductRepository extends ServiceEntityRepository
                 'longitudeMin' => $rightBottomCorner->getLongitude(),
                 'longitudeMax' => $leftTopCorner->getLongitude()
             ])
+            ->orderBy('p.deadline', 'ASC')
             ->getQuery()
             ->getResult()
             ;

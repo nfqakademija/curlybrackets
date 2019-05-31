@@ -23,7 +23,6 @@
                     <p class="mb-1">{{ product.description }}</p>
                     <p>
                         Savininkas: {{ product.user.username }}
-                        <img class="product-avatar" src=" {{('/images/avatars/' ~product.user.avatar )}}" title="{{ product.user.username }}">
                     </p>
                     <small>Baigia galioti {{ product.deadline | until }}</small>
                 </div>
