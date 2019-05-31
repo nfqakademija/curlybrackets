@@ -1,4 +1,5 @@
 easy_admin:
+    disabled_actions: ['new']
     site_name: Foodsharing
     entities:
         User:
@@ -9,10 +10,6 @@ easy_admin:
                     - 'lastName'
                     - 'email'
                     - 'activated'
-                    - 'createdAt'
-                    - 'updatedAt'
-        Location:
-            class: App\Entity\Location
 
         Product:
             class: App\Entity\Product
@@ -22,5 +19,7 @@ easy_admin:
                     - 'description'
                     - 'status'
                     - { property: 'givenAway', type: 'checkbox'}
-                    - 'createdAt'
-                    - 'updatedAt'
+
+        Location:
+            disabled_actions: ['delete']
+            class: App\Entity\Location
