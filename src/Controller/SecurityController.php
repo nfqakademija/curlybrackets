@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,6 +86,7 @@ class SecurityController extends AbstractController
      * @param $hash
      * @param Request $request
      * @return RedirectResponse|Response|null
+     * @throws NonUniqueResultException
      */
     public function confirmation(
         $hash,
